@@ -8,22 +8,42 @@ app.get('/', function (req, res) {
 });
 
 io.on('connection', function (socket) {
+    //allocate a random username
     var i = 0, userExists = true;
     while (userExists) {
-        if (users[i.toString()] === undefined) {
-            users[i.toString()] = socket;
-            socket.username = i.toString();
+        var newUsername = i.toString();
+        if (users[newUsername] === undefined) {
+            users[newUsername] = socket;
+            socket.username = newUsername;
             userExists = false;
+
+            //allocate a random partner
+            for (var username in users){
+                if (username !== socket.username && users[username]["partner"] === undefined) {
+                    users[username]["partner"] = socket.username;
+                    users[socket.username]["partner"] = username;
+                    break;
+                }
+            }
         }
         i++;
     }
 
     socket.on('send message', function (msg) {
-        io.emit('receive message', msg);
+        if (msg.trim() !== "") {
+            var partner = users[socket.username]["partner"];
+            if (partner) {
+                users[partner].emit('receive message', msg);
+            }
+        }
     });
 
     socket.on("disconnect", function () {
         if (!socket.username) return;
+        var partnerUsername = users[socket.username]["partner"];
+        if (partnerUsername) {
+            delete users[partnerUsername]["partner"];
+        }
         delete users[socket.username];
     });
 });
