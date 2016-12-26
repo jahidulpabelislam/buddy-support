@@ -1,10 +1,13 @@
-var app = require('express')(),
+var express = require('express'),
+    app = express(),
     http = require('http').Server(app),
     io = require('socket.io')(http),
     users = {};
 
+app.use(express.static(__dirname + '/public/lib'));
+
 app.get('/', function (req, res) {
-    res.sendFile(__dirname + '/index.html');
+    res.sendFile(__dirname + '/public/view/index.html');
 });
 
 io.on('connection', function (socket) {
@@ -18,7 +21,7 @@ io.on('connection', function (socket) {
             userExists = false;
 
             //allocate a random partner
-            for (var username in users){
+            for (var username in users) {
                 if (username !== socket.username && users[username]["partner"] === undefined) {
                     users[username]["partner"] = socket.username;
                     users[socket.username]["partner"] = username;
