@@ -18,7 +18,8 @@
         <ul id="messages"></ul>
 
         <form>
-            <input id="message" autocomplete="off"/><button>Send</button>
+            <input id="message"/>
+            <button>Send</button>
         </form>
 
         <script src="/socket.io/socket.io.js"></script>
@@ -28,12 +29,12 @@
             var socket = io();
 
             $('form').submit(function(){
-                socket.emit('chat message', $('#message').val());
+                socket.emit('send message', $('#message').val());
                 $('#message').val('');
                 return false;
             });
 
-            socket.on('chat message', function(msg){
+            socket.on('receive message', function(msg){
                 $('#messages').append($('<li>').text(msg));
             });
         </script>
