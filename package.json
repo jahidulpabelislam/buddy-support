@@ -1,0 +1,9 @@
+{
+  "name": "buddy-support",
+  "version": "1.0.0",
+  "description": "a chat app",
+  "dependencies": {
+    "express": "^4.10.2",
+    "socket.io": "^1.7.2"
+  }
+}
