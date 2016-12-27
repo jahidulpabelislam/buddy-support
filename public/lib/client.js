@@ -45,7 +45,10 @@ var socket = io(),
         e.preventDefault();
     };
 
-$("#startForm").submit(matchUser);
+$("#startForm").submit(function () {
+    socket.emit("start", matchUser);
+    return false;
+});
 
 socket.on("matched", function () {
     setUpChat();

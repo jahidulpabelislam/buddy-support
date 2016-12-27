@@ -11,17 +11,20 @@ app.get("/", function (req, res) {
 });
 
 io.on("connection", function (socket) {
-    //allocate a random username
-    var i = 0, userExists = true;
-    while (userExists) {
-        var newUsername = i.toString();
-        if (users[newUsername] === undefined) {
-            users[newUsername] = socket;
-            socket.username = newUsername;
-            users[newUsername].skipped = [];
-            userExists = false;
-        } else i++;
-    }
+    socket.on("start", function (cb) {
+        //allocate a random username
+        var i = 0, userExists = true;
+        while (userExists) {
+            var newUsername = i.toString();
+            if (users[newUsername] === undefined) {
+                users[newUsername] = socket;
+                socket.username = newUsername;
+                users[newUsername].skipped = [];
+                userExists = false;
+            } else i++;
+        }
+        cb();
+    });
 
     socket.on("match", function (cb) {
         var matched = false;
@@ -58,7 +61,6 @@ io.on("connection", function (socket) {
     });
 
     socket.on("skip", function (cb) {
-
         var partnerUsername = users[socket.username].partner;
         if (partnerUsername) {
             delete users[partnerUsername].partner;
