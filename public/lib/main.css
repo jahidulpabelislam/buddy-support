@@ -8,7 +8,7 @@ body {
     font: 13px Helvetica, Arial;
 }
 
-form {
+#messageForm {
     background: #000;
     padding: 3px;
     position: fixed;
@@ -16,19 +16,34 @@ form {
     width: 100%;
 }
 
-form input {
+#messageForm input {
     width: 90%;
     margin-right: .5%;
 }
 
-form button {
+#messageForm button {
     width: 9%;
 }
 
-#messages li {
-    padding: 5px 10px;
+#skipForm {
+    display: none;
 }
 
-#messages li:nth-child(odd) {
-    background: #eee;
+#messages {
+    width: 100%;
+}
+
+#messages li {
+    width: 75%;
+    display: inline-block;
+}
+
+#messages li.partner {
+    float: left;
+    background: dodgerblue;
+}
+
+#messages li.user {
+    float: right;
+    background: green;
 }
