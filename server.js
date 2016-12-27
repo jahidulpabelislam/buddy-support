@@ -10,23 +10,28 @@ app.get("/", function (req, res) {
     res.sendFile(__dirname + "/public/view/index.html");
 });
 
+http.listen(3000, function () {
+    console.log("listening on *:3000");
+});
+
 io.on("connection", function (socket) {
-    socket.on("start", function (cb) {
-        //allocate a random username
-        var i = 0, userExists = true;
-        while (userExists) {
-            var newUsername = i.toString();
-            if (users[newUsername] === undefined) {
-                users[newUsername] = socket;
-                socket.username = newUsername;
-                users[newUsername].skipped = [];
-                userExists = false;
-            } else i++;
+    socket.on("start", function () {
+        if (!socket.username) {
+            //allocate a random username
+            var i = 0, userExists = true;
+            while (userExists) {
+                var newUsername = i.toString();
+                if (users[newUsername] === undefined) {
+                    users[newUsername] = socket;
+                    socket.username = newUsername;
+                    users[newUsername].skipped = [];
+                    userExists = false;
+                } else i++;
+            }
         }
-        cb();
     });
 
-    socket.on("match", function (cb) {
+    socket.on("match", function (callback) {
         var matched = false;
         //allocate a random partner
         for (var username in users) {
@@ -38,14 +43,14 @@ io.on("connection", function (socket) {
                 break;
             }
         }
-        cb(matched);
+        callback(matched);
     });
 
-    socket.on("send message", function (msg) {
-        if (msg.trim() !== "") {
+    socket.on("send message", function (message) {
+        if (message.trim() !== "") {
             var partner = users[socket.username].partner;
             if (partner) {
-                users[partner].emit("receive message", msg);
+                users[partner].emit("receive message", message);
             }
         }
     });
@@ -60,7 +65,7 @@ io.on("connection", function (socket) {
         delete users[socket.username];
     });
 
-    socket.on("skip", function (cb) {
+    socket.on("skip", function (callback) {
         var partnerUsername = users[socket.username].partner;
         if (partnerUsername) {
             delete users[partnerUsername].partner;
@@ -69,10 +74,13 @@ io.on("connection", function (socket) {
             users[partnerUsername].emit("unmatched");
         }
 
-        cb();
+        callback();
     });
-});
 
-http.listen(3000, function () {
-    console.log("listening on *:3000");
+    socket.on("send image", function (image) {
+        var partnerUsername = users[socket.username].partner;
+        if (partnerUsername) {
+            users[partnerUsername].emit("receive image", image);
+        }
+    });
 });

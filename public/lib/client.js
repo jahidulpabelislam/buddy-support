@@ -43,16 +43,37 @@ var socket = io(),
             socket.emit("skip", matchUser);
         }
         e.preventDefault();
+    },
+    
+    sendImages = function () {
+        var imagesUpload = $("#imageSend")[0];
+
+        for (var i = 0; i < imagesUpload.files.length; i++) {
+
+            var fileReader;
+
+            //checks if file is a image
+            if (imagesUpload.files[i].type.includes("image/")) {
+                //gets image
+                fileReader = new FileReader();
+
+                fileReader.readAsDataURL(imagesUpload.files[i]);
+
+                fileReader.onload = function (e) {
+                    socket.emit("send image", e.target.result);
+                    $("#messages").append($("<li>").addClass("sent").append("<img src='" + e.target.result + "'>"));
+                };
+            }
+        }
     };
 
-$("#startForm").submit(function () {
-    socket.emit("start", matchUser);
-    return false;
+$("#startForm").submit(function (e) {
+    $("#startForm").hide();
+    socket.emit("start");
+    matchUser(e);
 });
 
-socket.on("matched", function () {
-    setUpChat();
-});
+socket.on("matched", setUpChat);
 
 socket.on("unmatched", matchUser);
 
@@ -63,3 +84,9 @@ socket.on("receive message", function (msg) {
 });
 
 $("#skipForm").submit(skipUser);
+
+$("#imageSend").click(sendImages);
+
+socket.on("receive image", function (image) {
+    $("#messages").append($("<li>").addClass("received").append("<img src='" + image + "'>"));
+});
