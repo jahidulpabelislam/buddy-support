@@ -38,12 +38,12 @@ body {
     display: inline-block;
 }
 
-#messages li.partner {
+#messages li.received {
     float: left;
     background: dodgerblue;
 }
 
-#messages li.user {
+#messages li.sent {
     float: right;
     background: green;
 }

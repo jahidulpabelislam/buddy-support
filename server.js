@@ -29,7 +29,7 @@ io.on("connection", function (socket) {
 
     socket.on("send message", function (msg) {
         if (msg.trim() !== "") {
-            var partner = users[socket.username]["partner"];
+            var partner = users[socket.username].partner;
             if (partner) {
                 users[partner].emit("receive message", msg);
             }
@@ -38,9 +38,9 @@ io.on("connection", function (socket) {
 
     socket.on("disconnect", function () {
         if (!socket.username) return;
-        var partnerUsername = users[socket.username]["partner"];
+        var partnerUsername = users[socket.username].partner;
         if (partnerUsername) {
-            delete users[partnerUsername]["partner"];
+            delete users[partnerUsername].partner;
             users[partnerUsername].emit("unmatched");
         }
         delete users[socket.username];
@@ -48,10 +48,10 @@ io.on("connection", function (socket) {
 
     socket.on("skip", function (cb) {
 
-        var partnerUsername = users[socket.username]["partner"];
+        var partnerUsername = users[socket.username].partner;
         if (partnerUsername) {
-            delete users[partnerUsername]["partner"];
-            delete users[socket.username]["partner"];
+            delete users[partnerUsername].partner;
+            delete users[socket.username].partner;
             users[socket.username].skipped.push(partnerUsername);
             users[partnerUsername].emit("unmatched");
         }
@@ -68,13 +68,13 @@ var matchUsers = function (socket, cb) {
     var matched = false;
     //allocate a random partner
     for (var username in users) {
-        if (username !== socket.username && users[socket.username].skipped.indexOf(username) === -1 && users[username].skipped.indexOf(socket.username) === -1 && users[username]["partner"] === undefined) {
-            users[username]["partner"] = socket.username;
-            users[socket.username]["partner"] = username;
+        if (username !== socket.username && users[socket.username].skipped.indexOf(username) === -1 && users[username].skipped.indexOf(socket.username) === -1 && users[username].partner === undefined) {
+            users[username].partner = socket.username;
+            users[socket.username].partner = username;
             users[username].emit("matched");
             matched = true;
             break;
         }
     }
-    cb(matched, users[socket.username].skipped);
+    cb(matched);
 };
