@@ -24,7 +24,18 @@ io.on("connection", function (socket) {
     }
 
     socket.on("match", function (cb) {
-        matchUsers(socket, cb);
+        var matched = false;
+        //allocate a random partner
+        for (var username in users) {
+            if (username !== socket.username && users[socket.username].skipped.indexOf(username) === -1 && users[username].skipped.indexOf(socket.username) === -1 && users[username].partner === undefined) {
+                users[username].partner = socket.username;
+                users[socket.username].partner = username;
+                users[username].emit("matched");
+                matched = true;
+                break;
+            }
+        }
+        cb(matched);
     });
 
     socket.on("send message", function (msg) {
@@ -56,25 +67,10 @@ io.on("connection", function (socket) {
             users[partnerUsername].emit("unmatched");
         }
 
-        matchUsers(socket, cb);
+        cb();
     });
 });
 
 http.listen(3000, function () {
     console.log("listening on *:3000");
 });
-
-var matchUsers = function (socket, cb) {
-    var matched = false;
-    //allocate a random partner
-    for (var username in users) {
-        if (username !== socket.username && users[socket.username].skipped.indexOf(username) === -1 && users[username].skipped.indexOf(socket.username) === -1 && users[username].partner === undefined) {
-            users[username].partner = socket.username;
-            users[socket.username].partner = username;
-            users[username].emit("matched");
-            matched = true;
-            break;
-        }
-    }
-    cb(matched);
-};
