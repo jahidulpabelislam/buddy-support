@@ -90,4 +90,11 @@ io.on("connection", function (socket) {
             users[partnerUsername].emit("receive video", video);
         }
     });
+
+    socket.on("send audio", function (audio) {
+        var partnerUsername = users[socket.username].partner;
+        if (partnerUsername) {
+            users[partnerUsername].emit("receive audio", audio);
+        }
+    });
 });

@@ -91,6 +91,30 @@ var socket = io(),
                 }
             }
         }
+    },
+
+    sendAudios = function () {
+        if (userMatched) {
+            var audiosUpload = $("#audioSend")[0];
+
+            for (var i = 0; i < audiosUpload.files.length; i++) {
+
+                var fileReader;
+
+                //checks if file is a image
+                if (audiosUpload.files[i].type.includes("audio/")) {
+                    //gets image
+                    fileReader = new FileReader();
+
+                    fileReader.readAsDataURL(audiosUpload.files[i]);
+
+                    fileReader.onload = function (e) {
+                        socket.emit("send audio", e.target.result);
+                        $("#messages").append($("<li>").addClass("sent").append("<audio src='" + e.target.result + "' controls>"));
+                    };
+                }
+            }
+        }
     };
 
 $("#startForm").submit(function (e) {
@@ -121,4 +145,10 @@ $("#videoSend").change(sendVideos);
 
 socket.on("receive video", function (video) {
     $("#messages").append($("<li>").addClass("received").append("<video src='" + video + "' controls>"));
+});
+
+$("#audioSend").change(sendAudios);
+
+socket.on("receive audio", function (audio) {
+    $("#messages").append($("<li>").addClass("received").append("<audio src='" + audio + "' controls>"));
 });
