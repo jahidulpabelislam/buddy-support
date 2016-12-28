@@ -67,6 +67,30 @@ var socket = io(),
                 }
             }
         }
+    },
+
+    sendVideos = function () {
+        if (userMatched) {
+            var videosUpload = $("#videoSend")[0];
+
+            for (var i = 0; i < videosUpload.files.length; i++) {
+
+                var fileReader;
+
+                //checks if file is a image
+                if (videosUpload.files[i].type.includes("video/")) {
+                    //gets video
+                    fileReader = new FileReader();
+
+                    fileReader.readAsDataURL(videosUpload.files[i]);
+
+                    fileReader.onload = function (e) {
+                        socket.emit("send video", e.target.result);
+                        $("#messages").append($("<li>").addClass("sent").append("<video src='" + e.target.result + "' controls>"));
+                    };
+                }
+            }
+        }
     };
 
 $("#startForm").submit(function (e) {
@@ -91,4 +115,10 @@ $("#imageSend").change(sendImages);
 
 socket.on("receive image", function (image) {
     $("#messages").append($("<li>").addClass("received").append("<img src='" + image + "'>"));
+});
+
+$("#videoSend").change(sendVideos);
+
+socket.on("receive video", function (video) {
+    $("#messages").append($("<li>").addClass("received").append("<video src='" + video + "' controls>"));
 });

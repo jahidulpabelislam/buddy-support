@@ -83,4 +83,11 @@ io.on("connection", function (socket) {
             users[partnerUsername].emit("receive image", image);
         }
     });
+
+    socket.on("send video", function (video) {
+        var partnerUsername = users[socket.username].partner;
+        if (partnerUsername) {
+            users[partnerUsername].emit("receive video", video);
+        }
+    });
 });
