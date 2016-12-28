@@ -2,8 +2,23 @@
   "name": "buddy-support",
   "version": "1.0.0",
   "description": "a chat app",
+  "author": "Jahidul Pabel Islam <jahidul.pabel.islam@hotmail.com>",
   "dependencies": {
+    "body-parser": "^1.15.2",
     "express": "^4.10.2",
+    "nodemailer": "^2.7.0",
     "socket.io": "^1.7.2"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jahidulpabelislam/Buddy-Support"
+  },
+  "bugs": {
+    "url": "https://github.com/jahidulpabelislam/Buddy-Support/issues"
+  },
+  "keywords": [
+    "nodejs",
+    "express",
+    "socket.io"
+  ]
 }
