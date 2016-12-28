@@ -45,68 +45,36 @@ var socket = io(),
         e.preventDefault();
     },
     
-    sendImages = function () {
+    sendFiles = function (e) {
         if (userMatched) {
-            var imagesUpload = $("#imageSend")[0];
+            var filesUpload = $("#filesSend")[0];
 
-            for (var i = 0; i < imagesUpload.files.length; i++) {
+            for (var i = 0; i < filesUpload.files.length; i++) {
 
                 var fileReader;
 
-                //checks if file is a image
-                if (imagesUpload.files[i].type.includes("image/")) {
-                    //gets image
-                    fileReader = new FileReader();
+                //gets file
+                fileReader = new FileReader();
+                fileReader.readAsDataURL(filesUpload.files[i]);
 
-                    fileReader.readAsDataURL(imagesUpload.files[i]);
+                //checks if file is a image
+                if (filesUpload.files[i].type.includes("image/")) {
 
                     fileReader.onload = function (e) {
                         socket.emit("send image", e.target.result);
                         $("#messages").append($("<li>").addClass("sent").append("<img src='" + e.target.result + "'>"));
                     };
                 }
-            }
-        }
-    },
-
-    sendVideos = function () {
-        if (userMatched) {
-            var videosUpload = $("#videoSend")[0];
-
-            for (var i = 0; i < videosUpload.files.length; i++) {
-
-                var fileReader;
-
-                //checks if file is a image
-                if (videosUpload.files[i].type.includes("video/")) {
-                    //gets video
-                    fileReader = new FileReader();
-
-                    fileReader.readAsDataURL(videosUpload.files[i]);
+                //checks if file is a video
+                else if (filesUpload.files[i].type.includes("video/")) {
 
                     fileReader.onload = function (e) {
                         socket.emit("send video", e.target.result);
                         $("#messages").append($("<li>").addClass("sent").append("<video src='" + e.target.result + "' controls>"));
                     };
                 }
-            }
-        }
-    },
-
-    sendAudios = function () {
-        if (userMatched) {
-            var audiosUpload = $("#audioSend")[0];
-
-            for (var i = 0; i < audiosUpload.files.length; i++) {
-
-                var fileReader;
-
-                //checks if file is a image
-                if (audiosUpload.files[i].type.includes("audio/")) {
-                    //gets image
-                    fileReader = new FileReader();
-
-                    fileReader.readAsDataURL(audiosUpload.files[i]);
+                //checks if file is a audio
+                else if (filesUpload.files[i].type.includes("audio/")) {
 
                     fileReader.onload = function (e) {
                         socket.emit("send audio", e.target.result);
@@ -135,19 +103,15 @@ socket.on("receive message", function (msg) {
 
 $("#skipForm").submit(skipUser);
 
-$("#imageSend").change(sendImages);
+$("#filesSend").change(sendFiles);
 
 socket.on("receive image", function (image) {
     $("#messages").append($("<li>").addClass("received").append("<img src='" + image + "'>"));
 });
 
-$("#videoSend").change(sendVideos);
-
 socket.on("receive video", function (video) {
     $("#messages").append($("<li>").addClass("received").append("<video src='" + video + "' controls>"));
 });
-
-$("#audioSend").change(sendAudios);
 
 socket.on("receive audio", function (audio) {
     $("#messages").append($("<li>").addClass("received").append("<audio src='" + audio + "' controls>"));
