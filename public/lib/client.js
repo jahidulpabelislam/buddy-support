@@ -27,7 +27,7 @@ var socket = io(),
         if (e) e.preventDefault();
     },
 
-    setUpMessageForm = function (e) {
+    sendMessage = function (e) {
         if (userMatched) {
             if ($("#message").val().trim() !== "") {
                 socket.emit("send message", $("#message").val());
@@ -46,23 +46,25 @@ var socket = io(),
     },
     
     sendImages = function () {
-        var imagesUpload = $("#imageSend")[0];
+        if (userMatched) {
+            var imagesUpload = $("#imageSend")[0];
 
-        for (var i = 0; i < imagesUpload.files.length; i++) {
+            for (var i = 0; i < imagesUpload.files.length; i++) {
 
-            var fileReader;
+                var fileReader;
 
-            //checks if file is a image
-            if (imagesUpload.files[i].type.includes("image/")) {
-                //gets image
-                fileReader = new FileReader();
+                //checks if file is a image
+                if (imagesUpload.files[i].type.includes("image/")) {
+                    //gets image
+                    fileReader = new FileReader();
 
-                fileReader.readAsDataURL(imagesUpload.files[i]);
+                    fileReader.readAsDataURL(imagesUpload.files[i]);
 
-                fileReader.onload = function (e) {
-                    socket.emit("send image", e.target.result);
-                    $("#messages").append($("<li>").addClass("sent").append("<img src='" + e.target.result + "'>"));
-                };
+                    fileReader.onload = function (e) {
+                        socket.emit("send image", e.target.result);
+                        $("#messages").append($("<li>").addClass("sent").append("<img src='" + e.target.result + "'>"));
+                    };
+                }
             }
         }
     };
@@ -77,7 +79,7 @@ socket.on("matched", setUpChat);
 
 socket.on("unmatched", matchUser);
 
-$("#messageForm").submit(setUpMessageForm);
+$("#messageForm").submit(sendMessage);
 
 socket.on("receive message", function (msg) {
     $("#messages").append($("<li>").addClass("received").text(msg));
@@ -85,7 +87,7 @@ socket.on("receive message", function (msg) {
 
 $("#skipForm").submit(skipUser);
 
-$("#imageSend").click(sendImages);
+$("#imageSend").change(sendImages);
 
 socket.on("receive image", function (image) {
     $("#messages").append($("<li>").addClass("received").append("<img src='" + image + "'>"));
