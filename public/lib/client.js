@@ -47,18 +47,18 @@ var socket = io(),
     
     sendFiles = function (e) {
         if (userMatched) {
-            var filesUpload = $("#filesSend")[0];
+            var files = $("#filesSend")[0].files;
 
-            for (var i = 0; i < filesUpload.files.length; i++) {
+            for (var i = 0; i < files.length; i++) {
 
                 var fileReader;
 
                 //gets file
                 fileReader = new FileReader();
-                fileReader.readAsDataURL(filesUpload.files[i]);
+                fileReader.readAsDataURL(files[i]);
 
                 //checks if file is a image
-                if (filesUpload.files[i].type.includes("image/")) {
+                if (files[i].type.includes("image/")) {
 
                     fileReader.onload = function (e) {
                         socket.emit("send image", e.target.result);
@@ -66,7 +66,7 @@ var socket = io(),
                     };
                 }
                 //checks if file is a video
-                else if (filesUpload.files[i].type.includes("video/")) {
+                else if (files[i].type.includes("video/")) {
 
                     fileReader.onload = function (e) {
                         socket.emit("send video", e.target.result);
@@ -74,7 +74,7 @@ var socket = io(),
                     };
                 }
                 //checks if file is a audio
-                else if (filesUpload.files[i].type.includes("audio/")) {
+                else if (files[i].type.includes("audio/")) {
 
                     fileReader.onload = function (e) {
                         socket.emit("send audio", e.target.result);
@@ -83,6 +83,7 @@ var socket = io(),
                 }
             }
         }
+        $("#filesSend").val('');
     };
 
 $("#startForm").submit(function (e) {

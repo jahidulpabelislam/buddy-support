@@ -2,12 +2,51 @@ var express = require("express"),
     app = express(),
     http = require("http").Server(app),
     io = require("socket.io")(http),
+    nodeMailer = require("nodemailer"),
+    bodyParser = require('body-parser'),
     users = {};
 
-app.use(express.static(__dirname + "/public/lib"));
+app.use(express.static(__dirname + "/public"));
+
+app.use(bodyParser.json());
+
+app.use(bodyParser.urlencoded({extended: true}));
 
 app.get("/", function (req, res) {
     res.sendFile(__dirname + "/public/view/index.html");
+});
+
+app.get("/contact/", function (req, res) {
+    res.sendFile(__dirname + "/public/view/contact.html");
+});
+
+app.post("/contact/", function (req, res) {
+    var transporter = nodeMailer.createTransport({
+            service: 'Gmail',
+            auth: {
+                user: 'up733474@myport.ac.uk',
+                pass: hidden
+            }
+        }),
+        mailOptions = {
+            replyTo: req.body.emailInput,
+            to: 'up733474@myport.ac.uk',
+            subject: 'Buddy Support Email',
+            text: req.body.messageInput
+        };
+
+    if (req.body.subjectInput) {
+        mailOptions.subject = req.body.subjectInput;
+    }
+
+    transporter.sendMail(mailOptions, function (error, info) {
+        if (error) {
+            console.log(error);
+        } else {
+            console.log('Message sent: ' + info.response);
+        }
+        res.sendFile(__dirname + "/public/view/contact.html");
+    });
 });
 
 http.listen(3000, function () {
@@ -91,7 +130,7 @@ io.on("connection", function (socket) {
         }
     });
 
-    socket.on("send audio", function (audio) {
+    socket.on("send video", function (audio) {
         var partnerUsername = users[socket.username].partner;
         if (partnerUsername) {
             users[partnerUsername].emit("receive audio", audio);

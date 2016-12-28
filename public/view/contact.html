@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="author" content="Jahidul Pabel Islam">
+        <meta name="description" content="">
+        <meta name="keywords" content="">
+        <link rel="stylesheet" href="lib/main.css"/>
+        <link rel="icon" href="images/logo.png">
+        <title>Contact Buddy Support</title>
+    </head>
+
+    <body>
+        <h3>Form</h3>
+        <p>Use this contact form for any enquires or to give us any feedback quickly.</p>
+        <p>* indicates a required field</p>
+
+        <form id="contactForm" method="post">
+
+            <label for="emailInput">Your Email Address *</label>
+            <input type="email" name="emailInput" placeholder="e.g. joe@example.com" required tabindex="1" id="emailInput"
+                   title="Email Address">
+
+            <label for="subjectInput">The Message Subject</label>
+            <input type="text" name="subjectInput" placeholder="e.g. App Feedback" tabindex="2" id="subjectInput"
+                   title="Subject of Message">
+
+            <label for="messageInput">Your Message *</label>
+
+            <textarea name="messageInput" placeholder="e.g. Your app could do with more colour." required tabindex="3" id="messageInput"
+                      title="The Message"></textarea>
+
+            <button type="submit">Submit</button>
+
+        </form>
+
+        <p>Or you can send your enquires or messages to <a href="mailto:jahidul.pabel.islam@hotmail.com" target="_blank">
+            jahidul.pabel.islam@hotmail.com
+        </a>.</p>
+    </body>
+</html>
