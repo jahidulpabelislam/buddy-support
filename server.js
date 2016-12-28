@@ -21,32 +21,28 @@ app.get("/contact/", function (req, res) {
 });
 
 app.post("/contact/", function (req, res) {
-    var transporter = nodeMailer.createTransport({
-            service: 'Gmail',
-            auth: {
-                user: 'up733474@myport.ac.uk',
-                pass: hidden
-            }
-        }),
-        mailOptions = {
-            replyTo: req.body.emailInput,
-            to: 'up733474@myport.ac.uk',
-            subject: 'Buddy Support Email',
-            text: req.body.messageInput
-        };
+    if (req.body.emailInput.trim() !== "" && req.body.messageInput.trim() !== "") {
+        var transporter = nodeMailer.createTransport({
+                service: 'Gmail',
+                auth: {
+                    user: 'up733474@myport.ac.uk',
+                    pass: hidden
+                }
+            }),
+            mailOptions = {
+                replyTo: req.body.emailInput,
+                to: 'up733474@myport.ac.uk',
+                subject: req.body.subjectInput || 'Buddy Support Email',
+                text: req.body.messageInput
+            };
 
-    if (req.body.subjectInput) {
-        mailOptions.subject = req.body.subjectInput;
+        transporter.sendMail(mailOptions, function (error, info) {
+            res.send(JSON.stringify({
+                ok: error ? false : true,
+                message: error ? "Fail" : "Sent"
+            }));
+        });
     }
-
-    transporter.sendMail(mailOptions, function (error, info) {
-        if (error) {
-            console.log(error);
-        } else {
-            console.log('Message sent: ' + info.response);
-        }
-        res.sendFile(__dirname + "/public/view/contact.html");
-    });
 });
 
 http.listen(3000, function () {
