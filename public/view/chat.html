@@ -22,8 +22,12 @@
         <ul id="messages"></ul>
 
         <form id="messageForm">
-            <label for="filesSend">Send Images/Videos/Audios</label>
-            <input type="file" name="filesSend" id="filesSend" multiple>
+            <label for="photosSend">Send Images</label>
+            <input type="file" name="photosSend" id="photosSend" multiple accept="image/*">
+            <label for="videosSend">Send Videos</label>
+            <input type="file" name="videosSend" id="videosSend" multiple accept="video/*">
+            <label for="audiosSend">Send Audios</label>
+            <input type="file" name="audiosSend" id="audiosSend" multiple accept="audio/*">
             <input id="message" placeholder="hello :)..."/>
             <button>Send</button>
         </form>
@@ -40,6 +44,6 @@
 
         <script src="/socket.io/socket.io.js"></script>
         <script src="http://code.jquery.com/jquery-1.11.1.js"></script>
-        <script type="text/javascript" src="lib/client.js"></script>
+        <script type="text/javascript" src="lib/ui.js"></script>
     </body>
 </html>

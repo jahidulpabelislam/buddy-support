@@ -45,9 +45,8 @@ var socket = io(),
         e.preventDefault();
     },
     
-    sendFiles = function (e) {
+    sendFiles = function (files) {
         if (userMatched) {
-            var files = $("#filesSend")[0].files;
 
             for (var i = 0; i < files.length; i++) {
 
@@ -83,7 +82,21 @@ var socket = io(),
                 }
             }
         }
-        $("#filesSend").val('');
+    },
+
+    sendPhotos = function () {
+        sendFiles($("#photosSend")[0].files);
+        $("#photosSend").val('');
+    },
+
+    sendVideos = function () {
+        sendFiles($("#videosSend")[0].files);
+        $("#videosSend").val('');
+    },
+
+    sendAudios = function () {
+        sendFiles($("#audiosSend")[0].files);
+        $("#audiosSend").val('');
     };
 
 $("#startForm").submit(function (e) {
@@ -104,7 +117,9 @@ socket.on("receive message", function (msg) {
 
 $("#skipForm").submit(skipUser);
 
-$("#filesSend").change(sendFiles);
+$("#photosSend").change(sendPhotos);
+$("#videosSend").change(sendVideos);
+$("#audiosSend").change(sendAudios);
 
 socket.on("receive image", function (image) {
     $("#messages").append($("<li>").addClass("received").append("<img src='" + image + "'>"));
