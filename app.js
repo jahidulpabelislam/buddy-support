@@ -6,6 +6,10 @@ var express = require("express"),
     bodyParser = require('body-parser'),
     users = {};
 
+http.listen(9000, function () {
+    console.log("listening on *:9000");
+});
+
 app.use(express.static(__dirname + "/public"));
 
 app.use(bodyParser.json());
@@ -13,7 +17,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 
 app.get("/", function (req, res) {
-    res.sendFile(__dirname + "/public/view/index.html");
+    res.sendFile(__dirname + "/public/view/chat.html");
 });
 
 app.get("/contact/", function (req, res) {
@@ -33,6 +37,7 @@ app.post("/contact/", function (req, res) {
                     pass: hidden
                 }
             }),
+
             mailOptions = {
                 replyTo: req.body.emailInput,
                 to: 'up733474@myport.ac.uk',
@@ -40,19 +45,20 @@ app.post("/contact/", function (req, res) {
                 text: req.body.messageInput
             };
 
-        transporter.sendMail(mailOptions, function (error, info) {
+        transporter.sendMail(mailOptions, function (error) {
             res.send(JSON.stringify({
-                ok: error ? false : true,
+                ok: !error,
                 feedback: error ? "Something went wrong, please try again." : "Your message has been sent."
             }));
         });
+
     } else {
         var response = {ok: false};
 
         if (req.body.emailInput.trim() === "") {
             response.emailFeedback = "Email Address must be provided and valid.";
         } else if (!result) {
-            response.emailFeedback ="Email Address must be valid.";
+            response.emailFeedback = "Email Address must be valid.";
         }
 
         if (req.body.messageInput.trim() === "") {
@@ -62,10 +68,6 @@ app.post("/contact/", function (req, res) {
         res.send(JSON.stringify(response));
     }
 
-});
-
-http.listen(3000, function () {
-    console.log("listening on *:3000");
 });
 
 io.on("connection", function (socket) {
