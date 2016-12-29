@@ -22,6 +22,7 @@
             <label for="emailInput">Your Email Address *</label>
             <input type="email" name="emailInput" placeholder="e.g. joe@example.com" required tabindex="1" id="emailInput"
                    title="Email Address">
+            <p id="emailFeedback"></p>
 
             <label for="subjectInput">The Message Subject</label>
             <input type="text" name="subjectInput" placeholder="e.g. App Feedback" tabindex="2" id="subjectInput"
@@ -31,12 +32,13 @@
 
             <textarea name="messageInput" placeholder="e.g. Your app could do with more colour." required tabindex="3" id="messageInput"
                       title="The Message"></textarea>
+            <p id="messageFeedback"></p>
 
             <button type="submit">Submit</button>
 
-        </form>
+            <p id="feedback"></p>
 
-        <p id="feedback"></p>
+        </form>
 
         <p>Or you can send your enquires or messages to <a href="mailto:jahidul.pabel.islam@hotmail.com" target="_blank">
             jahidul.pabel.islam@hotmail.com

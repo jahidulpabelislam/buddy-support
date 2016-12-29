@@ -21,7 +21,11 @@ app.get("/contact/", function (req, res) {
 });
 
 app.post("/contact/", function (req, res) {
-    if (req.body.emailInput.trim() !== "" && req.body.messageInput.trim() !== "") {
+    var validEmailPattern = /\b[\w._-]+@[\w-]+.[\w]{2,}\b/im,
+        result = validEmailPattern.test(req.body.emailInput);
+
+    if (req.body.emailInput.trim() !== "" && req.body.messageInput.trim() !== "" && result) {
+
         var transporter = nodeMailer.createTransport({
                 service: 'Gmail',
                 auth: {
@@ -39,10 +43,25 @@ app.post("/contact/", function (req, res) {
         transporter.sendMail(mailOptions, function (error, info) {
             res.send(JSON.stringify({
                 ok: error ? false : true,
-                message: error ? "Fail" : "Sent"
+                feedback: error ? "Something went wrong, please try again." : "Your message has been sent."
             }));
         });
+    } else {
+        var response = {ok: false};
+
+        if (req.body.emailInput.trim() === "") {
+            response.emailFeedback = "Email Address must be provided and valid.";
+        } else if (!result) {
+            response.emailFeedback ="Email Address must be valid.";
+        }
+
+        if (req.body.messageInput.trim() === "") {
+            response.messageFeedback = "Message must be provided.";
+        }
+
+        res.send(JSON.stringify(response));
     }
+
 });
 
 http.listen(3000, function () {
