@@ -27,7 +27,7 @@
 
             <label for="emailInput">Your Email Address *</label>
             <input type="email" name="emailInput" placeholder="e.g. joe@example.com" required tabindex="1" id="emailInput"
-                   title="Email Address">
+                   title="Email Address" oninput="validateEmail(this.value)">
             <p id="emailFeedback"></p>
 
             <label for="subjectInput">The Message Subject</label>
@@ -37,8 +37,9 @@
             <label for="messageInput">Your Message *</label>
 
             <textarea name="messageInput" placeholder="e.g. Your app could do with more colour." required tabindex="3" id="messageInput"
-                      title="The Message"></textarea>
+                      title="The Message" oninput="validateMessage(this.value)"></textarea>
             <p id="messageFeedback"></p>
+            <img src="images/loading.gif" id="loading">
 
             <button type="submit">Submit</button>
 

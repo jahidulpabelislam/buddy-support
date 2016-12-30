@@ -52,3 +52,7 @@ body {
     float: right;
     background: green;
 }
+
+#loading {
+    display: none;
+}

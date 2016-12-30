@@ -25,14 +25,17 @@ var renderFeedback = function (result) {
         $("#messageFeedback").text("");
     }
 
+    $("#loading").hide();
+
 };
 
 $("#contactForm").submit(function () {
     $("#feedback").text("");
+    $("#loading").show();
 
     //validate each required user input
-    var emailValidation = validateEmail($("#emailInput").val()),
-        messageValidation = validateMessage($("#messageInput").val());
+    var emailValidation = validateEmail($("#emailInput").val(), true),
+        messageValidation = validateMessage($("#messageInput").val(), true);
 
     //if form is valid send a request with necessary data to XHR
     if (emailValidation && messageValidation) {
@@ -46,23 +49,25 @@ $("#contactForm").submit(function () {
             },
             success: renderFeedback
         });
+    } else {
+        $("#loading").hide();
     }
 
     return false;
 });
 
 //validate the email address
-var validateEmail = function (mail) {
+var validateEmail = function (email, isForm) {
         var validEmailPattern = /\b[\w._-]+@[\w-]+.[\w]{2,}\b/im,
-            result = validEmailPattern.test(mail);
+            result = validEmailPattern.test(email);
 
         //checks if email is empty
-        if (mail.trim() === "") {
+        if (email.trim() === "" && isForm) {
             $("#emailFeedback").text("Email Address must be provided and valid.");
             return false;
         }
         //checks if email is valid
-        else if (!result) {
+        else if (!result && isForm) {
             //give user message
             $("#emailFeedback").text("Email Address must be valid.");
             return false;
@@ -76,10 +81,10 @@ var validateEmail = function (mail) {
     },
 
     //validate the message input
-    validateMessage = function (mess) {
+    validateMessage = function (message, isForm) {
 
         //checks is message is empty
-        if (mess.trim() === "") {
+        if (message.trim() === "" && isForm) {
             //give user message
             $("#messageFeedback").text("Message must be filled out.");
             return false;
