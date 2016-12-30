@@ -115,6 +115,12 @@ socket.on("receive message", function (msg) {
 
 $("#skipForm").submit(skipUser);
 
+$(".filesSend").click(function (e) {
+    if (!userMatched) {
+        e.preventDefault();
+    }
+});
+
 $(".filesSend").change(sendFiles);
 
 socket.on("receive image", function (image) {
