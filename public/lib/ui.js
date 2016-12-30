@@ -16,8 +16,7 @@ var socket = io(),
     },
 
     matchUser = function (e) {
-        socket.emit("match", function (matched, users) {
-            console.log(users);
+        socket.emit("match", function (matched) {
             if (matched) {
                 setUpChat();
             } else {
