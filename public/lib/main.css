@@ -30,6 +30,10 @@ body {
     display: none;
 }
 
+#reportForm {
+    display: none;
+}
+
 #messages {
     width: 100%;
 }

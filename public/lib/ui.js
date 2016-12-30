@@ -8,18 +8,22 @@ var socket = io(),
 
         $("#skipForm").show();
 
+        $("#reportForm").show();
+
         $("#feedback").text("");
 
         userMatched = true;
     },
 
     matchUser = function (e) {
-        socket.emit("match", function (matched) {
+        socket.emit("match", function (matched, users) {
+            console.log(users);
             if (matched) {
                 setUpChat();
             } else {
                 $("#messages").empty();
                 $("#skipForm").hide();
+                $("#reportForm").hide();
                 $("#feedback").text("No Users Available.");
                 userMatched = false;
             }
@@ -85,6 +89,13 @@ var socket = io(),
             }
             e.target.value = "";
         }
+    },
+
+    reportUser = function (e) {
+        if (userMatched) {
+            socket.emit("report", matchUser);
+        }
+        e.preventDefault();
     };
 
 $("#startForm").submit(function (e) {
@@ -117,4 +128,14 @@ socket.on("receive video", function (video) {
 
 socket.on("receive audio", function (audio) {
     $("#messages").append($("<li>").addClass("received").append("<audio src='" + audio + "' controls>"));
+});
+
+$("#reportForm").submit(reportUser);
+
+socket.on("blocked", function () {
+    $("#messages").empty();
+    $("#skipForm").hide();
+    $("#reportForm").hide();
+    $("#feedback").text("You have been blocked.");
+    userMatched = false;
 });

@@ -81,6 +81,7 @@ io.on("connection", function (socket) {
                     users[newUsername] = socket;
                     socket.username = newUsername;
                     users[newUsername].skipped = [];
+                    users[newUsername].reported = 0;
                     userExists = false;
                 } else i++;
             }
@@ -91,7 +92,9 @@ io.on("connection", function (socket) {
         var matched = false;
         //allocate a random partner
         for (var username in users) {
-            if (username !== socket.username && users[socket.username].skipped.indexOf(username) === -1 && users[username].skipped.indexOf(socket.username) === -1 && users[username].partner === undefined) {
+            if (username !== socket.username && users[socket.username].skipped.indexOf(username) === -1
+                && users[username].skipped.indexOf(socket.username) === -1 && users[username].partner === undefined
+                && users[username].reported <= 5) {
                 users[username].partner = socket.username;
                 users[socket.username].partner = username;
                 users[username].emit("matched");
@@ -152,5 +155,22 @@ io.on("connection", function (socket) {
         if (partnerUsername) {
             users[partnerUsername].emit("receive audio", audio);
         }
+    });
+
+    socket.on("report", function (callback) {
+        var partnerUsername = users[socket.username].partner;
+        if (partnerUsername) {
+            delete users[partnerUsername].partner;
+            delete users[socket.username].partner;
+            users[socket.username].skipped.push(partnerUsername);
+            users[partnerUsername].reported ++;
+            if (users[partnerUsername].reported > 5) {
+                users[partnerUsername].emit("blocked");
+            } else {
+                users[partnerUsername].emit("unmatched");
+            }
+        }
+
+        callback();
     });
 });
