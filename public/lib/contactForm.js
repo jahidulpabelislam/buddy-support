@@ -27,7 +27,11 @@ var renderFeedback = function (result) {
 
     $("#loading").hide();
 
-};
+},
+    error = function () {
+        $("#feedback").text("Something went wrong, please try again later.");
+        $("#loading").hide();
+    };
 
 $("#contactForm").submit(function () {
     $("#feedback").text("");
@@ -47,7 +51,8 @@ $("#contactForm").submit(function () {
                 subjectInput: $("#subjectInput").val(),
                 messageInput: $("#messageInput").val()
             },
-            success: renderFeedback
+            success: renderFeedback,
+            error: error
         });
     } else {
         $("#loading").hide();
