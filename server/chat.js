@@ -2,6 +2,7 @@ module.exports = function (io) {
     var users = {};
 
     io.on("connection", function (socket) {
+
         socket.on("start", function () {
             if (!socket.username) {
                 //allocate a random username
@@ -104,5 +105,7 @@ module.exports = function (io) {
 
             callback();
         });
+
     });
+
 };

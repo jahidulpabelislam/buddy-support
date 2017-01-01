@@ -17,25 +17,12 @@ body {
     color: white;
 }
 
-#messageForm input {
-    width: 90%;
-    margin-right: .5%;
-}
-
-#messageForm button {
-    width: 9%;
-}
-
-#skipForm {
+#skipButton {
     display: none;
 }
 
-#reportForm {
+#reportButton {
     display: none;
-}
-
-#messages {
-    width: 100%;
 }
 
 #messages li {

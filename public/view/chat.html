@@ -21,28 +21,22 @@
 
         <ul id="messages"></ul>
 
-        <form id="messageForm">
+        <div id="messageForm">
             <label for="photosSend">Send Images</label>
-            <input type="file" name="photosSend" class="filesSend" id="photosSend" multiple accept="image/*">
+            <input type="file" name="photosSend" class="filesSend" id="photosSend" multiple accept="image/*" capture>
             <label for="videosSend">Send Videos</label>
-            <input type="file" name="videosSend" class="filesSend" id="videosSend" multiple accept="video/*">
+            <input type="file" name="videosSend" class="filesSend" id="videosSend" multiple accept="video/*" capture>
             <label for="audiosSend">Send Audios</label>
-            <input type="file" name="audiosSend" class="filesSend" id="audiosSend" multiple accept="audio/*">
+            <input type="file" name="audiosSend" class="filesSend" id="audiosSend" multiple accept="audio/*" capture>
             <input id="message" placeholder="hello :)..."/>
-            <button>Send</button>
-        </form>
+            <button id="textSend">Send</button>
+        </div>
 
-        <form id="startForm">
-            <button>Start</button>
-        </form>
+        <button id="startButton">Start</button>
 
-        <form id="skipForm">
-            <button>Skip User</button>
-        </form>
+        <button id="skipButton">Skip User</button>
 
-        <form id="reportForm">
-            <button>Report User</button>
-        </form>
+        <button id="reportButton">Report User</button>
 
         <p id="feedback"></p>
 

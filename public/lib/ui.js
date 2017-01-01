@@ -4,33 +4,32 @@ var socket = io(),
     setUpChat = function () {
         $("#messages").empty();
 
-        $("#startForm").hide();
+        $("#startButton").hide();
 
-        $("#skipForm").show();
+        $("#skipButton").show();
 
-        $("#reportForm").show();
+        $("#reportButton").show();
 
         $("#feedback").text("");
 
         userMatched = true;
     },
 
-    matchUser = function (e) {
+    matchUser = function () {
         socket.emit("match", function (matched) {
             if (matched) {
                 setUpChat();
             } else {
                 $("#messages").empty();
-                $("#skipForm").hide();
-                $("#reportForm").hide();
+                $("#skipButton").hide();
+                $("#reportButton").hide();
                 $("#feedback").text("No Users Available.");
                 userMatched = false;
             }
         });
-        if (e) e.preventDefault();
     },
 
-    sendMessage = function (e) {
+    sendMessage = function () {
         if (userMatched) {
             if ($("#message").val().trim() !== "") {
                 socket.emit("send message", $("#message").val());
@@ -38,14 +37,12 @@ var socket = io(),
                 $("#message").val('');
             }
         }
-        e.preventDefault();
     },
 
-    skipUser = function (e) {
+    skipUser = function () {
         if (userMatched) {
             socket.emit("skip", matchUser);
         }
-        e.preventDefault();
     },
     
     sendFiles = function (e) {
@@ -90,30 +87,29 @@ var socket = io(),
         }
     },
 
-    reportUser = function (e) {
+    reportUser = function () {
         if (userMatched) {
             socket.emit("report", matchUser);
         }
-        e.preventDefault();
     };
 
-$("#startForm").submit(function (e) {
-    $("#startForm").hide();
+$("#startButton").click(function () {
+    $("#startButton").hide();
     socket.emit("start");
-    matchUser(e);
+    matchUser();
 });
 
 socket.on("matched", setUpChat);
 
 socket.on("unmatched", matchUser);
 
-$("#messageForm").submit(sendMessage);
+$("#textSend").click(sendMessage);
 
 socket.on("receive message", function (msg) {
     $("#messages").append($("<li>").addClass("received").text(msg));
 });
 
-$("#skipForm").submit(skipUser);
+$("#skipButton").click(skipUser);
 
 $(".filesSend").click(function (e) {
     if (!userMatched) {
@@ -135,7 +131,7 @@ socket.on("receive audio", function (audio) {
     $("#messages").append($("<li>").addClass("received").append("<audio src='" + audio + "' controls>"));
 });
 
-$("#reportForm").submit(reportUser);
+$("#reportButton").click(reportUser);
 
 socket.on("blocked", function () {
     $("#messages").empty();
