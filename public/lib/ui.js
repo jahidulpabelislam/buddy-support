@@ -1,5 +1,35 @@
 var socket = io(),
     userMatched = false,
+    lastMessageDate,
+
+    addDate = function () {
+        var dateText;
+        var thisMessageDate = new Date();
+
+        //checks if message is sent on the same day as last
+        if ((lastMessageDate === undefined) || (lastMessageDate.getDate() !== thisMessageDate.getDate() && thisMessageDate.getMonth() !== thisMessageDate.getMonth()
+            && thisMessageDate.getFullYear() !== thisMessageDate.getFullYear())) {
+            dateText = days[thisMessageDate.getDay()] + " " + getDateEnding(thisMessageDate.getDate()) + " " + months[thisMessageDate.getMonth()] + " " + thisMessageDate.getFullYear();
+            $("#messages").append($("<li>").addClass("date").text(dateText));
+        }
+        lastMessageDate = thisMessageDate;
+    },
+
+    addTime = function () {
+        var hour = lastMessageDate.getHours(),
+            minute = lastMessageDate.getMinutes(),
+            period = "AM";
+        if (hour > 12) {
+            hour -= 12;
+            period = "PM";
+        }
+
+        if (minute < 10) {
+            minute = 0 + minute.toString();
+        }
+
+        return hour + ":" + minute + period;
+    },
 
     setUpFeedback = function (matched, feedback) {
         $("#messages").empty();
@@ -28,11 +58,6 @@ var socket = io(),
 
             if (matched && !feedback) {
                 setUpChat();
-            } else if (!matched) {
-                $("#messages").empty();
-                $("#skipButton").hide();
-                $("#reportButton").hide();
-                $("#startButton").show();
             } else if (waiting) {
                 $("#messages").empty();
                 $("#skipButton").hide();
@@ -49,7 +74,9 @@ var socket = io(),
                     if (error) {
                         $("#feedback").text(error);
                     } else {
-                        $("#messages").append($("<li>").addClass("sent").text($("#message").val()));
+                        addDate();
+                        var time = addTime();
+                        $("#messages").append($("<li>").addClass("sent").text($("#message").val()).append($("<span>").addClass("time").text(time)));
                         $("#message").val('');
                     }
                 });
@@ -84,6 +111,8 @@ var socket = io(),
                 fileReader = new FileReader();
                 fileReader.readAsDataURL(files[i]);
 
+
+
                 //checks if file is a image
                 if (files[i].type.includes("image/")) {
 
@@ -92,7 +121,9 @@ var socket = io(),
                             if (error) {
                                 $("#feedback").text(error);
                             } else {
-                                $("#messages").append($("<li>").addClass("sent").append("<img src='" + e.target.result + "'>"));
+                                addDate();
+                                var time = addTime();
+                                $("#messages").append($("<li>").addClass("sent").append("<img src='" + e.target.result + "'>").append($("<span>").addClass("time").text(time)));
                             }
                         });
 
@@ -106,7 +137,9 @@ var socket = io(),
                             if (error) {
                                 $("#feedback").text(error);
                             } else {
-                                $("#messages").append($("<li>").addClass("sent").append("<video src='" + e.target.result + "' controls>"));
+                                addDate();
+                                var time = addTime();
+                                $("#messages").append($("<li>").addClass("sent").append("<video src='" + e.target.result + "' controls>").append($("<span>").addClass("time").text(time)));
                             }
 
                         });
@@ -121,7 +154,9 @@ var socket = io(),
                             if (error) {
                                 $("#feedback").text(error);
                             } else {
-                                $("#messages").append($("<li>").addClass("sent").append("<audio src='" + e.target.result + "' controls>"));
+                                addDate();
+                                var time = addTime();
+                                $("#messages").append($("<li>").addClass("sent").append("<audio src='" + e.target.result + "' controls>").append($("<span>").addClass("time").text(time)));
                             }
 
                         });
@@ -158,7 +193,9 @@ socket.on("unmatched", function () {
 $("#textSend").submit(sendMessage);
 
 socket.on("receive message", function (msg) {
-    $("#messages").append($("<li>").addClass("received").text(msg));
+    addDate();
+    var time = addTime();
+    $("#messages").append($("<li>").addClass("received").text(msg).append($("<span>").addClass("time").text(time)));
 });
 
 $("#skipButton").click(skipUser);
@@ -173,15 +210,21 @@ $(".filesSend").click(function (e) {
 $(".filesSend").change(sendFiles);
 
 socket.on("receive image", function (image) {
-    $("#messages").append($("<li>").addClass("received").append("<img src='" + image + "'>"));
+    addDate();
+    var time = addTime();
+    $("#messages").append($("<li>").addClass("received").append("<img src='" + image + "'>").append($("<span>").addClass("time").text(time)));
 });
 
 socket.on("receive video", function (video) {
-    $("#messages").append($("<li>").addClass("received").append("<video src='" + video + "' controls>"));
+    addDate();
+    var time = addTime();
+    $("#messages").append($("<li>").addClass("received").append("<video src='" + video + "' controls>").append($("<span>").addClass("time").text(time)));
 });
 
 socket.on("receive audio", function (audio) {
-    $("#messages").append($("<li>").addClass("received").append("<audio src='" + audio + "' controls>"));
+    addDate();
+    var time = addTime();
+    $("#messages").append($("<li>").addClass("received").append("<audio src='" + audio + "' controls>").append($("<span>").addClass("time").text(time)));
 });
 
 $("#reportButton").click(reportUser);
