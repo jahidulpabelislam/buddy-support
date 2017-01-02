@@ -2,31 +2,30 @@ var socket = io(),
     userMatched = false,
 
     setUpFeedback = function (matched, feedback) {
-        userMatched = matched;
         $("#messages").empty();
         $("#skipButton").hide();
         $("#reportButton").hide();
         $("#feedback").text(feedback);
+        userMatched = matched;
     },
 
     setUpChat = function () {
         $("#messages").empty();
-
         $("#startButton").hide();
-
         $("#skipButton").show();
-
         $("#reportButton").show();
-
         $("#feedback").text("");
-
         userMatched = true;
     },
 
     matchUser = function () {
-        socket.emit("match", function (matched, feedback) {
+
+        $("#feedback").text("Finding a match...");
+
+        socket.emit("match", function (matched, feedback, waiting) {
             userMatched = matched;
             if (feedback) $("#feedback").text(feedback);
+
             if (matched && !feedback) {
                 setUpChat();
             } else if (!matched) {
@@ -34,18 +33,31 @@ var socket = io(),
                 $("#skipButton").hide();
                 $("#reportButton").hide();
                 $("#startButton").show();
+            } else if (waiting) {
+                $("#messages").empty();
+                $("#skipButton").hide();
+                $("#reportButton").hide();
+                $("#startButton").hide();
             }
         });
     },
 
-    sendMessage = function () {
+    sendMessage = function (e) {
         if (userMatched) {
             if ($("#message").val().trim() !== "") {
-                socket.emit("send message", $("#message").val());
-                $("#messages").append($("<li>").addClass("sent").text($("#message").val()));
-                $("#message").val('');
+                socket.emit("send message", $("#message").val(), function (error) {
+                    if (error) {
+                        $("#feedback").text(error);
+                    } else {
+                        $("#messages").append($("<li>").addClass("sent").text($("#message").val()));
+                        $("#message").val('');
+                    }
+                });
             }
+        } else {
+            $("#feedback").text("You aren't matched with anyone.");
         }
+        e.preventDefault();
     },
 
     skipUser = function () {
@@ -54,6 +66,8 @@ var socket = io(),
                 setUpFeedback(false, feedback);
                 $("#startButton").show();
             });
+        } else {
+            $("#feedback").text("You aren't matched with anyone.");
         }
     },
     
@@ -80,7 +94,6 @@ var socket = io(),
                             } else {
                                 $("#messages").append($("<li>").addClass("sent").append("<img src='" + e.target.result + "'>"));
                             }
-
                         });
 
                     };
@@ -117,6 +130,8 @@ var socket = io(),
                 }
             }
             e.target.value = "";
+        } else {
+            $("#feedback").text("You aren't matched with anyone.");
         }
     },
 
@@ -126,6 +141,8 @@ var socket = io(),
                 setUpFeedback(false, feedback);
                 $("#startButton").show();
             });
+        } else {
+            $("#feedback").text("You aren't matched with anyone.");
         }
     };
 
@@ -138,7 +155,7 @@ socket.on("unmatched", function () {
     $("#startButton").show();
 });
 
-$("#textSend").click(sendMessage);
+$("#textSend").submit(sendMessage);
 
 socket.on("receive message", function (msg) {
     $("#messages").append($("<li>").addClass("received").text(msg));
@@ -149,6 +166,7 @@ $("#skipButton").click(skipUser);
 $(".filesSend").click(function (e) {
     if (!userMatched) {
         e.preventDefault();
+        $("#feedback").text("You aren't matched with anyone.");
     }
 });
 

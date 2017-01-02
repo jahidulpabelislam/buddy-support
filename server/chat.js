@@ -7,13 +7,13 @@ module.exports = function (io) {
             //allocate a random username
             var i = 0, userExists = true;
             while (userExists) {
-                var newUsername = i.toString();
-                if (users[newUsername] === undefined) {
-                    users[newUsername] = socket;
-                    socket.username = newUsername;
-                    users[newUsername].skipped = [];
-                    users[newUsername].reported = 0;
-                    users[newUsername].start = false;
+                var username = i.toString();
+                if (users[username] === undefined) {
+                    users[username] = socket;
+                    socket.username = username;
+                    users[username].skipped = [];
+                    users[username].reported = 0;
+                    users[username].start = false;
                     userExists = false;
                 } else i++;
             }
@@ -22,7 +22,8 @@ module.exports = function (io) {
         //match user with a random partner
         socket.on("match", function (callback) {
             var matched = false,
-                feedback = "";
+                feedback = "",
+                waiting = false;
 
             users[socket.username].start = true;
 
@@ -49,7 +50,8 @@ module.exports = function (io) {
                         }
                     }
 
-                    if (!matched) feedback = "No Users Available.";
+                    if (!matched) feedback = "No Users Available. Waiting for a match...";
+                    waiting = true;
 
                 } else {
                     feedback = "You have been blocked from chatting.";
@@ -60,13 +62,13 @@ module.exports = function (io) {
                 feedback = "Already matched.";
             }
 
-            callback(matched, feedback);
+            callback(matched, feedback, waiting);
         });
 
         socket.on("send message", function (message, callback) {
+            var error;
             if (message.trim() !== "") {
-                var partner = users[socket.username].partner,
-                    error;
+                var partner = users[socket.username].partner;
                 if (partner) {
                     users[partner].emit("receive message", message);
                 } else {
@@ -82,6 +84,7 @@ module.exports = function (io) {
             var partner = users[socket.username].partner;
             if (partner) {
                 delete users[partner].partner;
+                users[partner].start = false;
                 users[partner].emit("unmatched");
             }
             delete users[socket.username];
@@ -95,6 +98,8 @@ module.exports = function (io) {
                 delete users[socket.username].partner;
                 users[socket.username].skipped.push(partner);
                 users[partner].emit("unmatched");
+                users[partner].start = false;
+                users[socket.username].start = false;
                 feedback = "User has been skipped.";
             } else {
                 feedback = "You aren't matched with anyone.";
@@ -127,7 +132,7 @@ module.exports = function (io) {
             callback(error);
         });
 
-        socket.on("send video", function (audio, callback) {
+        socket.on("send audio", function (audio, callback) {
             var partner = users[socket.username].partner,
                 error;
             if (partner) {
@@ -147,6 +152,8 @@ module.exports = function (io) {
                 delete users[socket.username].partner;
                 users[socket.username].skipped.push(partner);
                 users[partner].reported++;
+                users[partner].start = false;
+                users[socket.username].start = false;
                 if (users[partner].reported > 5) {
                     users[partner].emit("blocked");
                 } else {
