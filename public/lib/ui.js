@@ -1,6 +1,14 @@
 var socket = io(),
     userMatched = false,
 
+    setUpFeedback = function (matched, feedback) {
+        userMatched = matched;
+        $("#messages").empty();
+        $("#skipButton").hide();
+        $("#reportButton").hide();
+        $("#feedback").text(feedback);
+    },
+
     setUpChat = function () {
         $("#messages").empty();
 
@@ -16,15 +24,16 @@ var socket = io(),
     },
 
     matchUser = function () {
-        socket.emit("match", function (matched) {
-            if (matched) {
+        socket.emit("match", function (matched, feedback) {
+            userMatched = matched;
+            if (feedback) $("#feedback").text(feedback);
+            if (matched && !feedback) {
                 setUpChat();
-            } else {
+            } else if (!matched) {
                 $("#messages").empty();
                 $("#skipButton").hide();
                 $("#reportButton").hide();
-                $("#feedback").text("No Users Available.");
-                userMatched = false;
+                $("#startButton").show();
             }
         });
     },
@@ -41,7 +50,10 @@ var socket = io(),
 
     skipUser = function () {
         if (userMatched) {
-            socket.emit("skip", matchUser);
+            socket.emit("skip", function (feedback) {
+                setUpFeedback(false, feedback);
+                $("#startButton").show();
+            });
         }
     },
     
@@ -62,24 +74,45 @@ var socket = io(),
                 if (files[i].type.includes("image/")) {
 
                     fileReader.onload = function (e) {
-                        socket.emit("send image", e.target.result);
-                        $("#messages").append($("<li>").addClass("sent").append("<img src='" + e.target.result + "'>"));
+                        socket.emit("send image", e.target.result, function (error) {
+                            if (error) {
+                                $("#feedback").text(error);
+                            } else {
+                                $("#messages").append($("<li>").addClass("sent").append("<img src='" + e.target.result + "'>"));
+                            }
+
+                        });
+
                     };
                 }
                 //checks if file is a video
                 else if (files[i].type.includes("video/")) {
 
                     fileReader.onload = function (e) {
-                        socket.emit("send video", e.target.result);
-                        $("#messages").append($("<li>").addClass("sent").append("<video src='" + e.target.result + "' controls>"));
+                        socket.emit("send video", e.target.result, function (error) {
+                            if (error) {
+                                $("#feedback").text(error);
+                            } else {
+                                $("#messages").append($("<li>").addClass("sent").append("<video src='" + e.target.result + "' controls>"));
+                            }
+
+                        });
+
                     };
                 }
                 //checks if file is a audio
                 else if (files[i].type.includes("audio/")) {
 
                     fileReader.onload = function (e) {
-                        socket.emit("send audio", e.target.result);
-                        $("#messages").append($("<li>").addClass("sent").append("<audio src='" + e.target.result + "' controls>"));
+                        socket.emit("send audio", e.target.result, function (error) {
+                            if (error) {
+                                $("#feedback").text(error);
+                            } else {
+                                $("#messages").append($("<li>").addClass("sent").append("<audio src='" + e.target.result + "' controls>"));
+                            }
+
+                        });
+
                     };
                 }
             }
@@ -89,19 +122,21 @@ var socket = io(),
 
     reportUser = function () {
         if (userMatched) {
-            socket.emit("report", matchUser);
+            socket.emit("report", function (feedback) {
+                setUpFeedback(false, feedback);
+                $("#startButton").show();
+            });
         }
     };
 
-$("#startButton").click(function () {
-    $("#startButton").hide();
-    socket.emit("start");
-    matchUser();
-});
+$("#startButton").click(matchUser);
 
 socket.on("matched", setUpChat);
 
-socket.on("unmatched", matchUser);
+socket.on("unmatched", function () {
+    setUpFeedback(false, "User has left.");
+    $("#startButton").show();
+});
 
 $("#textSend").click(sendMessage);
 
@@ -134,9 +169,5 @@ socket.on("receive audio", function (audio) {
 $("#reportButton").click(reportUser);
 
 socket.on("blocked", function () {
-    $("#messages").empty();
-    $("#skipForm").hide();
-    $("#reportForm").hide();
-    $("#feedback").text("You have been blocked.");
-    userMatched = false;
+    setUpFeedback(false, "You have been blocked.");
 });
