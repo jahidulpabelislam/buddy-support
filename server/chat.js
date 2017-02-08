@@ -108,42 +108,6 @@ module.exports = function (io) {
             callback(feedback);
         });
 
-        socket.on("send image", function (image, callback) {
-            var partner = users[socket.username].partner,
-                error;
-            if (partner) {
-                users[partner].emit("receive image", image);
-            } else {
-                error = "You aren't matched with anyone.";
-            }
-
-            callback(error);
-        });
-
-        socket.on("send video", function (video, callback) {
-            var partner = users[socket.username].partner,
-                error;
-            if (partner) {
-                users[partner].emit("receive video", video);
-            } else {
-                error = "You aren't matched with anyone.";
-            }
-
-            callback(error);
-        });
-
-        socket.on("send audio", function (audio, callback) {
-            var partner = users[socket.username].partner,
-                error;
-            if (partner) {
-                users[partner].emit("receive audio", audio);
-            } else {
-                error = "You aren't matched with anyone.";
-            }
-
-            callback(error);
-        });
-
         socket.on("report", function (callback) {
             var partner = users[socket.username].partner,
                 feedback;
