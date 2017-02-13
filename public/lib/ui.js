@@ -44,9 +44,7 @@ var socket = io(),
                     if (error) {
                         $("#feedback").text(error);
                     } else {
-                        addDate();
-                        var time = addTime();
-                        $("#messages").append($("<li>").addClass("sent").text($("#message").val()).append($("<span>").addClass("time").text(time)));
+                        $("#messages").append($("<li>").addClass("sent").text($("#message").val()).append($("<span>")));
                         $("#message").val('');
                     }
                 });
@@ -91,9 +89,7 @@ socket.on("unmatched", function () {
 $("#textSend").submit(sendMessage);
 
 socket.on("receive message", function (msg) {
-    addDate();
-    var time = addTime();
-    $("#messages").append($("<li>").addClass("received").text(msg).append($("<span>").addClass("time").text(time)));
+    $("#messages").append($("<li>").addClass("received").text(msg).append($("<span>")));
 });
 
 $("#skipButton").click(skipUser);

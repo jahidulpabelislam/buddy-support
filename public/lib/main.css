@@ -25,21 +25,6 @@ body {
     display: none;
 }
 
-#messages li {
-    width: 75%;
-    display: inline-block;
-}
-
-#messages li.received {
-    float: left;
-    background: dodgerblue;
-}
-
-#messages li.sent {
-    float: right;
-    background: green;
-}
-
 #loading {
     display: none;
 }
