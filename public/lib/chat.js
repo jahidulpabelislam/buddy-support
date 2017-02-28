@@ -5,6 +5,7 @@ var socket = io(),
         $("#messages").empty();
         $("#skipButton").hide();
         $("#reportButton").hide();
+        $("#preferences").show();
         $("#feedback").text(feedback);
         userMatched = matched;
     },
@@ -12,6 +13,7 @@ var socket = io(),
     setUpChat = function () {
         $("#messages").empty();
         $("#startButton").hide();
+        $("#preferences").hide();
         $("#skipButton").show();
         $("#reportButton").show();
         $("#feedback").text("");
