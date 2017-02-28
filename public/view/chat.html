@@ -85,13 +85,16 @@
                 <form id="preferences">
                     <p>I want to be a:</p>
                     <div class="radio">
-                        <label><input type="radio" name="type" value="Supporter">Supporter</label>
+                        <label><input type="radio" name="type" value="Supporter" checked>Supporter</label>
                     </div>
                     <div class="radio">
                         <label><input type="radio" name="type" value="Supportee">Supportee</label>
                     </div>
 
                     <p>I want to talk about:</p>
+                    <div class="checkbox">
+                        <label><input type="checkbox" name="talk" value="Anything" checked>Anything</label>
+                    </div>
                     <div class="checkbox">
                         <label><input type="checkbox" name="talk" value="Stress">Stress</label>
                     </div>
@@ -117,5 +120,6 @@
         <!-- Include all compiled plugins (below), or include individual files as needed -->
         <script src="lib/bootstrap/js/bootstrap.min.js"></script>
         <script type="text/javascript" src="lib/chat.js"></script>
+        <script type="text/javascript" src="lib/helperFunctions.js"></script>
     </body>
 </html>

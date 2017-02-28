@@ -15,6 +15,8 @@ module.exports = function (io) {
                     users[username].skipped = [];
                     users[username].reported = 0;
                     users[username].start = false;
+                    users[username].talks = ["Anything"];
+                    users[username].type = "Supporter";
                     userExists = false;
                 } else i++;
             }
@@ -37,17 +39,23 @@ module.exports = function (io) {
                     //loop through all user to find a match
                     for (var username in users) {
 
-                        //check if looped user is the user, haven't skipped each other, isn't blocked, isn't matched
+                        //check if looped user isn't the user, haven't skipped each other, isn't blocked, isn't matched, is opposite type of user (supporter & supportee)
                         if (username !== socket.username && users[socket.username].skipped.indexOf(username) === -1
                             && users[username].skipped.indexOf(socket.username) === -1 && users[username].partner === undefined
-                            && users[username].reported <= 5 && users[username].start === true) {
+                            && users[username].reported <= 5 && users[username].start === true && users[username].type !== users[socket.username].type) {
 
-                            users[username].partner = socket.username;
-                            users[socket.username].partner = username;
-                            users[username].emit("matched");
-                            matched = true;
-                            break;
+                            //loop through all user to find a match
+                            for (var i in users[username].talks) {
 
+                                if (users[socket.username].talks.indexOf(users[username].talks[i]) !== -1) {
+
+                                    users[username].partner = socket.username;
+                                    users[socket.username].partner = username;
+                                    users[username].emit("matched");
+                                    matched = true;
+                                    break;
+                                }
+                            }
                         }
                     }
 

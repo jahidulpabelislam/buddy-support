@@ -111,8 +111,5 @@ $("#preferences").change(function() {
         talks: talks
     };
 
-    socket.emit("change preferences", data, function (feedback) {
-        setUpFeedback(false, feedback);
-        $("#startButton").show();
-    });
+    socket.emit("change preferences", data);
 });
