@@ -47,6 +47,7 @@ var socket = io(),
                     } else {
                         $("#messages").append($("<p>").addClass("sent").text($("#message").val()));
                         $("#message").val("");
+                        $("html, body").animate({ scrollTop: $(document).height()-$(window).height() });
                     }
                 });
             }
@@ -94,6 +95,7 @@ $("#textSend").submit(sendMessage);
 
 socket.on("receive message", function (msg) {
     $("#messages").append($("<p>").addClass("received").text(msg));
+    $("html, body").animate({ scrollTop: $(document).height()-$(window).height() });
 });
 
 $("#skipButton").click(skipUser);
