@@ -7,6 +7,9 @@
         <meta name="author" content="Jahidul Pabel Islam">
         <meta name="description" content="">
         <meta name="keywords" content="">
+        <!-- Bootstrap stylesheet-->
+        <link href="lib/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
         <link rel="stylesheet" href="lib/main.css"/>
         <link rel="icon" href="images/logo.png">
         <title>Chat | Buddy Support</title>
@@ -14,32 +17,86 @@
 
     <body>
 
-        <header>
-            <a href="/">Chat</a>
-            <a href="contact">Contact</a>
-            <a href="help">Help</a>
-        </header>
-
-        <ul id="messages"></ul>
+        <!-- Fixed navbar -->
+        <nav class="navbar navbar-default navbar-static-top ">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
+                            aria-expanded="false" aria-controls="navbar">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand active" href="/">Buddy Support</a>
+                </div>
+                <div id="navbar" class="navbar-collapse collapse">
+                    <ul class="nav navbar-nav navbar-right">
+                        <li><a href="/contact">Contact</a></li>
+                        <li><a href="/help">Help</a></li>
+                    </ul>
+                    <form class="navbar-form navbar-right">
+                        <div class="form-group">
+                            <select class="form-control">
+                                <option>ENG</option>
+                                <option>POL</option>
+                                <option>BG</option>
+                                <option>WAL</option>
+                            </select>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </nav>
 
         <div id="messageForm">
-            <form id="textSend">
-                <input id="message" placeholder="hello :)..."/>
-                <button>Send</button>
-            </form>
+            <div class="container">
+                <form class="input-group" id="textSend">
+
+                    <div class="input-group-btn btn-group dropup" role="group">
+                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"
+                                aria-haspopup="true" aria-expanded="false">
+                            <span class="glyphicon glyphicon-earphone" aria-hidden="true"></span>
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <button type="button" class="btn btn-default"><span class="glyphicon glyphicon-facetime-video"
+                                                                                    aria-hidden="true"></span></button>
+                            </li>
+                            <li>
+                                <button type="button" class="btn btn-default"><span class="glyphicon glyphicon-facetime-video"
+                                                                                    aria-hidden="true"></span></button>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <input id="message" placeholder="hello :)..." class="form-control"/>
+                    <span class="input-group-btn">
+                                <button class="btn btn-default" type="button">Send</button>
+                            </span>
+                </form><!-- /input-group -->
+
+            </div>
         </div>
 
-        <button id="startButton" autofocus>Start Chatting</button>
+        <div>
+            <div class="container">
+                <button id="startButton" class="btn btn-default" autofocus>Start Chatting</button>
 
-        <button id="skipButton">Skip User</button>
+                <button id="skipButton" class="btn btn-default">Skip User</button>
 
-        <button id="reportButton">Report User</button>
+                <button id="reportButton" class="btn btn-default">Report User</button>
 
-        <p id="feedback"></p>
+                <p id="feedback"></p>
+                <ul id="messages"></ul>
+
+            </div>
+        </div>
 
         <script src="/socket.io/socket.io.js"></script>
         <script src="http://code.jquery.com/jquery-1.11.1.js"></script>
+        <!-- Include all compiled plugins (below), or include individual files as needed -->
+        <script src="lib/bootstrap/js/bootstrap.min.js"></script>
         <script type="text/javascript" src="lib/ui.js"></script>
-        <script type="text/javascript" src="lib/helperFunctions.js"></script>
     </body>
 </html>
