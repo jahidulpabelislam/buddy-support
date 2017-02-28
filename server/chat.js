@@ -26,7 +26,9 @@ module.exports = function (io) {
         socket.on("match", function (callback) {
             var matched = false,
                 feedback = "",
-                waiting = false;
+                blocked = false,
+                waiting = false,
+                waitingMessage = "";
 
             users[socket.username].start = true;
 
@@ -63,10 +65,14 @@ module.exports = function (io) {
                         }
                     }
 
-                    if (!matched) feedback = "No Users Available. Waiting for a match...";
-                    waiting = true;
+                    if (!matched) {
+                        waiting = true;
+                        feedback = "No Users Available. Waiting for a match...";
+                        waitingMessage = "Placeholder Motivational Message."
+                    }
 
                 } else {
+                    blocked = true;
                     feedback = "You have been blocked from chatting.";
                 }
 
@@ -75,7 +81,7 @@ module.exports = function (io) {
                 feedback = "Already matched.";
             }
 
-            callback(matched, feedback, waiting);
+            callback(matched, feedback, waitingMessage, blocked);
         });
 
         socket.on("send message", function (message, callback) {

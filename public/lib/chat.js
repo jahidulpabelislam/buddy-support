@@ -23,17 +23,24 @@ var socket = io(),
 
         $("#feedback").text("Finding a match...");
 
-        socket.emit("match", function (matched, feedback, waiting) {
+        socket.emit("match", function (matched, feedback, waitingMessage, blocked) {
             userMatched = matched;
-            if (feedback) $("#feedback").text(feedback);
+            if (feedback) {
+                $("#feedback").text(feedback);
+            }
 
-            if (matched && !feedback) {
+            if (matched) {
                 setUpChat();
-            } else if (waiting) {
+            } else if (waitingMessage) {
                 $("#preferences").hide();
                 $("#startContainer").show();
                 $("#startButton").hide();
                 $("#chat").hide();
+                $("#motivationalMessageContainer").show();
+                $("#motivationalMessage").text(waitingMessage);
+            } else if (blocked){
+                $("#preferences").hide();
+                $("#startContainer").show();
             }
         });
     },
@@ -104,6 +111,7 @@ $("#reportButton").click(reportUser);
 
 socket.on("blocked", function () {
     setUpFeedback(false, "You have been blocked.");
+    $("#preferences").hide();
 });
 
 $("#preferences").change(function() {

@@ -100,3 +100,7 @@ button {
 #gameSelect button {
     width: 100%;
 }
+
+#motivationalMessageContainer {
+    display: none;
+}
