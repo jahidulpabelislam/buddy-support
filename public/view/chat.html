@@ -18,7 +18,7 @@
     <body>
 
         <!-- Fixed navbar -->
-        <nav class="navbar navbar-default navbar-static-top ">
+        <nav class="navbar navbar-default navbar-fixed-top">
             <div class="container">
                 <div class="navbar-header">
                     <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
@@ -28,7 +28,7 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand active" href="/">Buddy Support</a>
+                    <a class="navbar-brand active" id="logoContainer" href="/"><img id="logo" src="images/logo.png" style="opacity:1;"> </a>
                 </div>
                 <div id="navbar" class="navbar-collapse collapse">
                     <ul class="nav navbar-nav navbar-right">
@@ -58,28 +58,43 @@
                                 aria-haspopup="true" aria-expanded="false">
                             <span class="glyphicon glyphicon-earphone" aria-hidden="true"></span>
                         </button>
-                        <ul class="dropdown-menu">
+                        <ul class="dropdown-menu" id="gameSelect">
                             <li>
-                                <button type="button" class="btn btn-default"><span class="glyphicon glyphicon-facetime-video"
-                                                                                    aria-hidden="true"></span></button>
+                                <button type="button" class="btn btn-default"><span
+                                        class="glyphicon glyphicon-facetime-video"
+                                        aria-hidden="true"></span></button>
                             </li>
                             <li>
-                                <button type="button" class="btn btn-default"><span class="glyphicon glyphicon-facetime-video"
-                                                                                    aria-hidden="true"></span></button>
+                                <button type="button" class="btn btn-default"><span
+                                        class="glyphicon glyphicon-facetime-video"
+                                        aria-hidden="true"></span></button>
                             </li>
                         </ul>
                     </div>
 
                     <input id="message" placeholder="hello :)..." class="form-control"/>
                     <span class="input-group-btn">
-                                <button class="btn btn-default" type="button">Send</button>
-                            </span>
+                                        <button class="btn btn-default" type="button">Send</button>
+                                    </span>
                 </form><!-- /input-group -->
 
             </div>
         </div>
 
-        <div>
+        <div id="chatButtons">
+            <div class="container">
+                <button id="skipButton" class="btn btn-danger">Skip User</button>
+                <button id="reportButton" class="btn btn-warning">Report User</button>
+            </div>
+        </div>
+
+        <section id="chat">
+            <div class="container">
+                <div id="messages"></div>
+            </div>
+        </section>
+
+        <section id="startContainer">
             <div class="container">
 
                 <form id="preferences">
@@ -103,23 +118,19 @@
                     </div>
                 </form>
 
-                <button id="startButton" class="btn btn-default" autofocus>Start Chatting</button>
-
-                <button id="skipButton" class="btn btn-default">Skip User</button>
-
-                <button id="reportButton" class="btn btn-default">Report User</button>
+                <button id="startButton" class="btn btn-primary" autofocus>Start Chatting</button>
 
                 <p id="feedback"></p>
-                <ul id="messages"></ul>
 
+                <div id="motivationalMessageContainer"><p id="motivationalMessage"></p></div>
             </div>
-        </div>
+        </section>
 
         <script src="/socket.io/socket.io.js"></script>
         <script src="http://code.jquery.com/jquery-1.11.1.js"></script>
         <!-- Include all compiled plugins (below), or include individual files as needed -->
         <script src="lib/bootstrap/js/bootstrap.min.js"></script>
         <script type="text/javascript" src="lib/chat.js"></script>
-        <script type="text/javascript" src="lib/helperFunctions.js"></script>
+        <script type="text/javascript" src="lib/fixedFooterHeader.js"></script>
     </body>
 </html>

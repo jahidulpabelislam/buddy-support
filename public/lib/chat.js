@@ -2,22 +2,21 @@ var socket = io(),
     userMatched = false,
 
     setUpFeedback = function (matched, feedback) {
-        $("#messages").empty();
-        $("#skipButton").hide();
-        $("#reportButton").hide();
-        $("#preferences").show();
+        $("#chat").hide();
+        $("#chatButtons").hide();
+        $("#startContainer").show();
         $("#feedback").text(feedback);
         userMatched = matched;
     },
 
     setUpChat = function () {
         $("#messages").empty();
-        $("#startButton").hide();
-        $("#preferences").hide();
-        $("#skipButton").show();
-        $("#reportButton").show();
-        $("#feedback").text("");
+        $("#chat").show();
+        $("#messageForm").show();
+        $("#chatButtons").show();
+        $("#startContainer").hide();
         userMatched = true;
+        expandSection();
     },
 
     matchUser = function () {
@@ -31,10 +30,10 @@ var socket = io(),
             if (matched && !feedback) {
                 setUpChat();
             } else if (waiting) {
-                $("#messages").empty();
-                $("#skipButton").hide();
-                $("#reportButton").hide();
+                $("#preferences").hide();
+                $("#startContainer").show();
                 $("#startButton").hide();
+                $("#chat").hide();
             }
         });
     },
@@ -46,7 +45,7 @@ var socket = io(),
                     if (error) {
                         $("#feedback").text(error);
                     } else {
-                        $("#messages").append($("<li>").addClass("sent").text($("#message").val()).append($("<span>")));
+                        $("#messages").append($("<p>").addClass("sent").text($("#message").val()));
                         $("#message").val("");
                     }
                 });
@@ -61,6 +60,7 @@ var socket = io(),
         if (userMatched) {
             socket.emit("skip", function (feedback) {
                 setUpFeedback(false, feedback);
+                $("#preferences").show();
                 $("#startButton").show();
             });
         } else {
@@ -72,6 +72,7 @@ var socket = io(),
         if (userMatched) {
             socket.emit("report", function (feedback) {
                 setUpFeedback(false, feedback);
+                $("#preferences").show();
                 $("#startButton").show();
             });
         } else {
@@ -85,13 +86,14 @@ socket.on("matched", setUpChat);
 
 socket.on("unmatched", function () {
     setUpFeedback(false, "User has left.");
+    $("#preferences").show();
     $("#startButton").show();
 });
 
 $("#textSend").submit(sendMessage);
 
 socket.on("receive message", function (msg) {
-    $("#messages").append($("<li>").addClass("received").text(msg).append($("<span>")));
+    $("#messages").append($("<p>").addClass("received").text(msg));
 });
 
 $("#skipButton").click(skipUser);
