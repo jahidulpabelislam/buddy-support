@@ -6,12 +6,12 @@ const expandSection = function() {
 
     //sets the header to be positioned lower than fixed nav (to fix issue with Bootstrap fixed navs)
     $("#startContainer").css("margin-top", $(".navbar-header").outerHeight(true) + 10 + "px");
-    $("#startContainer").css("margin-bottom", $("#messageForm").outerHeight(true) + 10 + "px");
+    $("#startContainer").css("margin-bottom", $(".navbar-header").outerHeight(true) + 10 + "px");
 
     $("#chat").css("margin-top", $(".navbar-header").outerHeight(true) + $("#chatButtons").outerHeight(true) + 10 + "px");
     $("#chat").css("margin-bottom", $("#messageForm").outerHeight(true) + 10 + "px");
 
-    //makes section default height to work out if content is too small or big
+    //make sections default height to work out if content is too small or big
     $("section").height("auto");
 
     var height = $("#startContainer").outerHeight(true);
@@ -19,7 +19,7 @@ const expandSection = function() {
     //checks if default height of content is shorter than screen height
     if (height < $(window).height()) {
 
-        //section is extended to fill the difference
+        //Start Container is extended to fill the difference
         $("#startContainer").height(($(window).height() - height) + $("#startContainer").height());
     }
 };
