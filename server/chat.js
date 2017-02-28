@@ -56,6 +56,10 @@ module.exports = function (io) {
                                     break;
                                 }
                             }
+
+                            if (matched) {
+                                break;
+                            }
                         }
                     }
 
