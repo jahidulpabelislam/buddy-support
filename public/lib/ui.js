@@ -45,7 +45,7 @@ var socket = io(),
                         $("#feedback").text(error);
                     } else {
                         $("#messages").append($("<li>").addClass("sent").text($("#message").val()).append($("<span>")));
-                        $("#message").val('');
+                        $("#message").val("");
                     }
                 });
             }

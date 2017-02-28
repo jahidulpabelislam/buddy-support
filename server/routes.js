@@ -1,6 +1,7 @@
 module.exports = function (app) {
+    "use strict";
 
-    var bodyParser = require('body-parser');
+    const bodyParser = require('body-parser');
 
     app.use(bodyParser.json());
 
