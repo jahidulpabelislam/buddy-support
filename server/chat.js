@@ -1,4 +1,5 @@
 module.exports = function (io) {
+
     var users = {};
 
     io.on("connection", function (socket) {
@@ -131,6 +132,17 @@ module.exports = function (io) {
             callback(feedback);
         });
 
-    });
+        socket.on("change preferences", function (data) {
+            if (!socket.username) return;
 
+            if (data.type === "Supporter") {
+                users[socket.username].type = "Supporter";
+            } else if (data.type === "Supportee") {
+                users[socket.username].type = "Supportee";
+            }
+
+            users[socket.username].talks = data.talks;
+
+        });
+    });
 };

@@ -99,3 +99,20 @@ $("#reportButton").click(reportUser);
 socket.on("blocked", function () {
     setUpFeedback(false, "You have been blocked.");
 });
+
+$("#preferences").change(function() {
+    var talks = [];
+    $.each($("input[name='talk']:checked"), function(){
+        talks.push($(this).val());
+    });
+
+    var data = {
+        type: $("input[name='type']:checked").val(),
+        talks: talks
+    };
+
+    socket.emit("change preferences", data, function (feedback) {
+        setUpFeedback(false, feedback);
+        $("#startButton").show();
+    });
+});
