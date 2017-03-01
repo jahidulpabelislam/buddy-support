@@ -30,7 +30,7 @@
     display: none;
 }
 
-#messages>p {
+#messages > p {
     -webkit-border-radius: 4px;
     -moz-border-radius: 4px;
     border-radius: 4px;
@@ -40,12 +40,12 @@
     color: white;
 }
 
-#messages>p.received{
+#messages > p.received {
     text-align: left;
     background: dodgerblue;
 }
 
-#messages>p.sent{
+#messages > p.sent {
     text-align: right;
     background: green;
     margin-left: auto;
@@ -100,7 +100,7 @@ button {
     display: none;
 }
 
-#messageLabel{
+#messageLabel {
     display: none;
 }
 
@@ -115,4 +115,13 @@ legend {
 
 #motivationalMessage {
     margin: 10px;
+}
+
+#help {
+    margin: auto;
+    max-width: 600px;
+}
+
+#help h2 {
+    text-align: center;
 }
