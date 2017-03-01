@@ -28,7 +28,7 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand active" id="logoContainer" href="/"><img id="logo" src="images/logo.png" style="opacity:1;"> </a>
+                    <a class="navbar-brand active" id="logoContainer" href="/"><img id="logo" src="images/logo.png" alt="Logo for Buddy Support" style="opacity:1;"> </a>
                 </div>
                 <div id="navbar" class="navbar-collapse collapse">
                     <ul class="nav navbar-nav navbar-right">
@@ -37,7 +37,8 @@
                     </ul>
                     <form class="navbar-form navbar-right">
                         <div class="form-group">
-                            <select class="form-control">
+                            <label id="languageLabel" for="language">Your Chosen Language</label>
+                            <select id="language" class="form-control">
                                 <option>ENG</option>
                                 <option>POL</option>
                                 <option>BG</option>
@@ -67,11 +68,11 @@
                             </li>
                         </ul>
                     </div>
-
+                    <label id="messageLabel" for="message">Your Text Message</label>
                     <input id="message" placeholder="hello :)..." class="form-control"/>
                     <span class="input-group-btn">
-                                                <button class="btn btn-default" type="submit">Send</button>
-                                            </span>
+                        <button class="btn btn-default" type="submit">Send</button>
+                    </span>
                 </form><!-- /input-group -->
 
             </div>
@@ -84,34 +85,37 @@
             </div>
         </div>
 
-        <section id="chat">
+        <div id="chat">
             <div class="container">
                 <div id="messages"></div>
             </div>
-        </section>
+        </div>
 
-        <section id="startContainer">
+        <div id="startContainer">
             <div class="container">
 
                 <form id="preferences">
-                    <p>I want to be a:</p>
+                    <fieldset>
+                    <legend>I want to be a:</legend>
                     <div class="radio">
-                        <label><input type="radio" name="type" value="Supporter" checked>Supporter</label>
+                        <label for="supporter"><input type="radio" name="type" value="Supporter" id="supporter" checked>Supporter</label>
                     </div>
                     <div class="radio">
-                        <label><input type="radio" name="type" value="Supportee">Supportee</label>
+                        <label for="supportee"><input type="radio" name="type" value="Supportee" id="supportee">Supportee</label>
                     </div>
-
-                    <p>I want to talk about:</p>
+                    </fieldset>
+                    <fieldset>
+                    <legend>I want to talk about:</legend>
                     <div class="checkbox">
-                        <label><input type="checkbox" name="talk" value="Anything" checked>Anything</label>
-                    </div>
-                    <div class="checkbox">
-                        <label><input type="checkbox" name="talk" value="Stress">Stress</label>
+                        <label for="anything"><input type="checkbox" name="talk" value="Anything" checked id="anything">Anything</label>
                     </div>
                     <div class="checkbox">
-                        <label><input type="checkbox" name="talk" value="Loneliness">Loneliness</label>
+                        <label for="stress"><input type="checkbox" name="talk" value="Stress" id="stress">Stress</label>
                     </div>
+                    <div class="checkbox">
+                        <label for="loneliness"><input type="checkbox" name="talk" value="Loneliness" id="loneliness">Loneliness</label>
+                    </div>
+                    </fieldset>
                 </form>
 
                 <button id="startButton" class="btn btn-primary" autofocus>Start Chatting</button>
@@ -120,7 +124,7 @@
 
                 <div id="motivationalMessageContainer"><p id="motivationalMessage"></p></div>
             </div>
-        </section>
+        </div>
 
         <script src="/socket.io/socket.io.js"></script>
         <script src="http://code.jquery.com/jquery-1.11.1.js"></script>

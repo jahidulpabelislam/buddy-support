@@ -47,6 +47,7 @@ body {
     max-width: 75%;
     padding: 5px;
     margin: 5px 0;
+    color: white;
 }
 
 #messages>p.received{
@@ -103,4 +104,17 @@ button {
 
 #motivationalMessageContainer {
     display: none;
+}
+
+#languageLabel {
+    display: none;
+}
+
+#messageLabel{
+    display: none;
+}
+
+legend {
+    border-bottom: none;
+    margin-bottom: 0;
 }

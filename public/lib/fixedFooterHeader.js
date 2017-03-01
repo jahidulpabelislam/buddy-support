@@ -12,7 +12,7 @@ const expandSection = function() {
     $("#chat").css("margin-bottom", $("#messageForm").outerHeight(true) + 10 + "px");
 
     //make sections default height to work out if content is too small or big
-    $("section").height("auto");
+    $("#startContainer").height("auto");
 
     var height = $("#startContainer").outerHeight(true);
 
