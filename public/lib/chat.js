@@ -52,9 +52,13 @@ var socket = io(),
                     if (error) {
                         $("#feedback").text(error);
                     } else {
+                        var difference = $(document).height() - $(document).scrollTop() == $(window).height();
+
                         $("#messages").append($("<p>").addClass("sent").text($("#message").val()));
                         $("#message").val("");
-                        $("html, body").animate({ scrollTop: $(document).height()-$(window).height() });
+                        if (difference) {
+                            $("html, body").animate({ scrollTop: $(document).height()-$(window).height() });
+                        }
                     }
                 });
             }
@@ -101,8 +105,11 @@ socket.on("unmatched", function () {
 $("#textSend").submit(sendMessage);
 
 socket.on("receive message", function (msg) {
+    var difference = $(document).height() - $(document).scrollTop() == $(window).height();
     $("#messages").append($("<p>").addClass("received").text(msg));
-    $("html, body").animate({ scrollTop: $(document).height()-$(window).height() });
+    if (difference) {
+        $("html, body").animate({ scrollTop: $(document).height()-$(window).height() });
+    }
 });
 
 $("#skipButton").click(skipUser);
