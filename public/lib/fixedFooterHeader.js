@@ -6,7 +6,6 @@ const expandSection = function() {
 
     //sets the header to be positioned lower than fixed nav (to fix issue with Bootstrap fixed navs)
     $("#startContainer").css("margin-top", $(".navbar-header").outerHeight(true) + 10 + "px");
-    $("#startContainer").css("margin-bottom", $(".navbar-header").outerHeight(true) + 10 + "px");
 
     $("#chat").css("margin-top", $(".navbar-header").outerHeight(true) + $("#chatButtons").outerHeight(true) + 10 + "px");
     $("#chat").css("margin-bottom", $("#messageForm").outerHeight(true) + 10 + "px");

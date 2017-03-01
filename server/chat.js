@@ -15,7 +15,7 @@ module.exports = function (io) {
                     users[username].skipped = [];
                     users[username].reported = 0;
                     users[username].start = false;
-                    users[username].talks = ["Anything"];
+                    users[username].topics = ["Anything"];
                     users[username].type = "Supporter";
                     userExists = false;
                 } else i++;
@@ -47,9 +47,9 @@ module.exports = function (io) {
                             && users[username].reported <= 5 && users[username].start === true && users[username].type !== users[socket.username].type) {
 
                             //loop through all user to find a match
-                            for (var i in users[username].talks) {
+                            for (var topic in users[username].topics) {
 
-                                if (users[socket.username].talks.indexOf(users[username].talks[i]) !== -1) {
+                                if (users[socket.username].topics.indexOf(users[username].topics[topic]) !== -1) {
 
                                     users[username].partner = socket.username;
                                     users[socket.username].partner = username;
@@ -159,7 +159,7 @@ module.exports = function (io) {
                 users[socket.username].type = "Supportee";
             }
 
-            users[socket.username].talks = data.talks;
+            users[socket.username].topics = data.topics;
 
         });
     });

@@ -129,14 +129,14 @@ socket.on("blocked", function () {
 });
 
 $("#preferences").change(function() {
-    var talks = [];
-    $.each($("input[name='talk']:checked"), function(){
-        talks.push($(this).val());
+    var topics = [];
+    $.each($("input[name='topic']:checked"), function(){
+        topics.push($(this).val());
     });
 
     var data = {
         type: $("input[name='type']:checked").val(),
-        talks: talks
+        topics: topics
     };
 
     socket.emit("change preferences", data);
