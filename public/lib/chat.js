@@ -15,6 +15,7 @@ var socket = io(),
         $("#messageForm").show();
         $("#chatButtons").show();
         $("#startContainer").hide();
+        $("#motivationalMessage").hide();
         userMatched = true;
         expandSection();
     },
@@ -36,7 +37,7 @@ var socket = io(),
                 $("#startContainer").show();
                 $("#startButton").hide();
                 $("#chat").hide();
-                $("#motivationalMessageContainer").show();
+                $("#motivationalMessage").show();
                 $("#motivationalMessage").text(waitingMessage);
             } else if (blocked){
                 $("#preferences").hide();
@@ -74,6 +75,7 @@ var socket = io(),
                 setUpFeedback(false, feedback);
                 $("#preferences").show();
                 $("#startButton").show();
+                $("#messageForm").hide();
             });
         } else {
             $("#feedback").text("You aren't matched with anyone.");
@@ -86,6 +88,7 @@ var socket = io(),
                 setUpFeedback(false, feedback);
                 $("#preferences").show();
                 $("#startButton").show();
+                $("#messageForm").hide();
             });
         } else {
             $("#feedback").text("You aren't matched with anyone.");
@@ -100,13 +103,16 @@ socket.on("unmatched", function () {
     setUpFeedback(false, "User has left.");
     $("#preferences").show();
     $("#startButton").show();
+    $("#messageForm").hide();
 });
 
 $("#textSend").submit(sendMessage);
 
 socket.on("receive message", function (msg) {
     var difference = $(document).height() - $(document).scrollTop() == $(window).height();
+
     $("#messages").append($("<p>").addClass("received").text(msg));
+
     if (difference) {
         $("html, body").animate({ scrollTop: $(document).height()-$(window).height() });
     }
@@ -119,6 +125,7 @@ $("#reportButton").click(reportUser);
 socket.on("blocked", function () {
     setUpFeedback(false, "You have been blocked.");
     $("#preferences").hide();
+    $("#messageForm").hide();
 });
 
 $("#preferences").change(function() {

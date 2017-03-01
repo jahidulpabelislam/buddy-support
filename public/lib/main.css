@@ -118,3 +118,11 @@ legend {
     border-bottom: none;
     margin-bottom: 0;
 }
+
+#feedback {
+    margin: 10px;
+}
+
+#motivationalMessage {
+    margin: 10px;
+}
