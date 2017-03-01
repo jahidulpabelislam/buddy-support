@@ -2,12 +2,15 @@
 const expandSection = function() {
     "use strict";
 
-    $("#chatButtons").css("top", $(".navbar-header").outerHeight(true) + 10 + "px");
 
-    //sets the header to be positioned lower than fixed nav (to fix issue with Bootstrap fixed navs)
+
+    //sets the content to be positioned lower than fixed nav (to fix issue with Bootstrap fixed navs)
     $("#startContainer").css("margin-top", $(".navbar-header").outerHeight(true) + 10 + "px");
-
+    $("#help").css("margin-top", $(".navbar-header").outerHeight(true) + 10 + "px");
+    $("#chatButtons").css("top", $(".navbar-header").outerHeight(true) + 10 + "px");
     $("#chat").css("margin-top", $(".navbar-header").outerHeight(true) + $("#chatButtons").outerHeight(true) + 10 + "px");
+
+    //leaves space for the message form at the bottom
     $("#chat").css("margin-bottom", $("#messageForm").outerHeight(true) + 10 + "px");
 
     //make sections default height to work out if content is too small or big
