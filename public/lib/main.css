@@ -125,3 +125,7 @@ legend {
 #help h2 {
     text-align: center;
 }
+
+#loading {
+    display: none;
+}

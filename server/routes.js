@@ -15,11 +15,11 @@ module.exports = function (app) {
         res.sendFile("/Users/Pabel/Google Drive/Project/Buddy-Support/public/view/contact.html");
     });
 
-    app.get("/help/", function (req, res) {
-        res.sendFile("/Users/Pabel/Google Drive/Project/Buddy-Support/public/view/help.html");
-    });
-
     app.post("/contact/", function (req, res) {
         require('./contactForm')(req, res);
+    });
+
+    app.get("/help/", function (req, res) {
+        res.sendFile("/Users/Pabel/Google Drive/Project/Buddy-Support/public/view/help.html");
     });
 };
