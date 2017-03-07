@@ -2,7 +2,7 @@ var renderFeedback = function (result) {
         result = JSON.parse(result);
 
         if (result.feedback) {
-            $("#feedback").text(result.feedback);
+            $("#feedback").append("<span>").text(result.feedback);
         } else {
             $("#feedback").text("");
         }
@@ -14,13 +14,13 @@ var renderFeedback = function (result) {
         }
 
         if (result.emailFeedback) {
-            $("#emailFeedback").text(result.emailFeedback);
+            $("#emailFeedback").append("<span>").text(result.emailFeedback);
         } else {
             $("#emailFeedback").text("");
         }
 
         if (result.messageFeedback) {
-            $("#messageFeedback").text(result.messageFeedback);
+            $("#messageFeedback").append("<span>").text(result.messageFeedback);
         } else {
             $("#messageFeedback").text("");
         }
@@ -29,7 +29,7 @@ var renderFeedback = function (result) {
 
     },
     error = function () {
-        $("#feedback").text("Something went wrong, please try again later.");
+        $("#feedback").append("<span>").text("Something went wrong, please try again later.");
         $("#loading").hide();
     };
 
@@ -64,13 +64,13 @@ var validateEmail = function (email, isForm) {
 
         //checks if email is empty
         if (email.trim() === "" && isForm) {
-            $("#emailFeedback").text("Email Address must be provided and valid.");
+            $("#emailFeedback").append("<span>").text("Email Address must be provided and valid.");
             return false;
         }
         //checks if email is valid
         else if (!result && isForm) {
             //give user message
-            $("#emailFeedback").text("Email Address must be valid.");
+            $("#emailFeedback").append("<span>").text("Email Address must be valid.");
             return false;
         }
         //else remove feedback message
@@ -89,7 +89,7 @@ var validateEmail = function (email, isForm) {
         //checks is message is empty
         if (message.trim() === "" && isForm) {
             //give user message
-            $("#messageFeedback").text("Message must be filled out.");
+            $("#messageFeedback").append("<span>").text("Message must be filled out.");
             return false;
         }
         //else remove feedback messages

@@ -148,6 +148,25 @@ legend {
     display: none;
 }
 
+#contactForm textarea {
+    max-width: 100%;
+    height: 213px;
+    max-height: 213px;
+    margin-bottom: 5px;
+}
+
+#contactForm input {
+    margin-bottom: 5px;
+}
+
+.required {
+    color: #e52525;
+}
+
+#contact h2 {
+    text-align: center;
+}
+
 #feedback button {
     margin-left: 5px;
 }
@@ -174,4 +193,12 @@ p#userDisplay > p.matched {
 p#userDisplay > p.user {
     float: right;
     background: green;
+}
+
+@media only screen and (min-width: 481px) {
+
+    #contactForm {
+        margin: auto;
+        max-width: 439px;
+    }
 }
