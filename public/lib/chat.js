@@ -192,6 +192,9 @@ socket.on("receive message", function(msg) {
 
     if (difference) {
         $("html, body").animate({scrollTop: $(document).height() - $(window).height()});
+    } else {
+        $("#notificationContainer").show();
+        $("#notification").text("New Message ↑");
     }
 
     $("#notificationSound")[0].play();
