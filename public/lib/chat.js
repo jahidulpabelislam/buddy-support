@@ -243,3 +243,10 @@ socket.on("typing", function(typing) {
         $("#notification").text("");
     }
 });
+
+$(window).scroll(function() {
+    if ($(document).height() - $(document).scrollTop() == $(window).height()) {
+        $("#notificationContainer").hide();
+        $("#notification").text("");
+    }
+});
