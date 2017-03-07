@@ -109,6 +109,12 @@ legend {
     margin-bottom: 0;
 }
 
+#messagesContainer {
+    display: none;
+}
+#feedbackContainer{
+    display: inline-block;
+}
 #feedback {
     margin: 10px;
 }

@@ -10,7 +10,7 @@
         <!-- Bootstrap stylesheet-->
         <link href="lib/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 
-        <link rel="stylesheet" href="lib/main.css"/>
+        <link rel="stylesheet" href="lib/main.css" />
         <link rel="icon" href="images/logo.png">
         <title>Chat | Buddy Support</title>
     </head>
@@ -28,7 +28,9 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand active" id="logoContainer" href="/"><img id="logo" src="images/logo.png" alt="Logo for Buddy Support" style="opacity:1;"> </a>
+                    <a class="navbar-brand active" id="logoContainer" href="/"><img id="logo" src="images/logo.png"
+                                                                                    alt="Logo for Buddy Support"
+                                                                                    style="opacity:1;"> </a>
                 </div>
                 <div id="navbar" class="navbar-collapse collapse">
                     <ul class="nav navbar-nav navbar-right">
@@ -69,10 +71,10 @@
                         </ul>
                     </div>
                     <label id="messageLabel" for="message">Your Text Message</label>
-                    <input id="message" placeholder="hello :)..." class="form-control"/>
+                    <input id="message" placeholder="hello :)..." class="form-control" />
                     <span class="input-group-btn">
-                        <button class="btn btn-default" type="submit">Send</button>
-                    </span>
+                                <button class="btn btn-default" type="submit">Send</button>
+                            </span>
                 </form><!-- /input-group -->
 
             </div>
@@ -96,33 +98,41 @@
 
                 <form id="preferences">
                     <fieldset>
-                    <legend>I want to be a:</legend>
-                    <div class="radio">
-                        <label for="supporter"><input type="radio" name="type" value="Supporter" id="supporter" checked>Supporter</label>
-                    </div>
-                    <div class="radio">
-                        <label for="supportee"><input type="radio" name="type" value="Supportee" id="supportee">Supportee</label>
-                    </div>
+                        <legend>I want to be a:</legend>
+                        <div class="radio">
+                            <label for="supporter"><input type="radio" name="type" value="Supporter" id="supporter" checked>Supporter</label>
+                        </div>
+                        <div class="radio">
+                            <label for="supportee"><input type="radio" name="type" value="Supportee"
+                                                          id="supportee">Supportee</label>
+                        </div>
                     </fieldset>
                     <fieldset>
-                    <legend>I want to talk about:</legend>
-                    <div class="checkbox">
-                        <label for="anything"><input type="checkbox" name="topic" value="Anything" checked id="anything">Anything</label>
-                    </div>
-                    <div class="checkbox">
-                        <label for="topic1"><input type="checkbox" name="topic" value="Topic 1" id="topic1">Topic 1</label>
-                    </div>
-                    <div class="checkbox">
-                        <label for="topic2"><input type="checkbox" name="topic" value="Topic 2" id="topic2">Topic 2</label>
-                    </div>
+                        <legend>I want to talk about:</legend>
+                        <div class="checkbox">
+                            <label for="anything"><input type="checkbox" name="topic" value="Anything" checked id="anything">Anything</label>
+                        </div>
+                        <div class="checkbox">
+                            <label for="topic1"><input type="checkbox" name="topic" value="Topic 1" id="topic1">Topic 1</label>
+                        </div>
+                        <div class="checkbox">
+                            <label for="topic2"><input type="checkbox" name="topic" value="Topic 2" id="topic2">Topic 2</label>
+                        </div>
                     </fieldset>
+
+                    <button id="startButton" class="btn btn-primary" autofocus>Start Chatting</button>
                 </form>
 
-                <button id="startButton" class="btn btn-primary" autofocus>Start Chatting</button>
+                <div id="messagesContainer">
 
-                <p id="feedback"></p>
+                    <div id="feedbackContainer" class="panel panel-default">
+                        <div class="panel-body" id="feedback"></div>
+                    </div>
 
-                <p id="motivationalMessage"></p>
+                    <p id="motivationalMessage"></p>
+
+                </div>
+
             </div>
         </div>
 

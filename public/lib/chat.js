@@ -1,15 +1,21 @@
 var socket = io(),
     userMatched = false,
 
-    setUpFeedback = function (matched, feedback) {
+    setUpFeedback = function(feedback) {
+        $("#startContainer").show();
+        $("#feedbackContainer").show();
         $("#chat").hide();
         $("#chatButtons").hide();
-        $("#startContainer").show();
-        $("#feedback").text(feedback);
-        userMatched = matched;
+        $("#messageForm").hide();
+        $button = $('<button/>').text('OK').addClass("btn btn-success").click(function() {
+            $("#preferences").show();
+            $("#messagesContainer").hide();
+        });
+        $("#feedback").text(feedback).append($button);
+        userMatched = false;
     },
 
-    setUpChat = function () {
+    setUpChat = function() {
         $("#messages").empty();
         $("#chat").show();
         $("#messageForm").show();
@@ -20,12 +26,17 @@ var socket = io(),
         expandSection();
     },
 
-    matchUser = function () {
+    matchUser = function(e) {
+
+        $("#preferences").hide();
+        $("#messagesContainer").show();
 
         $("#feedback").text("Finding a match...");
 
-        socket.emit("match", function (matched, feedback, waitingMessage, blocked) {
+        socket.emit("match", function(matched, feedback, waitingMessage, blocked) {
+
             userMatched = matched;
+
             if (feedback) {
                 $("#feedback").text(feedback);
             }
@@ -33,33 +44,27 @@ var socket = io(),
             if (matched) {
                 setUpChat();
             } else if (waitingMessage) {
-                $("#preferences").hide();
-                $("#startContainer").show();
-                $("#startButton").hide();
-                $("#chat").hide();
                 $("#motivationalMessage").show();
                 $("#motivationalMessage").text(waitingMessage);
-            } else if (blocked){
-                $("#preferences").hide();
-                $("#startContainer").show();
+            } else if (blocked) {
+                $("#feedback").text("You have been blocked.");
             }
         });
+
+        e.preventDefault();
     },
 
-    sendMessage = function (e) {
+    sendMessage = function(e) {
         if (userMatched) {
             if ($("#message").val().trim() !== "") {
-                socket.emit("send message", $("#message").val(), function (error) {
+                socket.emit("send message", $("#message").val(), function(error) {
                     if (error) {
                         $("#feedback").text(error);
                     } else {
-                        var difference = $(document).height() - $(document).scrollTop() == $(window).height();
 
                         $("#messages").append($("<p>").addClass("sent").text($("#message").val()));
                         $("#message").val("");
-                        if (difference) {
-                            $("html, body").animate({ scrollTop: $(document).height()-$(window).height() });
-                        }
+                        $("html, body").animate({scrollTop: $(document).height() - $(window).height()});
                     }
                 });
             }
@@ -69,52 +74,43 @@ var socket = io(),
         e.preventDefault();
     },
 
-    skipUser = function () {
+    skipUser = function() {
         if (userMatched) {
-            socket.emit("skip", function (feedback) {
-                setUpFeedback(false, feedback);
-                $("#preferences").show();
-                $("#startButton").show();
-                $("#messageForm").hide();
+            socket.emit("skip", function(feedback) {
+                setUpFeedback(feedback);
             });
         } else {
             $("#feedback").text("You aren't matched with anyone.");
         }
     },
 
-    reportUser = function () {
+    reportUser = function() {
         if (userMatched) {
-            socket.emit("report", function (feedback) {
-                setUpFeedback(false, feedback);
-                $("#preferences").show();
-                $("#startButton").show();
-                $("#messageForm").hide();
+            socket.emit("report", function(feedback) {
+                setUpFeedback(feedback);
             });
         } else {
             $("#feedback").text("You aren't matched with anyone.");
         }
     };
 
-$("#startButton").click(matchUser);
+$("#preferences").submit(matchUser);
 
 socket.on("matched", setUpChat);
 
-socket.on("unmatched", function () {
-    setUpFeedback(false, "User has left.");
-    $("#preferences").show();
-    $("#startButton").show();
-    $("#messageForm").hide();
+socket.on("unmatched", function() {
+    setUpFeedback("User has left the chat.");
 });
 
 $("#textSend").submit(sendMessage);
 
-socket.on("receive message", function (msg) {
+socket.on("receive message", function(msg) {
     var difference = $(document).height() - $(document).scrollTop() == $(window).height();
 
     $("#messages").append($("<p>").addClass("received").text(msg));
 
     if (difference) {
-        $("html, body").animate({ scrollTop: $(document).height()-$(window).height() });
+        $("html, body").animate({scrollTop: $(document).height() - $(window).height()});
     }
 });
 
@@ -122,15 +118,19 @@ $("#skipButton").click(skipUser);
 
 $("#reportButton").click(reportUser);
 
-socket.on("blocked", function () {
-    setUpFeedback(false, "You have been blocked.");
-    $("#preferences").hide();
+socket.on("blocked", function() {
+    $("#startContainer").show();
+    $("#feedbackContainer").show();
+    $("#chat").hide();
+    $("#chatButtons").hide();
     $("#messageForm").hide();
+    $("#feedback").text("You have been blocked.");
+    userMatched = false;
 });
 
 $("#preferences").change(function() {
     var topics = [];
-    $.each($("input[name='topic']:checked"), function(){
+    $.each($("input[name='topic']:checked"), function() {
         topics.push($(this).val());
     });
 
