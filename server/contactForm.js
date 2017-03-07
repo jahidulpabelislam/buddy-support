@@ -1,17 +1,16 @@
 module.exports = function (req, res) {
 
-    var nodeMailer = require("nodemailer");
-
-    var validEmailPattern = /\b[\w._-]+@[\w-]+.[\w]{2,}\b/im,
+    const nodeMailer = require("nodemailer"),
+        validEmailPattern = /\b[\w._-]+@[\w-]+.[\w]{2,}\b/im,
         result = validEmailPattern.test(req.body.emailInput);
 
     if (req.body.emailInput.trim() !== "" && req.body.messageInput.trim() !== "" && result) {
 
-        var transporter = nodeMailer.createTransport({
+        const transporter = nodeMailer.createTransport({
                 service: 'Gmail',
                 auth: {
-                    user: 'up733474@myport.ac.uk',
-                    pass: hidden
+                    user: 'jahidulwebapp@gmail.com',
+                    pass: 'myuniapppassword'
                 }
             }),
 

@@ -46,11 +46,7 @@ $("#contactForm").submit(function () {
         $.ajax({
             url: '/contact',
             type: 'POST',
-            data: {
-                emailInput: $("#emailInput").val(),
-                subjectInput: $("#subjectInput").val(),
-                messageInput: $("#messageInput").val()
-            },
+            data: $('#contactForm').serialize(),
             success: renderFeedback,
             error: error
         });
@@ -83,6 +79,8 @@ var validateEmail = function (email, isForm) {
             return true;
         }
 
+        $("#feedback").text("");
+
     },
 
     //validate the message input
@@ -99,4 +97,6 @@ var validateEmail = function (email, isForm) {
             $("#messageFeedback").text("");
             return true;
         }
+
+        $("#feedback").text("");
     };

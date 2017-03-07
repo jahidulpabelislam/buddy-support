@@ -2,10 +2,9 @@
 const expandSection = function() {
     "use strict";
 
-
-
     //sets the content to be positioned lower than fixed nav (to fix issue with Bootstrap fixed navs)
     $("#startContainer").css("margin-top", $(".navbar-header").outerHeight(true) + 10 + "px");
+    $("#contact").css("margin-top", $(".navbar-header").outerHeight(true) + 10 + "px");
     $("#help").css("margin-top", $(".navbar-header").outerHeight(true) + 10 + "px");
     $("#chatButtons").css("top", $(".navbar-header").outerHeight(true) + 10 + "px");
     $("#chat").css("margin-top", $(".navbar-header").outerHeight(true) + $("#chatButtons").outerHeight(true) + 10 + "px");
