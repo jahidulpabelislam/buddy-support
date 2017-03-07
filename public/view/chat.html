@@ -52,6 +52,10 @@
             </div>
         </nav>
 
+        <div id="notificationContainer" class="alert alert-info" role="alert">
+            <p id="notification"></p>
+        </div>
+
         <div id="messageForm">
             <div class="container">
                 <form class="input-group" id="textSend">
@@ -136,7 +140,7 @@
             </div>
         </div>
 
-        <audio id="notification" src="sound/notification.wav" style="display: none">
+        <audio id="notificationSound" src="sound/notification.wav" style="display: none">
 
         <script type="text/javascript" src="/socket.io/socket.io.js"></script>
         <script type="text/javascript" src="lib/jquery-3.1.1.min.js"></script>
