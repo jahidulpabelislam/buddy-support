@@ -44,7 +44,12 @@ var socket = io(),
             } else if (waitingMessage) {
                 $("#feedbackContainer" ).toggleClass("panel-primary", true);
                 $("#feedbackContainer" ).toggleClass("panel-success", false);
-                $("#feedback").text(feedback);
+                $button = $('<button/>').text('Back').addClass("btn btn-warning").click(function() {
+                    socket.emit("start again");
+                    $("#preferences").show();
+                    $("#messagesContainer").hide();
+                });
+                $("#feedback").text(feedback).append($button);
                 $("#motivationalMessage").show();
                 $("#motivationalMessage").text(waitingMessage);
             } else if (blocked) {

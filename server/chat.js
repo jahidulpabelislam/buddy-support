@@ -162,5 +162,12 @@ module.exports = function (io) {
             users[socket.username].topics = data.topics;
 
         });
+
+        socket.on("start again", function () {
+            if (!socket.username) return;
+
+            users[socket.username].start = false;
+
+        });
     });
 };
