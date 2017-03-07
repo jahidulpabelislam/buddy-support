@@ -69,8 +69,7 @@ var socket = io(),
                     if (error) {
                         $("#feedback").text(error);
                     } else {
-
-                        $("#messages").append($("<p>").addClass("sent").text($("#message").val()));
+                        $("#messages").append($("<p>").addClass("sent").append($("<p>").text($("#message").val())));
                         $("#message").val("");
                         $("html, body").animate({scrollTop: $(document).height() - $(window).height()});
                     }
@@ -128,7 +127,7 @@ $("#textSend").submit(sendMessage);
 socket.on("receive message", function(msg) {
     var difference = $(document).height() - $(document).scrollTop() == $(window).height();
 
-    $("#messages").append($("<p>").addClass("received").text(msg));
+    $("#messages").append($("<p>").addClass("received").append($("<p>").text(msg)));
 
     if (difference) {
         $("html, body").animate({scrollTop: $(document).height() - $(window).height()});
