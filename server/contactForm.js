@@ -4,7 +4,7 @@ module.exports = function(req, res) {
         validEmailPattern = /\b[\w._-]+@[\w-]+.[\w]{2,}\b/im,
         result = validEmailPattern.test(req.body.emailInput);
 
-    if (req.body.emailInput.trim() !== "" && req.body.messageInput.trim() !== "" && result) {
+    if (((req.body.contactType === "Enquiry" && req.body.emailInput.trim() !== "" && result) || req.body.contactType === "Message") && req.body.messageInput.trim() !== "") {
 
         const transporter = nodeMailer.createTransport({
                 service: 'Gmail',
@@ -15,9 +15,9 @@ module.exports = function(req, res) {
             }),
 
             mailOptions = {
-                replyTo: req.body.emailInput,
+                replyTo: req.body.contactType === "Enquiry" ? req.body.emailInput : "",
                 to: 'up733474@myport.ac.uk',
-                subject: req.body.subjectInput || 'Buddy Support Email',
+                subject: req.body.subjectInput || req.body.contactType === "Enquiry" ? 'Buddy Support Enquiry' : 'Buddy Support Message',
                 text: req.body.messageInput
             };
 
@@ -29,11 +29,11 @@ module.exports = function(req, res) {
         });
 
     } else {
-        var response = {ok: false};
+        var response = {ok: false, test: req.body};
 
-        if (req.body.emailInput.trim() === "") {
+        if (req.body.contactType === "Enquiry" && req.body.emailInput.trim() === "") {
             response.emailFeedback = "Email Address must be provided and valid.";
-        } else if (!result) {
+        } else if (req.body.contactType === "Enquiry" && !result) {
             response.emailFeedback = "Email Address must be valid.";
         }
 

@@ -236,6 +236,6 @@ p#userDisplay > p.user {
 
     #contactForm {
         margin: auto;
-        max-width: 439px;
+        max-width: 600px;
     }
 }

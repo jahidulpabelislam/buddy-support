@@ -1,4 +1,4 @@
-var renderFeedback = function (result) {
+var renderFeedback = function(result) {
         result = JSON.parse(result);
 
         if (result.feedback) {
@@ -35,25 +35,29 @@ var renderFeedback = function (result) {
         $("#loading").hide();
 
     },
-    error = function () {
+    error = function() {
         $("#feedback").text("Something went wrong, please try again later.").addClass("error");
         $("#loading").hide();
     };
 
-$("#contactForm").submit(function () {
-    $("#feedback").text("");
+$("#contactForm").submit(function() {
     $("#loading").show();
 
+    var type = $("#contactType").val();
+
     //validate each required user input
-    var emailValidation = validateEmail($("#emailInput").val(), true),
-        messageValidation = validateMessage($("#messageInput").val(), true);
+    var messageValidation = validateMessage($("#messageInput").val(), true);
+
+    if (type === "Enquiry") {
+        var emailValidation = validateEmail($("#emailInput").val(), true);
+    }
 
     //if form is valid send a request with necessary data to XHR
-    if (emailValidation && messageValidation) {
+    if ((type === "Enquiry" && emailValidation && messageValidation) || (type === "Message" && messageValidation)) {
         $.ajax({
             url: '/contact',
             type: 'POST',
-            data: $('#contactForm').serialize(),
+            data: $("#contactForm").serialize(),
             success: renderFeedback,
             error: error
         });
@@ -65,7 +69,9 @@ $("#contactForm").submit(function () {
 });
 
 //validate the email address
-var validateEmail = function (email, isForm) {
+var validateEmail = function(email, isForm) {
+        $("#feedback").text("");
+
         var validEmailPattern = /\b[\w._-]+@[\w-]+.[\w]{2,}\b/im,
             result = validEmailPattern.test(email);
 
@@ -88,13 +94,11 @@ var validateEmail = function (email, isForm) {
             $("#emailFeedback").text("").removeClass("error");
             return true;
         }
-
-        $("#feedback").text("");
-
     },
 
     //validate the message input
-    validateMessage = function (message, isForm) {
+    validateMessage = function(message, isForm) {
+        $("#feedback").text("");
 
         //checks is message is empty
         if (message.trim() === "" && isForm) {
@@ -110,5 +114,16 @@ var validateEmail = function (email, isForm) {
             return true;
         }
 
-        $("#feedback").text("");
     };
+
+$("#contactType").change(function() {
+    var type = $("#contactType").val();
+
+    if (type === "Enquiry") {
+        $("#emailGroup").show();
+        $("#emailInput").attr("required", true);
+    } else if (type === "Message") {
+        $("#emailInput").removeAttr("required");
+        $("#emailGroup").hide();
+    }
+});
