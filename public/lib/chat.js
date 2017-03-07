@@ -26,6 +26,8 @@ var socket = io(),
         $("#motivationalMessage").hide();
         userMatched = true;
         expandSection();
+
+        $("#messages").append($("<p>").attr("id", "userDisplay").append($("<p>").text("↓ Matched User").addClass("matched")).append($("<p>").text("You ↓").addClass("user")));
     },
 
     matchUser = function(e) {

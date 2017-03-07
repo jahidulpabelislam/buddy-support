@@ -140,3 +140,27 @@ legend {
 #feedback button {
     margin-left: 5px;
 }
+
+p#userDisplay {
+    max-width: 100%;
+    padding: 0;
+}
+
+p#userDisplay > p {
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+    max-width: 75%;
+    padding: 5px;
+    margin: 5px 0;
+    display: inline-block;
+}
+
+p#userDisplay > p.matched {
+    background: dodgerblue;
+}
+
+p#userDisplay > p.user {
+    float: right;
+    background: green;
+}
