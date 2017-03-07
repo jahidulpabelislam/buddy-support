@@ -7,6 +7,8 @@ var socket = io(),
         $("#chat").hide();
         $("#chatButtons").hide();
         $("#messageForm").hide();
+        $("#feedbackContainer" ).toggleClass("panel-primary", true);
+        $("#feedbackContainer" ).toggleClass("panel-success", false);
         $button = $('<button/>').text('OK').addClass("btn btn-success").click(function() {
             $("#preferences").show();
             $("#messagesContainer").hide();
@@ -40,6 +42,8 @@ var socket = io(),
             if (matched) {
                 setUpChat();
             } else if (waitingMessage) {
+                $("#feedbackContainer" ).toggleClass("panel-primary", true);
+                $("#feedbackContainer" ).toggleClass("panel-success", false);
                 $("#feedback").text(feedback);
                 $("#motivationalMessage").show();
                 $("#motivationalMessage").text(waitingMessage);
@@ -97,6 +101,9 @@ var socket = io(),
         $("#chat").hide();
         $("#chatButtons").hide();
         $("#messageForm").hide();
+        $("#feedbackContainer" ).toggleClass("panel-danger", true);
+        $("#feedbackContainer" ).toggleClass("panel-primary", false);
+        $("#feedbackContainer" ).toggleClass("panel-success", false);
         $("#feedback").text("You have been blocked.");
         userMatched = false;
     };
