@@ -1,4 +1,4 @@
-module.exports = function (req, res) {
+module.exports = function(req, res) {
 
     const nodeMailer = require("nodemailer"),
         validEmailPattern = /\b[\w._-]+@[\w-]+.[\w]{2,}\b/im,
@@ -21,7 +21,7 @@ module.exports = function (req, res) {
                 text: req.body.messageInput
             };
 
-        transporter.sendMail(mailOptions, function (error) {
+        transporter.sendMail(mailOptions, function(error) {
             res.send(JSON.stringify({
                 ok: !error,
                 feedback: error ? "Something went wrong, please try again later." : "Your message has been sent."

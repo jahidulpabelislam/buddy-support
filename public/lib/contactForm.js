@@ -2,7 +2,7 @@ var renderFeedback = function (result) {
         result = JSON.parse(result);
 
         if (result.feedback) {
-            $("#feedback").append("<span>").text(result.feedback);
+            $("#feedback").text(result.feedback);
         } else {
             $("#feedback").text("");
         }
@@ -11,25 +11,32 @@ var renderFeedback = function (result) {
             $("#emailInput").val("");
             $("#subjectInput").val("");
             $("#messageInput").val("");
+            $("#feedback").text(result.feedback).addClass("success");
+        } else {
+            $("#feedback").addClass("error");
         }
 
         if (result.emailFeedback) {
-            $("#emailFeedback").append("<span>").text(result.emailFeedback);
+            $("#emailFeedback").text(result.emailFeedback).addClass("error");
+            $("#emailInput").addClass("invalid");
         } else {
-            $("#emailFeedback").text("");
+            $("#emailFeedback").text("").removeClass("error");
+            $("#emailInput").removeClass("invalid");
         }
 
         if (result.messageFeedback) {
-            $("#messageFeedback").append("<span>").text(result.messageFeedback);
+            $("#messageFeedback").text(result.messageFeedback).addClass("error");
+            $("#messageInput").addClass("invalid");
         } else {
-            $("#messageFeedback").text("");
+            $("#messageFeedback").text("").removeClass("error");
+            $("#messageInput").removeClass("invalid");
         }
 
         $("#loading").hide();
 
     },
     error = function () {
-        $("#feedback").append("<span>").text("Something went wrong, please try again later.");
+        $("#feedback").text("Something went wrong, please try again later.").addClass("error");
         $("#loading").hide();
     };
 
@@ -64,18 +71,21 @@ var validateEmail = function (email, isForm) {
 
         //checks if email is empty
         if (email.trim() === "" && isForm) {
-            $("#emailFeedback").append("<span>").text("Email Address must be provided and valid.");
+            $("#emailInput").addClass("invalid");
+            $("#emailFeedback").text("Email Address must be provided and valid.").addClass("error");
             return false;
         }
         //checks if email is valid
         else if (!result && isForm) {
             //give user message
-            $("#emailFeedback").append("<span>").text("Email Address must be valid.");
+            $("#emailInput").addClass("invalid");
+            $("#emailFeedback").text("Email Address must be valid.").addClass("error");
             return false;
         }
         //else remove feedback message
-        else {
-            $("#emailFeedback").text("");
+        else if (email.trim() !== "" && result) {
+            $("#emailInput").removeClass("invalid");
+            $("#emailFeedback").text("").removeClass("error");
             return true;
         }
 
@@ -89,12 +99,14 @@ var validateEmail = function (email, isForm) {
         //checks is message is empty
         if (message.trim() === "" && isForm) {
             //give user message
-            $("#messageFeedback").append("<span>").text("Message must be filled out.");
+            $("#messageInput").addClass("invalid");
+            $("#messageFeedback").text("Message must be filled out.").addClass("error");
             return false;
         }
         //else remove feedback messages
-        else {
-            $("#messageFeedback").text("");
+        else if (message.trim() !== "") {
+            $("#messageInput").removeClass("invalid");
+            $("#messageFeedback").text("").removeClass("error");
             return true;
         }
 

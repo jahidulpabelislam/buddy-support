@@ -38,7 +38,7 @@
     word-wrap: break-word;
 }
 
-#messages > p >  p {
+#messages > p > p {
     -webkit-border-radius: 4px;
     -moz-border-radius: 4px;
     border-radius: 4px;
@@ -123,7 +123,8 @@ legend {
 #messagesContainer {
     display: none;
 }
-#feedbackContainer{
+
+#feedbackContainer {
     display: inline-block;
 }
 
@@ -161,6 +162,42 @@ legend {
 
 .required {
     color: #e52525;
+}
+
+.error {
+    color: #e52525;
+    font-weight: bold;
+}
+
+.success {
+    color: green;
+    font-weight: bold;
+}
+
+#contactForm input:focus.invalid {
+    border-color: #e52525;
+    -webkit-box-shadow: 0 0 8px rgba(229, 37, 37, 0.6);
+    -moz-box-shadow: 0 0 8px rgba(229, 37, 37, 0.6);
+    -o-box-shadow: 0 0 8px rgba(229, 37, 37, 0.6);
+    box-shadow: 0 0 8px rgba(229, 37, 37, 0.6);
+}
+
+#contactForm input.invalid {
+    border-color: #e52525;
+    outline: 0;
+}
+
+#contactForm textarea:focus.invalid {
+    border-color: #e52525;
+    -webkit-box-shadow: 0 0 8px rgba(229, 37, 37, 0.6);
+    -moz-box-shadow: 0 0 8px rgba(229, 37, 37, 0.6);
+    -o-box-shadow: 0 0 8px rgba(229, 37, 37, 0.6);
+    box-shadow: 0 0 8px rgba(229, 37, 37, 0.6);
+}
+
+#contactForm textarea.invalid {
+    border-color: #e52525;
+    outline: 0;
 }
 
 #contact h2 {
