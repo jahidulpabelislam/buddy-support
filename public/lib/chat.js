@@ -193,7 +193,7 @@ socket.on("receive message", function(msg) {
     if (difference) {
         $("html, body").animate({scrollTop: $(document).height() - $(window).height()});
     } else {
-        $("#notificationContainer").show();
+        $("#notificationContainerContainer").show();
         $("#notification").text("New Message ↓");
     }
 
@@ -236,17 +236,17 @@ $("#message").keyup(function() {
 
 socket.on("typing", function(typing) {
     if (typing) {
-        $("#notificationContainer").show();
+        $("#notificationContainerContainer").show();
         $("#notification").text("User is typing...");
     } else {
-        $("#notificationContainer").hide();
+        $("#notificationContainerContainer").hide();
         $("#notification").text("");
     }
 });
 
 $(window).scroll(function() {
     if ($(document).height() - $(document).scrollTop() == $(window).height()) {
-        $("#notificationContainer").hide();
+        $("#notificationContainerContainer").hide();
         $("#notification").text("");
     }
 });

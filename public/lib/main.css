@@ -246,11 +246,18 @@ p#userDisplay > p.user {
     font-weight: initial;
 }
 
-#notificationContainer {
+#notificationContainerContainer {
     position: fixed;
     bottom: 0;
     padding: 5px;
     display: none;
+    width: 100%;
+}
+
+#notificationContainer {
+    padding: 2px;
+    display: inline-block;
+    margin: 0;
 }
 
 #notification {

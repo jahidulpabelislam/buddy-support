@@ -11,7 +11,7 @@ const expandSection = function() {
 
     //leaves space for the message form at the bottom
     $("#chat").css("margin-bottom", $("#messageForm").outerHeight(true) + 10 + "px");
-    $("#notificationContainer").css("margin-bottom", $("#messageForm").outerHeight(true) + 2 + "px");
+    $("#notificationContainerContainer").css("margin-bottom", $("#messageForm").outerHeight(true) + 2 + "px");
 
     //make sections default height to work out if content is too small or big
     $("#startContainer").height("auto");
