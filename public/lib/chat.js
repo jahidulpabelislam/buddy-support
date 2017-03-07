@@ -37,17 +37,14 @@ var socket = io(),
 
             userMatched = matched;
 
-            if (feedback) {
-                $("#feedback").text(feedback);
-            }
-
             if (matched) {
                 setUpChat();
             } else if (waitingMessage) {
+                $("#feedback").text(feedback);
                 $("#motivationalMessage").show();
                 $("#motivationalMessage").text(waitingMessage);
             } else if (blocked) {
-                $("#feedback").text("You have been blocked.");
+                blocked();
             }
         });
 
@@ -92,6 +89,16 @@ var socket = io(),
         } else {
             $("#feedback").text("You aren't matched with anyone.");
         }
+    },
+
+    blocked = function() {
+        $("#startContainer").show();
+        $("#feedbackContainer").show();
+        $("#chat").hide();
+        $("#chatButtons").hide();
+        $("#messageForm").hide();
+        $("#feedback").text("You have been blocked.");
+        userMatched = false;
     };
 
 $("#preferences").submit(matchUser);
@@ -119,13 +126,7 @@ $("#skipButton").click(skipUser);
 $("#reportButton").click(reportUser);
 
 socket.on("blocked", function() {
-    $("#startContainer").show();
-    $("#feedbackContainer").show();
-    $("#chat").hide();
-    $("#chatButtons").hide();
-    $("#messageForm").hide();
-    $("#feedback").text("You have been blocked.");
-    userMatched = false;
+    blocked();
 });
 
 $("#preferences").change(function() {
