@@ -24,7 +24,7 @@ var socket = io(),
 
     },
 
-    addDate = function () {
+    addDate = function() {
         var dateText;
         var thisMessageDate = new Date();
 
@@ -35,6 +35,22 @@ var socket = io(),
             $("#messages").append($("<p>").addClass("date").append($("<p>").text(dateText)));
         }
         lastMessageDate = thisMessageDate;
+    },
+
+    addTime = function() {
+        var hour = lastMessageDate.getHours(),
+            minute = lastMessageDate.getMinutes(),
+            period = "AM";
+        if (hour > 12) {
+            hour -= 12;
+            period = "PM";
+        }
+
+        if (minute < 10) {
+            minute = 0 + minute.toString();
+        }
+
+        return hour + ":" + minute + period;
     },
 
     setUpFeedback = function(feedback) {
@@ -106,7 +122,8 @@ var socket = io(),
                         $("#feedback").text(error);
                     } else {
                         addDate();
-                        $("#messages").append($("<p>").addClass("sent").append($("<p>").text($("#message").val())));
+                        var time = addTime();
+                        $("#messages").append($("<p>").addClass("sent").append($("<p>").text($("#message").val()).append($("<p>").addClass("time").text(time))));
                         $("#message").val("");
                         $("html, body").animate({scrollTop: $(document).height() - $(window).height()});
                     }
@@ -164,10 +181,11 @@ $("#textSend").submit(sendMessage);
 socket.on("receive message", function(msg) {
 
     addDate();
+    var time = addTime();
 
     var difference = $(document).height() - $(document).scrollTop() == $(window).height();
 
-    $("#messages").append($("<p>").addClass("received").append($("<p>").text(msg)));
+    $("#messages").append($("<p>").addClass("received").append($("<p>").text(msg).append($("<p>").addClass("time").text(time))));
 
     if (difference) {
         $("html, body").animate({scrollTop: $(document).height() - $(window).height()});
