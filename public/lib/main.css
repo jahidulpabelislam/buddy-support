@@ -125,8 +125,12 @@ legend {
     max-width: 600px;
 }
 
-#help h2 {
+#help h1 {
     text-align: center;
+}
+
+#help button, #help input {
+    margin: 5px;
 }
 
 #loading {
