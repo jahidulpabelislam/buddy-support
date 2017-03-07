@@ -132,3 +132,7 @@ legend {
 #loading {
     display: none;
 }
+
+#feedback button {
+    margin-left: 5px;
+}
