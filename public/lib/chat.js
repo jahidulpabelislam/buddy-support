@@ -218,3 +218,25 @@ $("#preferences").change(function() {
 
     socket.emit("change preferences", data);
 });
+
+var typingTimeout,
+
+    typingTimeoutFunction = function() {
+        socket.emit("typing", false);
+        console.log("i finished typing");
+    };
+
+$("#message").keyup(function() {
+    console.log("i'm typing");
+    socket.emit("typing", true);
+    clearTimeout(typingTimeout);
+    typingTimeout = setTimeout(typingTimeoutFunction, 2000);
+});
+
+socket.on("typing", function(typing) {
+    if (typing) {
+        console.log("user is typing");
+    } else {
+        console.log("user not typing");
+    }
+});

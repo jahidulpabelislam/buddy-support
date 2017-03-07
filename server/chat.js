@@ -169,5 +169,15 @@ module.exports = function (io) {
             users[socket.username].start = false;
 
         });
+
+        socket.on("typing", function (typing) {
+            if (!socket.username) return;
+
+            var partner = users[socket.username].partner;
+
+            if (partner) {
+                users[partner].emit("typing", typing);
+            }
+        });
     });
 };
