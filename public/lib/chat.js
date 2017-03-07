@@ -66,6 +66,7 @@ var socket = io(),
             $("#messagesContainer").hide();
         });
         $("#feedback").text(feedback).append($button);
+        $("#notification")[0].play();
         userMatched = false;
     },
 
@@ -78,7 +79,7 @@ var socket = io(),
         $("#motivationalMessage").hide();
         userMatched = true;
         expandSection();
-
+        $("#notification")[0].play();
         $("#messages").append($("<p>").attr("id", "userDisplay").append($("<p>").text("↓ Matched User").addClass("matched")).append($("<p>").text("You ↓").addClass("user")));
     },
 
@@ -165,6 +166,7 @@ var socket = io(),
         $("#feedbackContainer").toggleClass("panel-primary", false);
         $("#feedbackContainer").toggleClass("panel-success", false);
         $("#feedback").text("You have been blocked.");
+        $("#notification")[0].play();
         userMatched = false;
     };
 
@@ -174,6 +176,7 @@ socket.on("matched", setUpChat);
 
 socket.on("unmatched", function() {
     setUpFeedback("User has left the chat.");
+    $("#notification")[0].play();
 });
 
 $("#textSend").submit(sendMessage);
@@ -190,6 +193,8 @@ socket.on("receive message", function(msg) {
     if (difference) {
         $("html, body").animate({scrollTop: $(document).height() - $(window).height()});
     }
+
+    $("#notification")[0].play();
 });
 
 $("#skipButton").click(skipUser);
