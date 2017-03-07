@@ -194,7 +194,7 @@ socket.on("receive message", function(msg) {
         $("html, body").animate({scrollTop: $(document).height() - $(window).height()});
     } else {
         $("#notificationContainer").show();
-        $("#notification").text("New Message ↑");
+        $("#notification").text("New Message ↓");
     }
 
     $("#notificationSound")[0].play();
