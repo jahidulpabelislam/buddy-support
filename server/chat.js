@@ -96,7 +96,11 @@ module.exports = function(io) {
                         //checks if message doesn't include any profanity
                         if (!profanity) {
                             googleTranslate.translate(message, users[partner].language, function(err, translation) {
-                                users[partner].emit("receive message", translation.translatedText);
+                                if (err) {
+                                    error = err;
+                                } else {
+                                    users[partner].emit("receive message", translation.translatedText);
+                                }
                             });
                         }
                         else {
