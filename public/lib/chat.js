@@ -84,6 +84,20 @@ var socket = io(),
         $("#messages").append($("<p>").attr("id", "userDisplay").append($("<p>").text("↓ Matched User").addClass("matched")).append($("<p>").text("You ↓").addClass("user")));
     },
 
+    addFeedbackInChat = function(feedback) {
+        $("#error").show();
+        $("#error").text(feedback);
+
+        $closeButton = $("<button>").addClass("close").append($("<span>").text("×"));
+
+        $("#error").append($closeButton);
+
+        $closeButton.click(function() {
+            $("#error").text("");
+            $("#error").hide();
+        });
+    },
+
     matchUser = function(e) {
 
         $("#preferences").hide();
@@ -121,7 +135,7 @@ var socket = io(),
             if ($("#message").val().trim() !== "") {
                 socket.emit("send message", $("#message").val(), function(error) {
                     if (error) {
-                        $("#feedback").text(error);
+                        addFeedbackInChat(error);
                     } else {
                         addDate();
                         var time = addTime();
@@ -132,7 +146,7 @@ var socket = io(),
                 });
             }
         } else {
-            $("#feedback").text("You aren't matched with anyone.");
+            addFeedbackInChat("You aren't matched with anyone.");
         }
         e.preventDefault();
     },
@@ -143,7 +157,7 @@ var socket = io(),
                 setUpFeedback(feedback);
             });
         } else {
-            $("#feedback").text("You aren't matched with anyone.");
+            addFeedbackInChat("You aren't matched with anyone.");
         }
     },
 
@@ -153,7 +167,7 @@ var socket = io(),
                 setUpFeedback(feedback);
             });
         } else {
-            $("#feedback").text("You aren't matched with anyone.");
+            addFeedbackInChat("You aren't matched with anyone.");
         }
     },
 

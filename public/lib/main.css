@@ -271,6 +271,10 @@ p#userDisplay > p.user {
     display: none;
 }
 
+#error {
+    display: none;
+}
+
 @media only screen and (min-width: 481px) {
 
     #contactForm {
