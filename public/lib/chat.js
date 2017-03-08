@@ -196,6 +196,7 @@ socket.on("matched", setUpChat);
 
 socket.on("unmatched", function() {
     setUpFeedback("User has left the chat.");
+    sendNotifications("User has left the chat.");
     $("#notificationSound")[0].play();
 });
 

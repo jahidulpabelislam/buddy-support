@@ -242,8 +242,10 @@ p#userDisplay > p.user {
     background: #d6d5d5;
 }
 
-#messages > p > p >p.time {
+#messages > p > p > p.time {
     font-weight: initial;
+    margin: 0;
+    font-size: smaller;
 }
 
 #notificationsContainer {
