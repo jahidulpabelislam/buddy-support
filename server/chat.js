@@ -1,8 +1,9 @@
-module.exports = function (io) {
+module.exports = function(io) {
 
-    var users = {};
+    var users = {},
+        isprofanity = require('isprofanity');
 
-    io.on("connection", function (socket) {
+    io.on("connection", function(socket) {
 
         if (!socket.username) {
             //allocate a random username
@@ -23,7 +24,7 @@ module.exports = function (io) {
         }
 
         //match user with a random partner
-        socket.on("match", function (callback) {
+        socket.on("match", function(callback) {
             var matched = false,
                 feedback = "",
                 blocked = false,
@@ -84,21 +85,31 @@ module.exports = function (io) {
             callback(matched, feedback, waitingMessage, blocked);
         });
 
-        socket.on("send message", function (message, callback) {
+        socket.on("send message", function(message, callback) {
             var error;
             if (message.trim() !== "") {
                 var partner = users[socket.username].partner;
                 if (partner) {
-                    users[partner].emit("receive message", message);
+                    isprofanity(message, function(t) {
+                        // t will equal true if it contains a swear word and false if not
+                        if (!t) {
+                            users[partner].emit("receive message", message);
+                        }
+                        else {
+                            error = "Message contains profanity.";
+                        }
+                        callback(error);
+                    });
                 } else {
                     error = "You aren't matched with anyone.";
+                    callback(error);
                 }
+            } else {
+                callback(error);
             }
-
-            callback(error);
         });
 
-        socket.on("disconnect", function () {
+        socket.on("disconnect", function() {
             if (!socket.username) return;
             var partner = users[socket.username].partner;
             if (partner) {
@@ -109,7 +120,7 @@ module.exports = function (io) {
             delete users[socket.username];
         });
 
-        socket.on("skip", function (callback) {
+        socket.on("skip", function(callback) {
             var partner = users[socket.username].partner,
                 feedback;
             if (partner) {
@@ -127,7 +138,7 @@ module.exports = function (io) {
             callback(feedback);
         });
 
-        socket.on("report", function (callback) {
+        socket.on("report", function(callback) {
             var partner = users[socket.username].partner,
                 feedback;
             if (partner) {
@@ -150,7 +161,7 @@ module.exports = function (io) {
             callback(feedback);
         });
 
-        socket.on("change preferences", function (data) {
+        socket.on("change preferences", function(data) {
             if (!socket.username) return;
 
             if (data.type === "Supporter") {
@@ -163,14 +174,14 @@ module.exports = function (io) {
 
         });
 
-        socket.on("start again", function () {
+        socket.on("start again", function() {
             if (!socket.username) return;
 
             users[socket.username].start = false;
 
         });
 
-        socket.on("typing", function (typing) {
+        socket.on("typing", function(typing) {
             if (!socket.username) return;
 
             var partner = users[socket.username].partner;
