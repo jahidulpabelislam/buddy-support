@@ -227,10 +227,15 @@ var typingTimeout,
         socket.emit("typing", false);
     };
 
-$("#message").keyup(function() {
-    socket.emit("typing", true);
+$("#message").keyup(function(e) {
     clearTimeout(typingTimeout);
-    typingTimeout = setTimeout(typingTimeoutFunction, 2000);
+    var code = (e.keyCode ? e.keyCode : e.which);
+    if (code !== 13) {
+        socket.emit("typing", true);
+        typingTimeout = setTimeout(typingTimeoutFunction, 2000);
+    } else {
+        socket.emit("typing", false);
+    }
 });
 
 socket.on("typing", function(typing) {
