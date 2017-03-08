@@ -168,6 +168,24 @@ var socket = io(),
         $("#feedback").text("You have been blocked.");
         $("#notificationSound")[0].play();
         userMatched = false;
+    },
+
+    notifyMe = function() {
+        //check if the browser supports notifications and whether  permissions has been granted already
+        if (("Notification" in window) && Notification.permission === "granted") {
+            //send notification
+            new Notification("User has messaged you.");
+        }
+
+        //otherwise send request to the user for permission
+        else if (Notification.permission !== "denied") {
+            Notification.requestPermission(function(permission) {
+                //send notification
+                if (permission === "granted") {
+                    new Notification("User has messaged you.");
+                }
+            });
+        }
     };
 
 $("#preferences").submit(matchUser);
@@ -197,6 +215,8 @@ socket.on("receive message", function(msg) {
     }
 
     $("#notificationSound")[0].play();
+
+    notifyMe();
 });
 
 $("#skipButton").click(skipUser);
