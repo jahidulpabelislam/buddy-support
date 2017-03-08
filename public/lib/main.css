@@ -246,22 +246,27 @@ p#userDisplay > p.user {
     font-weight: initial;
 }
 
-#notificationContainerContainer {
+#notificationsContainer {
     position: fixed;
     bottom: 0;
-    padding: 5px;
-    display: none;
     width: 100%;
 }
 
-#notificationContainer {
-    padding: 2px;
+#notifications {
     display: inline-block;
-    margin: 0;
 }
 
-#notification {
-    margin: 0;
+.notification {
+    padding: 5px;
+    margin: 5px;
+}
+
+#userTyping {
+    display: none;
+}
+
+#newMessage {
+    display: none;
 }
 
 @media only screen and (min-width: 481px) {
