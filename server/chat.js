@@ -1,7 +1,8 @@
 module.exports = function(io) {
 
     var users = {},
-        isprofanity = require('isprofanity');
+        isprofanity = require('isprofanity'),
+        googleTranslate = require('google-translate')("AIzaSyD9-7x_akVND9A5sGSYNyHfpZ_BfIqPHnI");
 
     io.on("connection", function(socket) {
 
@@ -90,9 +91,9 @@ module.exports = function(io) {
             if (message.trim() !== "") {
                 var partner = users[socket.username].partner;
                 if (partner) {
-                    isprofanity(message, function(t) {
-                        // t will equal true if it contains a swear word and false if not
-                        if (!t) {
+                    isprofanity(message, function(profanity) {
+                        //checks if message doesn't include any profanity
+                        if (!profanity) {
                             users[partner].emit("receive message", message);
                         }
                         else {
@@ -190,5 +191,14 @@ module.exports = function(io) {
                 users[partner].emit("typing", typing);
             }
         });
+
+        socket.on("get languages", function(callback) {
+            if (!socket.username) return;
+
+            googleTranslate.getSupportedLanguages("en", function(err, languageCodes) {
+                callback(languageCodes);
+            });
+        });
+
     });
 };

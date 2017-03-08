@@ -288,3 +288,9 @@ $(window).scroll(function() {
         $("#newMessage").hide();
     }
 });
+
+socket.emit("get languages", function(languageCodes) {
+    languageCodes.forEach(function(aLanguage) {
+        $("#language").append($("<option>").val(aLanguage.language).text(aLanguage.name));
+    });
+});
