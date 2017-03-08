@@ -2,7 +2,34 @@ module.exports = function(io) {
 
     var users = {},
         isprofanity = require('isprofanity'),
-        googleTranslate = require('google-translate')("AIzaSyD9-7x_akVND9A5sGSYNyHfpZ_BfIqPHnI");
+        googleTranslate = require('google-translate')("AIzaSyD9-7x_akVND9A5sGSYNyHfpZ_BfIqPHnI"),
+
+        motivationalMessages = {
+            Supporter: [
+                "Supporter Placeholder Motivational Message 1.",
+                "Supporter Placeholder Motivational Message 2.",
+                "Supporter Placeholder Motivational Message 3.",
+                "Supporter Placeholder Motivational Message 4.",
+                "Supporter Placeholder Motivational Message 5.",
+                "Supporter Placeholder Motivational Message 6.",
+                "Supporter Placeholder Motivational Message 7.",
+                "Supporter Placeholder Motivational Message 8.",
+                "Supporter Placeholder Motivational Message 9.",
+                "Supporter Placeholder Motivational Message 10."
+            ],
+            Supportee: [
+                "Supportee Placeholder Motivational Message 1.",
+                "Supportee Placeholder Motivational Message 2.",
+                "Supportee Placeholder Motivational Message 3.",
+                "Supportee Placeholder Motivational Message 4.",
+                "Supportee Placeholder Motivational Message 5.",
+                "Supportee Placeholder Motivational Message 6.",
+                "Supportee Placeholder Motivational Message 7.",
+                "Supportee Placeholder Motivational Message 8.",
+                "Supportee Placeholder Motivational Message 9.",
+                "Supportee Placeholder Motivational Message 10."
+            ]
+        };
 
     io.on("connection", function(socket) {
 
@@ -30,8 +57,7 @@ module.exports = function(io) {
             var matched = false,
                 feedback = "",
                 blocked = false,
-                waiting = false,
-                waitingMessage = "";
+                randomMotivationalMessages = "";
 
             users[socket.username].start = true;
 
@@ -69,9 +95,9 @@ module.exports = function(io) {
                     }
 
                     if (!matched) {
-                        waiting = true;
                         feedback = "No Users Available. Waiting for a match...";
-                        waitingMessage = "Placeholder Motivational Message."
+                        var messageIndex = Math.floor(Math.random() * motivationalMessages[users[socket.username].type].length);
+                        randomMotivationalMessages = motivationalMessages[users[socket.username].type][messageIndex];
                     }
 
                 } else {
@@ -84,7 +110,7 @@ module.exports = function(io) {
                 feedback = "Already matched.";
             }
 
-            callback(matched, feedback, waitingMessage, blocked);
+            callback(matched, feedback, randomMotivationalMessages, blocked);
         });
 
         socket.on("send message", function(message, callback) {
