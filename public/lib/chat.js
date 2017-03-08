@@ -80,6 +80,7 @@ var socket = io(),
         userMatched = true;
         expandSection();
         $("#notificationSound")[0].play();
+        sendNotifications("Matched with a User.");
         $("#messages").append($("<p>").attr("id", "userDisplay").append($("<p>").text("↓ Matched User").addClass("matched")).append($("<p>").text("You ↓").addClass("user")));
     },
 
@@ -166,15 +167,16 @@ var socket = io(),
         $("#feedbackContainer").toggleClass("panel-primary", false);
         $("#feedbackContainer").toggleClass("panel-success", false);
         $("#feedback").text("You have been blocked.");
+        sendNotifications("You have been blocked.");
         $("#notificationSound")[0].play();
         userMatched = false;
     },
 
-    notifyMe = function() {
+    sendNotifications = function(notification) {
         //check if the browser supports notifications and whether  permissions has been granted already
         if (("Notification" in window) && Notification.permission === "granted") {
             //send notification
-            new Notification("User has messaged you.");
+            new Notification(notification);
         }
 
         //otherwise send request to the user for permission
@@ -182,7 +184,7 @@ var socket = io(),
             Notification.requestPermission(function(permission) {
                 //send notification
                 if (permission === "granted") {
-                    new Notification("User has messaged you.");
+                    new Notification(notification);
                 }
             });
         }
@@ -216,7 +218,7 @@ socket.on("receive message", function(msg) {
 
     $("#notificationSound")[0].play();
 
-    notifyMe();
+    sendNotifications("User has messaged you.");
 });
 
 $("#skipButton").click(skipUser);
