@@ -258,7 +258,7 @@ p#userDisplay > p.user {
 
 .notification {
     padding: 5px;
-    margin: 5px;
+    margin: 5px 0;
 }
 
 #userTyping {
