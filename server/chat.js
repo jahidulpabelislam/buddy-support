@@ -19,6 +19,7 @@ module.exports = function(io) {
                     users[username].start = false;
                     users[username].topics = ["Anything"];
                     users[username].type = "Supporter";
+                    users[username].language = "en";
                     userExists = false;
                 } else i++;
             }
@@ -198,6 +199,12 @@ module.exports = function(io) {
             googleTranslate.getSupportedLanguages("en", function(err, languageCodes) {
                 callback(languageCodes);
             });
+        });
+
+        socket.on("change language", function(language) {
+            if (!socket.username) return;
+
+            users[username].language = language;
         });
 
     });

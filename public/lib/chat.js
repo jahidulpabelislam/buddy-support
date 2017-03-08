@@ -293,4 +293,10 @@ socket.emit("get languages", function(languageCodes) {
     languageCodes.forEach(function(aLanguage) {
         $("#language").append($("<option>").val(aLanguage.language).text(aLanguage.name));
     });
+    $("#language").val("en");
 });
+
+$("#language").change(function() {
+    socket.emit("change language", $("#language").val());
+});
+
