@@ -145,7 +145,13 @@
             </div>
         </div>
 
-        <audio id="notificationSound" src="sound/notification.wav" style="display: none">
+
+        <audio autoplay id="notificationSound" autoplay>
+            <source src="sound/notification.wav" type="audio/wav">
+            <source src="sound/notification.mp3" type="audio/mp3">
+            <source src="sound/notification.ogg" type="audio/ogg">
+                Your browser does not support the audio element.
+        </audio>
 
         <script type="text/javascript" src="/socket.io/socket.io.js"></script>
         <script type="text/javascript" src="lib/jquery-3.1.1.min.js"></script>
