@@ -298,18 +298,7 @@ socket.emit("get languages", function(languageCodes) {
 
 $("#language").change(function() {
 
-    socket.emit("change language", $("#language").val(), function(languageCodes) {
+    socket.emit("change language", $("#language").val());
 
-        $language = $("#language").val();
-
-        $("#language").text("");
-
-        languageCodes.forEach(function(aLanguage) {
-            $("#language").append($("<option>").val(aLanguage.language).text(aLanguage.name));
-        });
-
-        $("#language").val($language);
-
-    });
 });
 

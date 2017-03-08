@@ -57,7 +57,7 @@ module.exports = function(io) {
             var matched = false,
                 feedback = "",
                 blocked = false,
-                randomMotivationalMessages = "";
+                randomMotivationalMessage = "";
 
             users[socket.username].start = true;
 
@@ -97,7 +97,7 @@ module.exports = function(io) {
                     if (!matched) {
                         feedback = "No Users Available. Waiting for a match...";
                         var messageIndex = Math.floor(Math.random() * motivationalMessages[users[socket.username].type].length);
-                        randomMotivationalMessages = motivationalMessages[users[socket.username].type][messageIndex];
+                        randomMotivationalMessage = motivationalMessages[users[socket.username].type][messageIndex];
                     }
 
                 } else {
@@ -110,33 +110,51 @@ module.exports = function(io) {
                 feedback = "Already matched.";
             }
 
-            callback(matched, feedback, randomMotivationalMessages, blocked);
+            googleTranslate.translate(feedback, users[socket.username].language, function(err, translation) {
+
+                googleTranslate.translate(randomMotivationalMessage, users[socket.username].language, function(err2, translation2) {
+
+                    callback(matched, translation.translatedText || feedback, translation2.translatedText || randomMotivationalMessage, blocked);
+                });
+
+            });
+
         });
 
         socket.on("send message", function(message, callback) {
-            var error;
+            var error = "";
             if (message.trim() !== "") {
                 var partner = users[socket.username].partner;
                 if (partner) {
+
                     isprofanity(message, function(profanity) {
+
                         //checks if message doesn't include any profanity
                         if (!profanity) {
+
                             googleTranslate.translate(message, users[partner].language, function(err, translation) {
                                 if (err) {
-                                    error = err;
+                                    error = "Error Sending Message";
                                 } else {
                                     users[partner].emit("receive message", translation.translatedText);
                                 }
                             });
-                        }
-                        else {
+
+                        } else {
                             error = "Message contains profanity.";
                         }
-                        callback(error);
+
+                        googleTranslate.translate(error, users[socket.username].language, function(err, translation) {
+                            callback(translation.translatedText || error);
+                        });
+
                     });
                 } else {
                     error = "You aren't matched with anyone.";
-                    callback(error);
+
+                    googleTranslate.translate(error, users[socket.username].language, function(err, translation) {
+                        callback(translation.translatedText || error);
+                    });
                 }
             } else {
                 callback(error);
@@ -169,7 +187,10 @@ module.exports = function(io) {
                 feedback = "You aren't matched with anyone.";
             }
 
-            callback(feedback);
+            googleTranslate.translate(feedback, users[socket.username].language, function(err, translation) {
+                callback(translation.translatedText || feedback);
+            });
+
         });
 
         socket.on("report", function(callback) {
@@ -192,7 +213,10 @@ module.exports = function(io) {
                 feedback = "You aren't matched with anyone.";
             }
 
-            callback(feedback);
+            googleTranslate.translate(feedback, users[socket.username].language, function(err, translation) {
+                callback(translation.translatedText || feedback);
+            });
+
         });
 
         socket.on("change preferences", function(data) {
@@ -233,15 +257,19 @@ module.exports = function(io) {
             });
         });
 
-        socket.on("change language", function(language, callback) {
+        socket.on("change language", function(language) {
             if (!socket.username) return;
 
             users[socket.username].language = language;
 
-            googleTranslate.getSupportedLanguages(users[socket.username].language, function(err, languageCodes) {
-                callback(languageCodes);
-            });
         });
 
+        socket.on("translate", function(string, callback) {
+            if (!socket.username) return;
+
+            googleTranslate.translate(string, users[socket.username].language, function(err, translation) {
+                callback(err, translation.translatedText);
+            });
+        });
     });
 };
