@@ -207,10 +207,14 @@ module.exports = function(io) {
             });
         });
 
-        socket.on("change language", function(language) {
+        socket.on("change language", function(language, callback) {
             if (!socket.username) return;
 
             users[socket.username].language = language;
+
+            googleTranslate.getSupportedLanguages(users[socket.username].language, function(err, languageCodes) {
+                callback(languageCodes);
+            });
         });
 
     });
