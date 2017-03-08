@@ -95,7 +95,9 @@ module.exports = function(io) {
                     isprofanity(message, function(profanity) {
                         //checks if message doesn't include any profanity
                         if (!profanity) {
-                            users[partner].emit("receive message", message);
+                            googleTranslate.translate(message, users[partner].language, function(err, translation) {
+                                users[partner].emit("receive message", translation.translatedText);
+                            });
                         }
                         else {
                             error = "Message contains profanity.";
@@ -196,7 +198,7 @@ module.exports = function(io) {
         socket.on("get languages", function(callback) {
             if (!socket.username) return;
 
-            googleTranslate.getSupportedLanguages("en", function(err, languageCodes) {
+            googleTranslate.getSupportedLanguages(users[socket.username].language, function(err, languageCodes) {
                 callback(languageCodes);
             });
         });
@@ -204,7 +206,7 @@ module.exports = function(io) {
         socket.on("change language", function(language) {
             if (!socket.username) return;
 
-            users[username].language = language;
+            users[socket.username].language = language;
         });
 
     });
