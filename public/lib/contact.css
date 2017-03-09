@@ -1,8 +1,10 @@
-
-#loading {
-    display: none;
+#contact h2 {
+    text-align: center;
 }
 
+#contactForm input {
+    margin-bottom: 5px;
+}
 
 #contactForm textarea {
     max-width: 100%;
@@ -11,23 +13,6 @@
     margin-bottom: 5px;
 }
 
-#contactForm input {
-    margin-bottom: 5px;
-}
-
-.required {
-    color: #e52525;
-}
-
-.error {
-    color: #e52525;
-    font-weight: bold;
-}
-
-.success {
-    color: green;
-    font-weight: bold;
-}
 
 #contactForm input:focus.invalid {
     border-color: #e52525;
@@ -55,8 +40,18 @@
     outline: 0;
 }
 
-#contact h2 {
-    text-align: center;
+.required {
+    color: #e52525;
+}
+
+.error {
+    color: #e52525;
+    font-weight: bold;
+}
+
+.success {
+    color: green;
+    font-weight: bold;
 }
 
 @media only screen and (min-width: 481px) {

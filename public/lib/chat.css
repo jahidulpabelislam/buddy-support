@@ -75,10 +75,6 @@
     display: none;
 }
 
-#languageLabel {
-    display: none;
-}
-
 #messageLabel {
     display: none;
 }
@@ -103,7 +99,6 @@ legend {
 #feedback button {
     margin-left: 5px;
 }
-
 
 p#userDisplay {
     max-width: 100%;

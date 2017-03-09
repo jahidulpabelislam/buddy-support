@@ -19,3 +19,7 @@
 #logo:hover {
     opacity: 1;
 }
+
+#languageLabel {
+    display: none;
+}

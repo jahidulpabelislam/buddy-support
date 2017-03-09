@@ -32,7 +32,7 @@ var renderFeedback = function(result) {
             $("#messageInput").removeClass("invalid");
         }
 
-        $("#loading").hide();
+        $("#submit").button('reset');
 
     },
     error = function() {
@@ -41,7 +41,7 @@ var renderFeedback = function(result) {
     };
 
 $("#contactForm").submit(function() {
-    $("#loading").show();
+    $("#submit").button('loading');
 
     var type = $("#contactType").val();
 
@@ -62,7 +62,7 @@ $("#contactForm").submit(function() {
             error: error
         });
     } else {
-        $("#loading").hide();
+        $("#submit").button('reset');
     }
 
     return false;
