@@ -1,0 +1,12 @@
+#help {
+    margin: auto;
+    max-width: 600px;
+}
+
+#help h1 {
+    text-align: center;
+}
+
+#help button, #help input {
+    margin: 5px;
+}

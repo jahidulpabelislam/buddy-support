@@ -1,6 +1,5 @@
 var socket = io(),
     userMatched = false,
-
     lastMessageDate,
 
     //function that date to the chat box
@@ -27,6 +26,7 @@ var socket = io(),
 
             period = "AM";
 
+        //if the time is past 1:00pm make the period to PM and make it 12 hour format
         if (hour > 12) {
             hour -= 12;
             period = "PM";
@@ -40,22 +40,32 @@ var socket = io(),
 
     },
 
-    setUpFeedback = function(feedback) {
+    setUpFeedback = function() {
         $("#startContainer").show();
+
         $("#chat").hide();
         $("#chatButtons").hide();
         $("#messageForm").hide();
+
         $("#feedbackContainer").show();
-        $("#feedbackContainer").toggleClass("panel-primary", true);
+
+        userMatched = false;
+    },
+
+    addFeedback = function(feedback) {
+        setUpFeedback();
+
         $("#feedbackContainer").toggleClass("panel-success", false);
+        $("#feedbackContainer").toggleClass("panel-primary", true);
+
         $button = $('<button/>').text('OK').addClass("btn btn-success").click(function() {
             $("#preferences").show();
             $("#messagesContainer").hide();
         });
 
         $("#feedback").text(feedback).append($button);
+
         $("#notificationSound")[0].play();
-        userMatched = false;
     },
 
     setUpChat = function() {
@@ -66,7 +76,7 @@ var socket = io(),
         $("#startContainer").hide();
         $("#motivationalMessage").hide();
         userMatched = true;
-        $("#notificationSound")[0].play();
+
         sendNotifications("Matched with a User.");
         lastMessageDate = undefined;
         $("#messages").append($("<p>").attr("id", "userDisplay").append($("<p>").text("↓ Matched User").addClass("matched")).append($("<p>").text("You ↓").addClass("user")));
@@ -141,7 +151,7 @@ var socket = io(),
     skipUser = function() {
         if (userMatched) {
             socket.emit("skip", function(feedback) {
-                setUpFeedback(feedback);
+                addFeedback(feedback);
             });
         } else {
             addFeedbackInChat("You aren't matched with anyone.");
@@ -151,7 +161,7 @@ var socket = io(),
     reportUser = function() {
         if (userMatched) {
             socket.emit("report", function(feedback) {
-                setUpFeedback(feedback);
+                addFeedback(feedback);
             });
         } else {
             addFeedbackInChat("You aren't matched with anyone.");
@@ -159,23 +169,20 @@ var socket = io(),
     },
 
     blocked = function() {
-        $("#startContainer").show();
-        $("#feedbackContainer").show();
-        $("#chat").hide();
-        $("#chatButtons").hide();
-        $("#messageForm").hide();
+        setUpFeedback();
+
         $("#feedbackContainer").toggleClass("panel-danger", true);
         $("#feedbackContainer").toggleClass("panel-primary", false);
-        $("#feedbackContainer").toggleClass("panel-success", false);
 
         $("#feedback").text("You have been blocked.");
 
         sendNotifications("You have been blocked.");
-        $("#notificationSound")[0].play();
-        userMatched = false;
+
     },
 
     sendNotifications = function(notification) {
+
+        $("#notificationSound")[0].play();
 
         if (!handleVisibilityChange()) {
 
@@ -204,9 +211,8 @@ $("#preferences").submit(matchUser);
 socket.on("matched", setUpChat);
 
 socket.on("unmatched", function() {
-    setUpFeedback("User has left the chat.");
+    addFeedback("User has left the chat.");
     sendNotifications("User has left the chat.");
-    $("#notificationSound")[0].play();
 });
 
 $("#textSend").submit(sendMessage);
@@ -226,8 +232,6 @@ socket.on("receive message", function(msg) {
     } else {
         $("#newMessage").show();
     }
-
-    $("#notificationSound")[0].play();
 
     sendNotifications("User has messaged you.");
 });

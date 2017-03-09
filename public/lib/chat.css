@@ -1,0 +1,163 @@
+
+#messageForm {
+    background: #000;
+    padding: 3px;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    color: white;
+    display: none;
+}
+
+#messages > p {
+    max-width: 75%;
+    padding: 0;
+    margin: 0;
+    color: white;
+    word-wrap: break-word;
+}
+
+#messages > p > p {
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+    padding: 5px;
+    margin: 5px 0;
+    display: inline-block;
+    font-weight: bold;
+}
+
+#messages > p.received > p {
+    background: dodgerblue;
+}
+
+#messages > p.sent {
+    text-align: right;
+    margin-left: auto;
+}
+
+#messages > p.sent > p {
+    background: green;
+}
+
+
+#chat {
+    display: none;
+}
+
+#startContainer {
+    display: -webkit-box;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+}
+
+#preferences {
+    text-align: center;
+}
+
+#chatButtons {
+    display: none;
+    position: fixed;
+    width: 100%;
+}
+
+#reportButton {
+    float: right;
+}
+
+#gameSelect button {
+    width: 100%;
+}
+
+#motivationalMessageContainer {
+    display: none;
+}
+
+#languageLabel {
+    display: none;
+}
+
+#messageLabel {
+    display: none;
+}
+
+legend {
+    border-bottom: none;
+    margin-bottom: 0;
+}
+
+#messagesContainer {
+    display: none;
+}
+
+#feedbackContainer {
+    display: inline-block;
+}
+
+#motivationalMessage {
+    margin: 10px;
+}
+
+#feedback button {
+    margin-left: 5px;
+}
+
+
+p#userDisplay {
+    max-width: 100%;
+    padding: 0;
+}
+
+p#userDisplay > p {
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+    max-width: 75%;
+    padding: 5px;
+    margin: 5px 0;
+    display: inline-block;
+}
+
+p#userDisplay > p.matched {
+    background: dodgerblue;
+}
+
+p#userDisplay > p.user {
+    float: right;
+    background: green;
+}
+
+#messages > p.date {
+    max-width: 100%;
+    width: 100%;
+    text-align: center;
+}
+
+#messages > p.date > p {
+    margin: 0;
+    background: #d6d5d5;
+}
+
+#messages > p > p > p.time {
+    font-weight: initial;
+    margin: 0;
+    font-size: smaller;
+}
+
+#notificationsContainer {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+}
+
+#notifications {
+    display: inline-block;
+}
+
+.notification {
+    padding: 5px;
+    margin: 5px 0;
+    display: none;
+}
