@@ -10,6 +10,7 @@ var socket = io(),
         //checks if message is sent on the same day as the last message
         if ((lastMessageDate === undefined) || (lastMessageDate.getDate() !== thisMessageDate.getDate() && lastMessageDate.getMonth() !== thisMessageDate.getMonth()
             && lastMessageDate.getFullYear() !== thisMessageDate.getFullYear())) {
+
             dateText = days[thisMessageDate.getDay()] + " " + getDateEnding(thisMessageDate.getDate()) + " " + months[thisMessageDate.getMonth()] + " " + thisMessageDate.getFullYear();
 
             $("#messages").append($("<p>").addClass("date").append($("<p>").text(dateText)));
@@ -56,16 +57,23 @@ var socket = io(),
         setUpFeedback();
 
         $("#feedbackContainer").toggleClass("panel-success", false);
-        $("#feedbackContainer").toggleClass("panel-primary", true);
 
         $button = $('<button/>').text('OK').addClass("btn btn-success").click(function() {
             $("#preferences").show();
             $("#messagesContainer").hide();
         });
 
-        $("#feedback").text(feedback).append($button);
+        socket.emit("translate", feedback, function(error, translation) {
+            if (!error && translation && translation.translatedText) {
+                feedback = translation.translatedText;
+            }
 
-        $("#notificationSound")[0].play();
+            $("#feedback").text(feedback).append($button);
+
+            $("#notificationSound")[0].play();
+
+        });
+
     },
 
     setUpChat = function() {
@@ -78,22 +86,33 @@ var socket = io(),
         userMatched = true;
 
         sendNotifications("Matched with a User.");
+
         lastMessageDate = undefined;
+
         $("#messages").append($("<p>").attr("id", "userDisplay").append($("<p>").text("↓ Matched User").addClass("matched")).append($("<p>").text("You ↓").addClass("user")));
     },
 
     addFeedbackInChat = function(feedback) {
-        $("#error").show();
-        $("#error").text(feedback);
 
-        $closeButton = $("<button>").addClass("close").append($("<span>").text("×"));
+        socket.emit("translate", feedback, function(error, translation) {
+            if (!error && translation && translation.translatedText) {
+                feedback = translation.translatedText;
+            }
 
-        $("#error").append($closeButton);
+            $("#error").show();
+            $("#error").text(feedback);
 
-        $closeButton.click(function() {
-            $("#error").text("");
-            $("#error").hide();
+            $closeButton = $("<button>").addClass("close").append($("<span>").text("×"));
+
+            $("#error").append($closeButton);
+
+            $closeButton.click(function() {
+                $("#error").text("");
+                $("#error").hide();
+            });
+
         });
+
     },
 
     matchUser = function(e) {
@@ -110,16 +129,21 @@ var socket = io(),
             if (matched) {
                 setUpChat();
             } else if (waitingMessage) {
+
                 $("#feedbackContainer").toggleClass("panel-primary", true);
                 $("#feedbackContainer").toggleClass("panel-success", false);
+
                 $button = $('<button/>').text('Back').addClass("btn btn-warning").click(function() {
                     socket.emit("start again");
                     $("#preferences").show();
                     $("#messagesContainer").hide();
                 });
+
                 $("#feedback").text(feedback).append($button);
+
                 $("#motivationalMessage").show();
                 $("#motivationalMessage").text(waitingMessage);
+                
             } else if (blocked) {
                 blocked();
             }

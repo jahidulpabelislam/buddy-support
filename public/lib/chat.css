@@ -40,7 +40,6 @@
     background: green;
 }
 
-
 #chat {
     display: none;
 }
@@ -51,6 +50,7 @@
     display: -ms-flexbox;
     display: -webkit-flex;
     display: flex;
+    text-align: center;
 }
 
 #preferences {
@@ -90,6 +90,7 @@ legend {
 
 #feedbackContainer {
     display: inline-block;
+    text-align: center;
 }
 
 #motivationalMessage {
