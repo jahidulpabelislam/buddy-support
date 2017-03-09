@@ -264,12 +264,5 @@ module.exports = function(io) {
 
         });
 
-        socket.on("translate", function(string, callback) {
-            if (!socket.username) return;
-
-            googleTranslate.translate(string, users[socket.username].language, function(err, translation) {
-                callback(err, translation.translatedText);
-            });
-        });
     });
 };

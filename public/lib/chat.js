@@ -3,44 +3,66 @@ var socket = io(),
 
     lastMessageDate,
 
-    months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
+    //sets up the months to be used later
+    months = {
+        0: "January",
+        1: "February",
+        2: "March",
+        3: "April",
+        4: "May",
+        5: "June",
+        6: "July",
+        7: "August",
+        8: "September",
+        9: "October",
+        10: "November",
+        11: "December"
+    },
 
     //sets up the days to be used later
-    days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+    days = {0: "Sunday", 1: "Monday", 2: "Tuesday", 3: "Wednesday", 4: "Thursday", 5: "Friday", 6: "Saturday"},
 
+    //function to get the date endings
     getDateEnding = function(date) {
         var j = date % 10,
             k = date % 100;
+
         if (j === 1 && k !== 11) {
             return date + "st";
-        }
-        if (j === 2 && k !== 12) {
+        } else if (j === 2 && k !== 12) {
             return date + "nd";
-        }
-        if (j === 3 && k !== 13) {
+        } else if (j === 3 && k !== 13) {
             return date + "rd";
         }
+
         return date + "th";
 
     },
 
+    //function that date to the chat box
     addDate = function() {
-        var dateText;
-        var thisMessageDate = new Date();
+        var dateText,
+            thisMessageDate = new Date();
 
-        //checks if message is sent on the same day as last
-        if ((lastMessageDate === undefined) || (lastMessageDate.getDate() !== thisMessageDate.getDate() && thisMessageDate.getMonth() !== thisMessageDate.getMonth()
-            && thisMessageDate.getFullYear() !== thisMessageDate.getFullYear())) {
+        //checks if message is sent on the same day as the last message
+        if ((lastMessageDate === undefined) || (lastMessageDate.getDate() !== thisMessageDate.getDate() && lastMessageDate.getMonth() !== thisMessageDate.getMonth()
+            && lastMessageDate.getFullYear() !== thisMessageDate.getFullYear())) {
             dateText = days[thisMessageDate.getDay()] + " " + getDateEnding(thisMessageDate.getDate()) + " " + months[thisMessageDate.getMonth()] + " " + thisMessageDate.getFullYear();
+
             $("#messages").append($("<p>").addClass("date").append($("<p>").text(dateText)));
         }
+
         lastMessageDate = thisMessageDate;
     },
 
+    //function to return the time of a message
     addTime = function() {
         var hour = lastMessageDate.getHours(),
+
             minute = lastMessageDate.getMinutes(),
+
             period = "AM";
+
         if (hour > 12) {
             hour -= 12;
             period = "PM";
@@ -51,20 +73,22 @@ var socket = io(),
         }
 
         return hour + ":" + minute + period;
+
     },
 
     setUpFeedback = function(feedback) {
         $("#startContainer").show();
-        $("#feedbackContainer").show();
         $("#chat").hide();
         $("#chatButtons").hide();
         $("#messageForm").hide();
+        $("#feedbackContainer").show();
         $("#feedbackContainer").toggleClass("panel-primary", true);
         $("#feedbackContainer").toggleClass("panel-success", false);
         $button = $('<button/>').text('OK').addClass("btn btn-success").click(function() {
             $("#preferences").show();
             $("#messagesContainer").hide();
         });
+
         $("#feedback").text(feedback).append($button);
         $("#notificationSound")[0].play();
         userMatched = false;
@@ -78,7 +102,6 @@ var socket = io(),
         $("#startContainer").hide();
         $("#motivationalMessage").hide();
         userMatched = true;
-        expandSection();
         $("#notificationSound")[0].play();
         sendNotifications("Matched with a User.");
         $("#messages").append($("<p>").attr("id", "userDisplay").append($("<p>").text("↓ Matched User").addClass("matched")).append($("<p>").text("You ↓").addClass("user")));
@@ -138,8 +161,7 @@ var socket = io(),
                         addFeedbackInChat(error);
                     } else {
                         addDate();
-                        var time = addTime();
-                        $("#messages").append($("<p>").addClass("sent").append($("<p>").text($("#message").val()).append($("<p>").addClass("time").text(time))));
+                        $("#messages").append($("<p>").addClass("sent").append($("<p>").text($("#message").val()).append($("<p>").addClass("time").text(addTime()))));
                         $("#message").val("");
                         $("html, body").animate({scrollTop: $(document).height() - $(window).height()});
                     }
@@ -180,13 +202,16 @@ var socket = io(),
         $("#feedbackContainer").toggleClass("panel-danger", true);
         $("#feedbackContainer").toggleClass("panel-primary", false);
         $("#feedbackContainer").toggleClass("panel-success", false);
+
         $("#feedback").text("You have been blocked.");
+
         sendNotifications("You have been blocked.");
         $("#notificationSound")[0].play();
         userMatched = false;
     },
 
     sendNotifications = function(notification) {
+
         //check if the browser supports notifications and whether  permissions has been granted already
         if (("Notification" in window) && Notification.permission === "granted") {
             //send notification
@@ -202,6 +227,7 @@ var socket = io(),
                 }
             });
         }
+
     };
 
 $("#preferences").submit(matchUser);
