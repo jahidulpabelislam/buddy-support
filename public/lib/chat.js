@@ -68,6 +68,7 @@ var socket = io(),
         userMatched = true;
         $("#notificationSound")[0].play();
         sendNotifications("Matched with a User.");
+        lastMessageDate = undefined;
         $("#messages").append($("<p>").attr("id", "userDisplay").append($("<p>").text("↓ Matched User").addClass("matched")).append($("<p>").text("You ↓").addClass("user")));
     },
 
