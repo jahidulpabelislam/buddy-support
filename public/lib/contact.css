@@ -2,19 +2,22 @@
     text-align: center;
 }
 
-#contactForm input {
+#contactForm .input {
     margin-bottom: 5px;
 }
 
-#contactForm textarea {
+#contactForm textarea.input {
     max-width: 100%;
     height: 213px;
     max-height: 213px;
-    margin-bottom: 5px;
 }
 
+#contactForm .input.invalid {
+    border-color: #e52525;
+    outline: 0;
+}
 
-#contactForm input:focus.invalid {
+#contactForm .input:focus.invalid {
     border-color: #e52525;
     -webkit-box-shadow: 0 0 8px rgba(229, 37, 37, 0.6);
     -moz-box-shadow: 0 0 8px rgba(229, 37, 37, 0.6);
@@ -22,36 +25,18 @@
     box-shadow: 0 0 8px rgba(229, 37, 37, 0.6);
 }
 
-#contactForm input.invalid {
-    border-color: #e52525;
-    outline: 0;
-}
-
-#contactForm textarea:focus.invalid {
-    border-color: #e52525;
-    -webkit-box-shadow: 0 0 8px rgba(229, 37, 37, 0.6);
-    -moz-box-shadow: 0 0 8px rgba(229, 37, 37, 0.6);
-    -o-box-shadow: 0 0 8px rgba(229, 37, 37, 0.6);
-    box-shadow: 0 0 8px rgba(229, 37, 37, 0.6);
-}
-
-#contactForm textarea.invalid {
-    border-color: #e52525;
-    outline: 0;
+.error {
+    color: #e52525;
+    font-weight: 700;
 }
 
 .required {
     color: #e52525;
 }
 
-.error {
-    color: #e52525;
-    font-weight: bold;
-}
-
 .success {
     color: green;
-    font-weight: bold;
+    font-weight: 700;
 }
 
 @media only screen and (min-width: 481px) {

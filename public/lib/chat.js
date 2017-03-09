@@ -50,13 +50,15 @@ var socket = io(),
 
         $("#feedbackContainer").show();
 
+        $("#feedbackContainer").toggleClass("panel-success", false);
+
         userMatched = false;
     },
 
     addFeedback = function(feedback) {
         setUpFeedback();
 
-        $("#feedbackContainer").toggleClass("panel-success", false);
+        $("#feedbackContainer").toggleClass("panel-primary", true);
 
         $button = $('<button/>').text('OK').addClass("btn btn-success").click(function() {
             $("#preferences").show();
@@ -120,6 +122,8 @@ var socket = io(),
         $("#preferences").hide();
         $("#messagesContainer").show();
 
+        $("#feedbackContainer").toggleClass("panel-success", true);
+
         $("#feedback").text("Finding a match...");
 
         socket.emit("match", function(matched, feedback, waitingMessage, blocked) {
@@ -143,7 +147,7 @@ var socket = io(),
 
                 $("#motivationalMessage").show();
                 $("#motivationalMessage").text(waitingMessage);
-                
+
             } else if (blocked) {
                 blocked();
             }
