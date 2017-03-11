@@ -331,3 +331,8 @@ $("#language").change(function() {
     socket.emit("change language", $("#language").val());
 
 });
+
+
+$("#viewNewMessage").click(function() {
+    $("html, body").animate({scrollTop: $(document).height() - $(window).height()});
+});
