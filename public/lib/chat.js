@@ -78,21 +78,6 @@ var socket = io(),
 
     },
 
-    setUpChat = function() {
-        $("#messages").empty();
-        $("#chat").show();
-        $("#messageForm").show();
-        $("#chatButtons").show();
-        $("#startContainer").hide();
-        $("#motivationalMessage").hide();
-        userMatched = true;
-
-        sendNotifications("Matched with a User.");
-
-        lastMessageDate = undefined;
-
-        $("#messages").append($("<p>").attr("id", "userDisplay").append($("<p>").text("↓ Matched User").addClass("matched")).append($("<p>").text("You ↓").addClass("user")));
-    },
 
     addFeedbackInChat = function(feedback) {
 
@@ -115,6 +100,22 @@ var socket = io(),
 
         });
 
+    },
+
+    setUpChat = function() {
+        $("#messages").empty();
+        $("#chat").show();
+        $("#messageForm").show();
+        $("#chatButtons").show();
+        $("#startContainer").hide();
+        $("#motivationalMessage").hide();
+        userMatched = true;
+
+        sendNotifications("Matched with a User.");
+
+        lastMessageDate = undefined;
+
+        $("#messages").append($("<p>").attr("id", "userDisplay").append($("<p>").text("↓ Matched User").addClass("matched")).append($("<p>").text("You ↓").addClass("user")));
     },
 
     matchUser = function(e) {
@@ -293,6 +294,7 @@ var typingTimeout,
     };
 
 $("#message").keyup(function(e) {
+    $("#error").hide();
     clearTimeout(typingTimeout);
     var code = (e.keyCode ? e.keyCode : e.which);
     if (code !== 13) {
