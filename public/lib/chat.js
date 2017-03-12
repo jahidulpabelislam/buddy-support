@@ -167,7 +167,7 @@ var socket = io(),
                         addFeedbackInChat(error);
                     } else {
                         addDate();
-                        $("#messages").append($("<p>").addClass("sent").append($("<p>").text($("#message").val()).append($("<p>").addClass("time").text(addTime()))));
+                        $("#messages").append($("<p>").addClass("sent").append($("<p>").text($("#message").val()).append($("<p>").addClass("time").text(addTime()).append($("<span>").addClass("delivery glyphicon glyphicon-ok-circle")))));
                         $("#message").val("");
                         $("html, body").animate({scrollTop: $(document).height() - $(window).height()});
                     }
@@ -254,12 +254,13 @@ socket.on("receive message", function(msg) {
 
     var time = addTime();
 
-    var difference = $(document).height() - $(document).scrollTop() == $(window).height();
+    var atTheBottom = $(document).height() - $(document).scrollTop() == $(window).height();
 
     $("#messages").append($("<p>").addClass("received").append($("<p>").text(msg).append($("<p>").addClass("time").text(time))));
 
-    if (difference) {
+    if (atTheBottom) {
         $("html, body").animate({scrollTop: $(document).height() - $(window).height()});
+        socket.emit("viewed");
     } else {
         $("#newMessage").show();
     }
@@ -384,6 +385,7 @@ socket.on("typing", function(typing) {
 $(window).scroll(function() {
     if ($(document).height() - $(document).scrollTop() == $(window).height()) {
         $("#newMessage").hide();
+        socket.emit("viewed");
     }
 });
 
@@ -439,3 +441,13 @@ var getConfirmation = function(e) {
     }
 
 };
+
+
+socket.on("viewed", function() {
+
+    $(".delivery").toggleClass("glyphicon-ok-circle", true);
+
+    $(".delivery").toggleClass("glyphicon glyphicon-eye-open", true);
+
+
+});

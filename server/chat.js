@@ -272,5 +272,15 @@ module.exports = function(io) {
             });
         });
 
+        socket.on("viewed", function() {
+            if (!socket.username) return;
+
+            var partner = users[socket.username].partner;
+
+            if (partner) {
+                users[partner].emit("viewed");
+            }
+        });
+
     });
 };
