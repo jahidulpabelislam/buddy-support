@@ -8,8 +8,8 @@ var socket = io(),
             thisMessageDate = new Date();
 
         //checks if message is sent on the same day as the last message
-        if ((lastMessageDate === undefined) || (lastMessageDate.getDate() !== thisMessageDate.getDate() && lastMessageDate.getMonth() !== thisMessageDate.getMonth()
-            && lastMessageDate.getFullYear() !== thisMessageDate.getFullYear())) {
+        if ((lastMessageDate === undefined) || !(lastMessageDate.getDate() === thisMessageDate.getDate() && lastMessageDate.getMonth() === thisMessageDate.getMonth()
+            && lastMessageDate.getFullYear() === thisMessageDate.getFullYear())) {
 
             dateText = days[thisMessageDate.getDay()] + " " + getDateEnding(thisMessageDate.getDate()) + " " + months[thisMessageDate.getMonth()] + " " + thisMessageDate.getFullYear();
 
