@@ -55,7 +55,7 @@ var socket = io(),
         userMatched = false;
 
         $("#notifications").children().hide();
-        
+
     },
 
     addFeedback = function(feedback) {
@@ -64,8 +64,8 @@ var socket = io(),
         $("#feedbackContainer").toggleClass("panel-primary", true);
 
         $button = $('<button/>').text('OK').addClass("btn btn-success").click(function() {
-            $("#preferences").show();
             $("#messagesContainer").hide();
+            matchUser();
         });
 
         socket.emit("translate", feedback, function(error, translation) {
