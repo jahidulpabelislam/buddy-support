@@ -333,6 +333,6 @@ $("#language").change(function() {
 });
 
 
-$("#viewNewMessage").click(function() {
+$("#newMessage").click(function() {
     $("html, body").animate({scrollTop: $(document).height() - $(window).height()});
 });
