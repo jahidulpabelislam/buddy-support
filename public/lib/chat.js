@@ -456,5 +456,15 @@ socket.on("viewed", function() {
     $(".delivery").toggleClass("glyphicon-ok-circle", true);
 
     $(".delivery").toggleClass("glyphicon glyphicon-eye-open", true);
-
 });
+
+document.addEventListener(visibilityChange, function() {
+    if (!document[hidden]) {
+        if ($(document).height() - $(document).scrollTop() == $(window).height()) {
+            $("#newMessage").hide();
+            socket.emit("viewed");
+            newMessages = 0;
+            document.title = "Chat | Buddy Support";
+        }
+    }
+}, false);
