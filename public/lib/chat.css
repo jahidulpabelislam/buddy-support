@@ -34,7 +34,7 @@
 }
 
 #messages > p#userDisplay > p.user {
-    background: green;
+    background: #2ecc71;
     float: right;
 }
 
@@ -48,7 +48,7 @@
 }
 
 #messages > p.sent > p {
-    background: green;
+    background: #2ecc71;
 }
 
 #messages > p.date {
