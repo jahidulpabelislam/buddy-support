@@ -30,14 +30,14 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand active" id="logoContainer" href="/"><img id="logo" src="images/logo.png"
+                    <a class="navbar-brand active" id="logoContainer" href="/" onclick="return getConfirmation(this);"><img id="logo" src="images/logo.png"
                                                                                     alt="Logo for Buddy Support"
                                                                                     style="opacity:1;"> </a>
                 </div>
                 <div id="navbar" class="navbar-collapse collapse">
                     <ul class="nav navbar-nav navbar-right">
-                        <li><a href="/contact">Contact</a></li>
-                        <li><a href="/help">Help</a></li>
+                        <li><a href="/contact" onclick="return getConfirmation(this);">Contact</a></li>
+                        <li><a href="/help" onclick="return getConfirmation(this);">Help</a></li>
                     </ul>
                     <form class="navbar-form navbar-right">
                         <div class="form-group">
@@ -144,6 +144,13 @@
             </div>
         </div>
 
+        <div id="confirmationContainerContainer">
+            <div class="container">
+                <div id="confirmationContainer" class="panel panel-danger">
+                    <div class="panel-heading" ><p id="confirmationMessage"></p><div id="confirmationButtons"></div></div>
+                </div>
+            </div>
+        </div>
 
         <audio id="notificationSound">
             <source src="sound/notification.wav" type="audio/wav">
