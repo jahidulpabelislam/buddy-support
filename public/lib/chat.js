@@ -168,7 +168,12 @@ var socket = io(),
                         addFeedbackInChat(error);
                     } else {
                         addDate();
-                        $("#messages").append($("<p>").addClass("sent").append($("<p>").text($("#message").val()).append($("<p>").addClass("time").text(addTime()).append($("<span>").addClass("delivery glyphicon glyphicon-ok-circle")))));
+                        $deliveryReport = $("<span>").addClass("delivered");
+                        $deliveryReportImg = $("<span>").addClass("delivery glyphicon glyphicon-ok-circle");
+                        $timeSent = $("<span>").addClass("time").text(addTime());
+                        $reports = $("<p>").append($timeSent).append($deliveryReportImg).append($deliveryReport);
+
+                        $("#messages").append($("<p>").addClass("sent").append($("<p>").text($("#message").val()).append($reports)));
                         $("#message").val("");
                         $("html, body").animate({scrollTop: $(document).height() - $(window).height()});
                     }
@@ -453,7 +458,31 @@ var getConfirmation = function(e) {
 
 socket.on("viewed", function() {
 
-    $(".delivery").toggleClass("glyphicon-ok-circle", true);
+    $(".delivery").each(function() {
+        var viewed = new Date();
+
+        var hour = viewed.getHours(),
+
+            minute = viewed.getMinutes(),
+
+            period = "AM";
+
+        //if the time is past 1:00pm make the period to PM and make it 12 hour format
+        if (hour > 12) {
+            hour -= 12;
+            period = "PM";
+        }
+
+        if (minute < 10) {
+            minute = 0 + minute.toString();
+        }
+
+        if ($(this).hasClass("glyphicon-ok-circle")) {
+            $(this).parent().children(".delivered").text(hour + ":" + minute + period)
+        }
+    });
+
+    $(".delivery").toggleClass("glyphicon-ok-circle", false);
 
     $(".delivery").toggleClass("glyphicon glyphicon-eye-open", true);
 });

@@ -61,10 +61,11 @@
     margin: 0;
 }
 
-#messages > p > p > p.time {
+#messages > p > p > p {
     font-size: smaller;
     font-weight: initial;
     margin: 0;
+    display: block;
 }
 
 #chat {
