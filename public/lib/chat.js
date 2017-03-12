@@ -53,6 +53,9 @@ var socket = io(),
         $("#feedbackContainer").toggleClass("panel-success", false);
 
         userMatched = false;
+
+        $("#notifications").children().hide();
+        
     },
 
     addFeedback = function(feedback) {
