@@ -1,6 +1,7 @@
 var socket = io(),
     userMatched = false,
     lastMessageDate,
+    newMessages = 0,
 
     //function that date to the chat box
     addDate = function() {
@@ -264,6 +265,10 @@ socket.on("receive message", function(msg) {
             socket.emit("viewed");
         }
     } else {
+        newMessages++;
+        $("#newMessage").text("(" + newMessages + ") New Message");
+        $("#newMessage").append($("<i>").addClass("fa fa-arrow-down"));
+        document.title = "(" + newMessages + ") Chat | Buddy Support";
         $("#newMessage").show();
     }
 
@@ -388,6 +393,8 @@ $(window).scroll(function() {
     if ($(document).height() - $(document).scrollTop() == $(window).height()) {
         $("#newMessage").hide();
         socket.emit("viewed");
+        newMessages = 0;
+        document.title = "Chat | Buddy Support";
     }
 });
 
@@ -444,12 +451,10 @@ var getConfirmation = function(e) {
 
 };
 
-
 socket.on("viewed", function() {
 
     $(".delivery").toggleClass("glyphicon-ok-circle", true);
 
     $(".delivery").toggleClass("glyphicon glyphicon-eye-open", true);
-
 
 });

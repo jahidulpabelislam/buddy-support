@@ -50,9 +50,3 @@ var months = {
     currentlyViewing = function() {
         return !document[hidden];
     };
-
-//checks if browser has support
-if (typeof document.addEventListener !== "undefined" || typeof document[hidden] !== "undefined") {
-    // Handle page visibility change
-    document.addEventListener(visibilityChange, currentlyViewing, false);
-}
