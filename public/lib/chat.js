@@ -215,7 +215,7 @@ var socket = io(),
 
         $("#notificationSound")[0].play();
 
-        if (!handleVisibilityChange()) {
+        if (!currentlyViewing()) {
 
             //check if the browser supports notifications and whether  permissions has been granted already
             if (("Notification" in window) && Notification.permission === "granted") {
@@ -260,7 +260,9 @@ socket.on("receive message", function(msg) {
 
     if (atTheBottom) {
         $("html, body").animate({scrollTop: $(document).height() - $(window).height()});
-        socket.emit("viewed");
+        if (currentlyViewing()) {
+            socket.emit("viewed");
+        }
     } else {
         $("#newMessage").show();
     }

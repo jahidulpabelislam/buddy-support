@@ -47,12 +47,12 @@ var months = {
     },
 
     //return whether user is on page/tab
-    handleVisibilityChange = function() {
+    currentlyViewing = function() {
         return !document[hidden];
     };
 
 //checks if browser has support
 if (typeof document.addEventListener !== "undefined" || typeof document[hidden] !== "undefined") {
     // Handle page visibility change
-    document.addEventListener(visibilityChange, handleVisibilityChange, false);
+    document.addEventListener(visibilityChange, currentlyViewing, false);
 }
