@@ -123,6 +123,7 @@ module.exports = function(io) {
 
         socket.on("send message", function(message, callback) {
             var error = "";
+
             if (message.trim() !== "") {
                 var partner = users[socket.username].partner;
                 if (partner) {
@@ -133,22 +134,23 @@ module.exports = function(io) {
                         if (!profanity) {
 
                             if (users[partner].language !== users[socket.username].language) {
+
+                                googleTranslate.translate(message, users[partner].language, function(err, messageTranslation) {
                                     if (err) {
                                         error = "Error Sending Message";
                                     } else {
-                                        users[partner].emit("receive message", translation.translatedText);
+                                        message = messageTranslation.translatedText;
                                     }
                                 });
-                            } else {
-                                users[partner].emit("receive message", message);
-                            }
 
+                            }
                         } else {
                             error = "Message contains profanity.";
                         }
 
-                        googleTranslate.translate(error, users[socket.username].language, function(err, translation) {
-                            callback(translation.translatedText || error);
+                        googleTranslate.translate(error, users[socket.username].language, function(err, errorTranslation) {
+                            callback(errorTranslation.translatedText || error);
+                            users[partner].emit("receive message", message);
                         });
 
                     });

@@ -168,10 +168,10 @@ var socket = io(),
                         addFeedbackInChat(error);
                     } else {
                         addDate();
-                        $deliveryReport = $("<span>").addClass("delivered");
-                        $deliveryReportImg = $("<span>").addClass("delivery glyphicon glyphicon-ok-circle");
+                        $viewedTime = $("<span>").addClass("viewedTime");
+                        $deliveryReportImg = $("<span>").addClass("deliveryImg glyphicon glyphicon-ok-circle");
                         $timeSent = $("<span>").addClass("time").text(addTime());
-                        $reports = $("<p>").append($timeSent).append($deliveryReportImg).append($deliveryReport);
+                        $reports = $("<p>").append($timeSent).append($deliveryReportImg).append($viewedTime);
 
                         $("#messages").append($("<p>").addClass("sent").append($("<p>").text($("#message").val()).append($reports)));
                         $("#message").val("");
@@ -458,7 +458,8 @@ var getConfirmation = function(e) {
 
 socket.on("viewed", function() {
 
-    $(".delivery").each(function() {
+    $(".deliveryImg").each(function() {
+
         var viewed = new Date();
 
         var hour = viewed.getHours(),
@@ -478,13 +479,14 @@ socket.on("viewed", function() {
         }
 
         if ($(this).hasClass("glyphicon-ok-circle")) {
-            $(this).parent().children(".delivered").text(hour + ":" + minute + period)
+
+            $(this).parent().children(".viewedTime").text(hour + ":" + minute + period)
         }
     });
 
-    $(".delivery").toggleClass("glyphicon-ok-circle", false);
+    $(".deliveryImg").toggleClass("glyphicon-ok-circle", false);
 
-    $(".delivery").toggleClass("glyphicon glyphicon-eye-open", true);
+    $(".deliveryImg").toggleClass("glyphicon glyphicon-eye-open", true);
 });
 
 document.addEventListener(visibilityChange, function() {
