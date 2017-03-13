@@ -1,15 +1,3 @@
-//set the name of the hidden property and the change event for visibility
-var hidden, visibilityChange;
-if (typeof document.hidden !== "undefined") {
-    hidden = "hidden";
-    visibilityChange = "visibilitychange";
-} else if (typeof document.msHidden !== "undefined") {
-    hidden = "msHidden";
-    visibilityChange = "msvisibilitychange";
-} else if (typeof document.webkitHidden !== "undefined") {
-    hidden = "webkitHidden";
-    visibilityChange = "webkitvisibilitychange";
-}
 //sets up the months to be used later
 var months = {
         0: "January",
@@ -44,9 +32,4 @@ var months = {
 
         return date + "th";
 
-    },
-
-    //return whether user is on page/tab
-    currentlyViewing = function() {
-        return !document[hidden];
     };

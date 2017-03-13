@@ -2,6 +2,7 @@ var socket = io(),
     userMatched = false,
     lastMessageDate,
     newMessages = 0,
+    onPage = true,
 
     //function that date to the chat box
     addDate = function() {
@@ -221,7 +222,7 @@ var socket = io(),
 
         $("#notificationSound")[0].play();
 
-        if (!currentlyViewing()) {
+        if (onPage) {
 
             //check if the browser supports notifications and whether  permissions has been granted already
             if (("Notification" in window) && Notification.permission === "granted") {
@@ -264,11 +265,9 @@ socket.on("receive message", function(msg) {
 
     $("#messages").append($("<p>").addClass("received").append($("<p>").text(msg).append($("<p>").addClass("time").text(time))));
 
-    if (atTheBottom) {
+    if (atTheBottom && onPage) {
         $("html, body").animate({scrollTop: $(document).height() - $(window).height()});
-        if (currentlyViewing()) {
-            socket.emit("viewed");
-        }
+        socket.emit("viewed");
     } else {
         newMessages++;
         $("#newMessage").text("(" + newMessages + ") New Message");
@@ -489,13 +488,22 @@ socket.on("viewed", function() {
     $(".deliveryImg").toggleClass("glyphicon glyphicon-eye-open", true);
 });
 
-document.addEventListener(visibilityChange, function() {
-    if (!document[hidden]) {
-        if ($(document).height() - $(document).scrollTop() == $(window).height()) {
-            $("#newMessage").hide();
-            socket.emit("viewed");
-            newMessages = 0;
-            document.title = "Chat | Buddy Support";
-        }
+window.addEventListener("focus", function() {
+    onPage = true;
+    if ($(document).height() - $(document).scrollTop() == $(window).height()) {
+        $("#newMessage").hide();
+        socket.emit("viewed");
+        newMessages = 0;
+        document.title = "Chat | Buddy Support";
     }
-}, false);
+});
+
+window.addEventListener("blur", function() {
+    onPage = false;
+    if ($(document).height() - $(document).scrollTop() == $(window).height()) {
+        $("#newMessage").hide();
+        socket.emit("viewed");
+        newMessages = 0;
+        document.title = "Chat | Buddy Support";
+    }
+});
