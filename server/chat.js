@@ -132,13 +132,16 @@ module.exports = function(io) {
                         //checks if message doesn't include any profanity
                         if (!profanity) {
 
-                            googleTranslate.translate(message, users[partner].language, function(err, translation) {
-                                if (err) {
-                                    error = "Error Sending Message";
-                                } else {
-                                    users[partner].emit("receive message", translation.translatedText);
-                                }
-                            });
+                            if (users[partner].language !== users[socket.username].language) {
+                                    if (err) {
+                                        error = "Error Sending Message";
+                                    } else {
+                                        users[partner].emit("receive message", translation.translatedText);
+                                    }
+                                });
+                            } else {
+                                users[partner].emit("receive message", message);
+                            }
 
                         } else {
                             error = "Message contains profanity.";
