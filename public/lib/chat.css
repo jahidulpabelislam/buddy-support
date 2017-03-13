@@ -68,6 +68,14 @@
     display: block;
 }
 
+.deliveryImg.glyphicon {
+    margin: 0 2px;
+}
+
+#newMessage i {
+    margin-left: 2px;
+}
+
 #chat {
     display: none;
 }
