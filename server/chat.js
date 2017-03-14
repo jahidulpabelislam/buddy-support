@@ -179,18 +179,39 @@ module.exports = function(io) {
 
         socket.on("disconnect", function() {
             if (!socket.username) return;
+
             var partner = users[socket.username].partner;
+
             if (partner) {
                 delete users[partner].partner;
                 users[partner].start = false;
                 users[partner].emit("unmatched");
             }
+
+
+
+            //loop through all user to delete all users records
+            for (var username in users) {
+                console.log(users[username].skipped);
+
+
+                //check if looped user isn't the user, haven't skipped each other, isn't blocked, isn't matched, is opposite type of user (supporter & supportee)
+                if (users[username].skipped.indexOf(socket.username) !== -1) {
+                    delete users[username].skipped[users[username].skipped.indexOf(socket.username)];
+                }
+
+                console.log(users[username].skipped);
+            }
+
+
+
             delete users[socket.username];
         });
 
         socket.on("skip", function(callback) {
             var partner = users[socket.username].partner,
                 feedback;
+
             if (partner) {
                 delete users[partner].partner;
                 delete users[socket.username].partner;
