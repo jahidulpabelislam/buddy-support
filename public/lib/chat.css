@@ -167,3 +167,11 @@ legend {
 #confirmationButtons button {
     margin-left: 5px;
 }
+
+#preferencesFeedbackContainer {
+    display: none;
+}
+
+#preferencesFeedback {
+    display: inline-block;
+}

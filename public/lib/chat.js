@@ -172,7 +172,7 @@ var socket = io(),
         $("#messages").append($("<p>").attr("id", "userDisplay").append($("<p>").text("↓ Matched User").addClass("matched")).append($("<p>").text("You ↓").addClass("user")));
     },
 
-    matchUser = function(e) {
+    matchUser = function() {
 
         $("#preferences").hide();
         $("#messagesContainer").show();
@@ -207,8 +207,6 @@ var socket = io(),
                 blocked();
             }
         });
-
-        e.preventDefault();
     },
 
     sendMessage = function(e) {
@@ -299,7 +297,34 @@ var socket = io(),
         return !document[hidden];
     };
 
-$("#preferences").submit(matchUser);
+$("#preferences").submit(function(e) {
+
+    var topics = [];
+
+    $.each($("input[name='topic']:checked"), function() {
+        topics.push($(this).val());
+    });
+
+    if (topics.length === 0) {
+        $("#preferencesFeedbackContainer").show();
+        $("#preferencesFeedback").text("You need to select a topic.");
+    } else if (topics.indexOf("Anything") !== -1 && topics.length > 1) {
+        $("#preferencesFeedbackContainer").show();
+        $("#preferencesFeedback").text("You can't select 'Anything' as a topic along with another topic.");
+    } else {
+        var data = {
+            type: $("input[name='type']:checked").val(),
+            topics: topics
+        };
+
+        socket.emit("change preferences", data);
+        $("#preferencesFeedbackContainer").hide();
+
+        matchUser();
+    }
+
+    e.preventDefault();
+});
 
 socket.on("matched", setUpChat);
 
@@ -406,20 +431,6 @@ $("#reportButton").click(function() {
 
 socket.on("blocked", function() {
     blocked();
-});
-
-$("#preferences").change(function() {
-    var topics = [];
-    $.each($("input[name='topic']:checked"), function() {
-        topics.push($(this).val());
-    });
-
-    var data = {
-        type: $("input[name='type']:checked").val(),
-        topics: topics
-    };
-
-    socket.emit("change preferences", data);
 });
 
 var typingTimeout,
