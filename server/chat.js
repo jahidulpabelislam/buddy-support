@@ -3,6 +3,7 @@ module.exports = function(io) {
     var users = {},
         isprofanity = require('isprofanity'),
         googleTranslate = require('google-translate')("AIzaSyD9-7x_akVND9A5sGSYNyHfpZ_BfIqPHnI"),
+        randomstring = require("randomstring"),
 
         motivationalMessages = {
             Supportee: [
@@ -46,9 +47,9 @@ module.exports = function(io) {
 
         if (!socket.username) {
             //allocate a random username
-            var i = 0, userExists = true;
-            while (userExists) {
-                var username = i.toString();
+            var usernameAllocated = false;
+            while (!usernameAllocated) {
+                var username = randomstring.generate();
                 if (users[username] === undefined) {
                     users[username] = socket;
                     socket.username = username;
@@ -58,8 +59,8 @@ module.exports = function(io) {
                     users[username].topics = ["Anything"];
                     users[username].type = "Supporter";
                     users[username].language = "en";
-                    userExists = false;
-                } else i++;
+                    usernameAllocated = true;
+                }
             }
         }
 
@@ -188,12 +189,9 @@ module.exports = function(io) {
                 users[partner].emit("unmatched");
             }
 
-
-
             //loop through all user to delete all users records
             for (var username in users) {
                 console.log(users[username].skipped);
-
 
                 //check if looped user isn't the user, haven't skipped each other, isn't blocked, isn't matched, is opposite type of user (supporter & supportee)
                 if (users[username].skipped.indexOf(socket.username) !== -1) {
@@ -202,8 +200,6 @@ module.exports = function(io) {
 
                 console.log(users[username].skipped);
             }
-
-
 
             delete users[socket.username];
         });

@@ -10,11 +10,12 @@
   },
   "dependencies": {
     "body-parser": "^1.15.2",
-    "google-translate": "^2.0.4",
     "express": "^4.10.2",
+    "google-translate": "^2.0.4",
     "isprofanity": "^1.0.9",
     "nodemailer": "^2.7.0",
     "nodemon": "^1.11.0",
+    "randomstring": "^1.1.5",
     "socket.io": "^1.7.2"
   },
   "repository": {
