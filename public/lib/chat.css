@@ -121,8 +121,13 @@ legend {
     text-align: center;
 }
 
+#motivationalMessageContainer {
+    display: none;
+}
+
 #motivationalMessage {
-    margin: 10px;
+
+    font-size: xx-large;
 }
 
 #feedback button {

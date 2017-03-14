@@ -173,7 +173,7 @@ var socket = io(),
     },
 
     matchUser = function() {
-
+        $("#motivationalMessageContainer").hide();
         $("#preferences").hide();
         $("#messagesContainer").show();
 
@@ -188,6 +188,7 @@ var socket = io(),
             if (matched) {
                 setUpChat();
             } else if (waitingMessage) {
+                $("#motivationalMessageContainer").show();
 
                 $("#feedbackContainer").toggleClass("panel-primary", true);
                 $("#feedbackContainer").toggleClass("panel-success", false);
@@ -337,6 +338,7 @@ $("#preferences").submit(function(e) {
 socket.on("matched", setUpChat);
 
 socket.on("unmatched", function() {
+    $("#motivationalMessageContainer").hide();
     addFeedback("User has left the chat.");
     sendNotifications("User has left the chat.");
 });
