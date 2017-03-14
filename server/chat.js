@@ -5,29 +5,40 @@ module.exports = function(io) {
         googleTranslate = require('google-translate')("AIzaSyD9-7x_akVND9A5sGSYNyHfpZ_BfIqPHnI"),
 
         motivationalMessages = {
-            Supporter: [
-                "Supporter Placeholder Motivational Message 1.",
-                "Supporter Placeholder Motivational Message 2.",
-                "Supporter Placeholder Motivational Message 3.",
-                "Supporter Placeholder Motivational Message 4.",
-                "Supporter Placeholder Motivational Message 5.",
-                "Supporter Placeholder Motivational Message 6.",
-                "Supporter Placeholder Motivational Message 7.",
-                "Supporter Placeholder Motivational Message 8.",
-                "Supporter Placeholder Motivational Message 9.",
-                "Supporter Placeholder Motivational Message 10."
-            ],
             Supportee: [
-                "Supportee Placeholder Motivational Message 1.",
-                "Supportee Placeholder Motivational Message 2.",
-                "Supportee Placeholder Motivational Message 3.",
-                "Supportee Placeholder Motivational Message 4.",
-                "Supportee Placeholder Motivational Message 5.",
-                "Supportee Placeholder Motivational Message 6.",
-                "Supportee Placeholder Motivational Message 7.",
-                "Supportee Placeholder Motivational Message 8.",
-                "Supportee Placeholder Motivational Message 9.",
-                "Supportee Placeholder Motivational Message 10."
+                "I know how you are feeling.",
+                "You can do this.",
+                "Everyone goes through experiences like this.",
+                "Take a deep breath.",
+                "It will get easier.",
+                "You can only do your best.",
+                "Keep smiling.",
+                "Don't give up.",
+                "Don't worry, you can do this.",
+                "Everyone is different.",
+                "I know you will succeed.",
+                "I am proud of you.",
+                "Be very proud of yourself.",
+                "Keep going.",
+                "You're very patient.",
+                "You are awesome."
+            ],
+            Supporter: [
+                "I am proud of you.",
+                "Be very proud of yourself.",
+                "You're very patient.",
+                "You are awesome.",
+                "Buddy Support is grateful to you.",
+                "Supportees are grateful to you.",
+                "Buddy Support couldn't make do without you.",
+                "Supportees couldn't make do without you.",
+                "I'm really glad you are here for Supportees.",
+                "Your work is very appreciated.",
+                "I'm really glad you are here for Supportees.",
+                "Supportees appreciates you.",
+                "Buddy Support appreciates you.",
+                "Buddy Support is really lucky to have you.",
+                "Supportees are really lucky to have you."
             ]
         };
 
@@ -244,7 +255,7 @@ module.exports = function(io) {
             } else {
                 feedback = "Please select your type, Supporter or a Supportee.";
             }
-            
+
             callback(feedback)
 
         });
