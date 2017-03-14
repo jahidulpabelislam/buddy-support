@@ -224,16 +224,28 @@ module.exports = function(io) {
 
         });
 
-        socket.on("change preferences", function(data) {
+        socket.on("change preferences", function(data, callback) {
             if (!socket.username) return;
+
+            var feedback = "";
+
+            if (data.topics.length === 0) {
+                feedback = "Please select a topic.";
+            } else if (data.topics.indexOf("Anything") !== -1 && data.topics.length > 1) {
+                feedback = "You can't select 'Anything' as a topic along with another topic.";
+            } else {
+                users[socket.username].topics = data.topics;
+            }
 
             if (data.type === "Supporter") {
                 users[socket.username].type = "Supporter";
             } else if (data.type === "Supportee") {
                 users[socket.username].type = "Supportee";
+            } else {
+                feedback = "Please select your type, Supporter or a Supportee.";
             }
-
-            users[socket.username].topics = data.topics;
+            
+            callback(feedback)
 
         });
 

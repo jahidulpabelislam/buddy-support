@@ -307,7 +307,7 @@ $("#preferences").submit(function(e) {
 
     if (topics.length === 0) {
         $("#preferencesFeedbackContainer").show();
-        $("#preferencesFeedback").text("You need to select a topic.");
+        $("#preferencesFeedback").text("Please select a topic.");
     } else if (topics.indexOf("Anything") !== -1 && topics.length > 1) {
         $("#preferencesFeedbackContainer").show();
         $("#preferencesFeedback").text("You can't select 'Anything' as a topic along with another topic.");
@@ -317,10 +317,18 @@ $("#preferences").submit(function(e) {
             topics: topics
         };
 
-        socket.emit("change preferences", data);
-        $("#preferencesFeedbackContainer").hide();
+        socket.emit("change preferences", data, function(feedback) {
+            if (feedback) {
+                $("#preferencesFeedbackContainer").show();
+                $("#preferencesFeedback").text(feedback);
+            } else {
+                $("#preferencesFeedbackContainer").hide();
 
-        matchUser();
+                matchUser();
+            }
+
+        });
+
     }
 
     e.preventDefault();
