@@ -191,14 +191,11 @@ module.exports = function(io) {
 
             //loop through all user to delete all users records
             for (var username in users) {
-                console.log(users[username].skipped);
 
                 //check if looped user isn't the user, haven't skipped each other, isn't blocked, isn't matched, is opposite type of user (supporter & supportee)
                 if (users[username].skipped.indexOf(socket.username) !== -1) {
                     delete users[username].skipped[users[username].skipped.indexOf(socket.username)];
                 }
-
-                console.log(users[username].skipped);
             }
 
             delete users[socket.username];
