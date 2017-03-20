@@ -31,9 +31,10 @@
                         <span class="icon-bar"></span>
                     </button>
 
-                    <a class="navbar-brand" id="logoContainer" href="/" onclick="return getConfirmation(this);"><img id="logo" src="/images/logo.png"
-                                                                                    alt="Logo for Buddy Support"
-                                                                                    style="opacity:1;"></a>
+                    <a class="navbar-brand" id="logoContainer" href="/" onclick="return getConfirmation(this);"><img
+                            id="logo" src="/images/logo.png"
+                            alt="Logo for Buddy Support"
+                            style="opacity:1;"></a>
                     <a class="navbar-brand" href="/" onclick="return getConfirmation(this);">Chat</a>
                 </div>
                 <div id="navbar" class="navbar-collapse collapse">
@@ -83,8 +84,8 @@
                     <label id="messageLabel" for="message">Your Text Message</label>
                     <input id="message" placeholder="hello :)..." class="form-control" />
                     <span class="input-group-btn">
-                                <button class="btn btn-default" type="submit">Send</button>
-                            </span>
+                                    <button class="btn btn-default" type="submit">Send</button>
+                                </span>
                 </form><!-- /input-group -->
 
             </div>
@@ -92,8 +93,12 @@
 
         <div id="chatButtons">
             <div class="container">
-                <button id="skipButton" class="btn btn-danger"><span class="glyphicon glyphicon-ban-circle" aria-hidden="true"></span> Skip User</button>
-                <button id="reportButton" class="btn btn-warning"><span class="glyphicon glyphicon-flag" aria-hidden="true"></span> Report User</button>
+                <button id="skipButton" class="btn btn-danger"><span class="glyphicon glyphicon-ban-circle"
+                                                                     aria-hidden="true"></span> Skip User
+                </button>
+                <button id="reportButton" class="btn btn-warning"><span class="glyphicon glyphicon-flag"
+                                                                        aria-hidden="true"></span> Report User
+                </button>
             </div>
         </div>
 
@@ -120,19 +125,23 @@
                     <fieldset>
                         <legend>I want to talk about:</legend>
                         <div class="checkbox">
-                            <label for="anything"><input type="checkbox" name="topic" value="Anything" checked id="anything">Anything</label>
+                            <label for="anything"><input type="checkbox" name="topic" value="Anything" checked
+                                                         id="anything">Anything</label>
                         </div>
                         <div class="checkbox">
                             <label for="loneliness"><input type="checkbox" name="topic" value="Loneliness" id="loneliness">Loneliness</label>
                         </div>
                         <div class="checkbox">
-                            <label for="stress"><input type="checkbox" name="topic" value="Stress" id="stress">Stress</label>
+                            <label for="stress"><input type="checkbox" name="topic" value="Stress"
+                                                       id="stress">Stress</label>
                         </div>
                         <div class="checkbox">
-                            <label for="unhappiness"><input type="checkbox" name="topic" value="Unhappiness" id="unhappiness">Unhappiness</label>
+                            <label for="unhappiness"><input type="checkbox" name="topic" value="Unhappiness"
+                                                            id="unhappiness">Unhappiness</label>
                         </div>
                         <div class="checkbox">
-                            <label for="feelings of anxiety"><input type="checkbox" name="topic" value="Feelings of Anxiety" id="feelings of anxiety">Feelings of Anxiety</label>
+                            <label for="feelingsOfAnxiety"><input type="checkbox" name="topic" value="Feelings of Anxiety"
+                                                                  id="feelingsOfAnxiety">Feelings of Anxiety</label>
                         </div>
                         <div class="checkbox">
                             <label for="isolation"><input type="checkbox" name="topic" value="Isolation" id="isolation">Isolation</label>
@@ -162,7 +171,9 @@
         <div id="confirmationContainerContainer">
             <div class="container">
                 <div id="confirmationContainer" class="panel panel-danger">
-                    <div class="panel-heading" ><p id="confirmationMessage"></p><div id="confirmationButtons"></div></div>
+                    <div class="panel-heading"><p id="confirmationMessage"></p>
+                        <div id="confirmationButtons"></div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -171,7 +182,7 @@
             <source src="/sound/notification.wav" type="audio/wav">
             <source src="/sound/notification.mp3" type="audio/mp3">
             <source src="/sound/notification.ogg" type="audio/ogg">
-                Your browser does not support the audio element.
+            Your browser does not support the audio element.
         </audio>
 
         <script type="text/javascript" src="/socket.io/socket.io.js"></script>
