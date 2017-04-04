@@ -134,7 +134,7 @@ module.exports = function(io) {
         });
 
         socket.on("send message", function(message, callback) {
-            var error = "";
+            var error;
 
             if (message.trim() !== "") {
                 var partner = users[socket.username].partner;
@@ -148,23 +148,24 @@ module.exports = function(io) {
                             if (users[partner].language !== users[socket.username].language) {
 
                                 googleTranslate.translate(message, users[partner].language, function(err, messageTranslation) {
-                                    if (err) {
-                                        error = "Error Sending Message";
-                                    } else {
-                                        message = messageTranslation.translatedText;
-                                    }
+                                    callback(error);
+                                    users[partner].emit("receive message", messageTranslation.translatedText || message);
                                 });
-
+                            } else {
+                                callback(error);
+                                users[partner].emit("receive message", message);
                             }
                         } else {
                             error = "Message contains profanity.";
+
+                            if (users[partner].language !== users[socket.username].language) {
+                                googleTranslate.translate(error, users[socket.username].language, function(err, errorTranslation) {
+                                    callback(errorTranslation.translatedText || error);
+                                });
+                            } else {
+                                callback(error);
+                            }
                         }
-
-                        googleTranslate.translate(error, users[socket.username].language, function(err, errorTranslation) {
-                            callback(errorTranslation.translatedText || error);
-                            users[partner].emit("receive message", message);
-                        });
-
                     });
                 } else {
                     error = "You aren't matched with anyone.";
