@@ -28,25 +28,23 @@
     display: none;
 }
 
+.navbar-toggle .icon-bar {
+    transition: all 500ms ease-in-out;
+    position: relative;
+}
+
 .navbar-toggle.collapsed .icon-bar:nth-of-type(2) {
-    top: initial;
+    top: 0;
     transform: rotate(0deg);
 }
 
 .navbar-toggle.collapsed .icon-bar:nth-of-type(3) {
-    top: 1px;
-    transform: rotate(0deg);
     background-color: #888;
 }
 
 .navbar-toggle.collapsed .icon-bar:nth-of-type(4) {
-    top: 2px;
+    top: 0;
     transform: rotate(0deg);
-}
-
-.navbar-toggle .icon-bar {
-    transition: all 500ms ease-in-out;
-    position: relative;
 }
 
 .navbar-toggle .icon-bar:nth-of-type(2) {
