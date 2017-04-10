@@ -4,6 +4,7 @@
 
 #contactForm .input {
     margin-bottom: 5px;
+    -webkit-appearance: none;
 }
 
 #contactForm textarea.input {
