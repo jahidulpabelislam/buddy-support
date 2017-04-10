@@ -37,7 +37,7 @@ var renderFeedback = function(result) {
     },
     error = function() {
         $("#feedback").text("Something went wrong, please try again later.").addClass("error");
-        $("#loading").hide();
+        $("#submit").button('reset');
     };
 
 $("#contactForm").submit(function() {
