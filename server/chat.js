@@ -87,7 +87,7 @@ module.exports = function(io) {
                             && users[username].skipped.indexOf(socket.username) === -1 && users[username].partner === undefined
                             && users[username].reported <= 5 && users[username].start === true && users[username].type !== users[socket.username].type) {
 
-                            //loop through all user to find a match
+                            //loop through the looped user's topic to find a match with the same topic
                             for (var topic in users[username].topics) {
 
                                 if (users[socket.username].topics.indexOf(users[username].topics[topic]) !== -1) {
@@ -107,9 +107,33 @@ module.exports = function(io) {
                     }
 
                     if (!matched) {
-                        feedback = "No Users Available. Waiting for a match...";
-                        var messageIndex = Math.floor(Math.random() * motivationalMessages[users[socket.username].type].length);
-                        randomMotivationalMessage = motivationalMessages[users[socket.username].type][messageIndex];
+                        //loop through all user to find a match that has a topic of anything
+                        for (var username in users) {
+
+                            //check if looped user isn't the user, haven't skipped each other, isn't blocked, isn't matched, is opposite type of user (supporter & supportee)
+                            if (username !== socket.username && users[socket.username].skipped.indexOf(username) === -1
+                                && users[username].skipped.indexOf(socket.username) === -1 && users[username].partner === undefined
+                                && users[username].reported <= 5 && users[username].start === true && users[username].type !== users[socket.username].type) {
+
+                                if (users[socket.username].topics.indexOf("Anything") !== -1 || users[username].topics.indexOf("Anything") !== -1 ) {
+
+                                    users[username].partner = socket.username;
+                                    users[socket.username].partner = username;
+                                    users[username].emit("matched");
+                                    matched = true;
+                                    break;
+                                }
+
+                                if (matched) {
+                                    break;
+                                }
+                            }
+                        }
+                        if (!matched) {
+                            feedback = "No Users Available. Waiting for a match...";
+                            var messageIndex = Math.floor(Math.random() * motivationalMessages[users[socket.username].type].length);
+                            randomMotivationalMessage = motivationalMessages[users[socket.username].type][messageIndex];
+                        }
                     }
 
                 } else {
