@@ -497,37 +497,32 @@ $("#newMessage").click(function() {
 
 var getConfirmation = function(e) {
 
-    if (userMatched) {
+    $("#confirmationContainerContainer").css("z-index", "2000");
+    $("#confirmationContainerContainer").css("opacity", "100");
 
-        $("#confirmationContainerContainer").css("z-index", "2000");
-        $("#confirmationContainerContainer").css("opacity", "100");
+    $no = $('<button/>').text('No').addClass("btn btn-success").click(function() {
+        $("#confirmationContainerContainer").css("z-index", "-1000");
+        $("#confirmationContainerContainer").css("opacity", "0");
+        $("#confirmationMessage").text("");
+        $("#confirmationButtons").text("");
+    });
 
-        $no = $('<button/>').text('No').addClass("btn btn-success").click(function() {
-            $("#confirmationContainerContainer").css("z-index", "-1000");
-            $("#confirmationContainerContainer").css("opacity", "0");
-            $("#confirmationMessage").text("");
-            $("#confirmationButtons").text("");
-        });
+    $yes = $('<button/>').text('Yes').addClass("btn btn-danger").click(function() {
+        window.location = e.href;
+    });
 
-        $yes = $('<button/>').text('Yes').addClass("btn btn-danger").click(function() {
-            window.location = e.href;
-        });
+    socket.emit("translate", "Are you sure you want to leave the chat?", function(error, translation) {
+        if (!error && translation && translation.translatedText) {
+            feedback = translation.translatedText;
+        }
 
-        socket.emit("translate", "Are you sure you want to leave the chat?", function(error, translation) {
-            if (!error && translation && translation.translatedText) {
-                feedback = translation.translatedText;
-            }
+        $("#confirmationMessage").text(feedback);
 
-            $("#confirmationMessage").text(feedback);
+        $("#confirmationButtons").append($no).append($yes);
 
-            $("#confirmationButtons").append($no).append($yes);
+    });
 
-        });
-
-        return false;
-    } else {
-        return true;
-    }
+    return false;
 
 };
 
