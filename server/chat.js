@@ -1,10 +1,15 @@
+//Code that handles chat events/Socket.io events
 module.exports = function(io) {
 
+    //Used to store a list of the current users
     var users = {},
+
+        //Gets the External packages needed for the chat functionanlity
         isprofanity = require('isprofanity'),
         googleTranslate = require('google-translate')("AIzaSyD9-7x_akVND9A5sGSYNyHfpZ_BfIqPHnI"),
         randomstring = require("randomstring"),
 
+        //Holds the motivational messages for each type of user for use later
         motivationalMessages = {
             Supportee: [
                 "I know how you are feeling.",
@@ -43,10 +48,11 @@ module.exports = function(io) {
             ]
         };
 
+    //Holds all the Events to listen to After a User has connected to the chat
     io.on("connection", function(socket) {
 
+        //Allocates a random username on connection
         if (!socket.username) {
-            //allocate a random username
             var usernameAllocated = false;
             while (!usernameAllocated) {
                 var username = randomstring.generate();
@@ -64,30 +70,30 @@ module.exports = function(io) {
             }
         }
 
-        //match user with a random partner
+        //Matches user with a random partner
         socket.on("match", function(callback) {
             var matched = false,
-                feedback = "",
+                feedback ,
                 blocked = false,
-                randomMotivationalMessage = "";
+                randomMotivationalMessage;
 
             users[socket.username].start = true;
 
-            //checks if user is already matched
+            //Checks if the user is already matched
             if (users[socket.username].partner === undefined) {
 
-                //check is user has been blocked
+                //Checks if the user has been blocked
                 if (users[socket.username].reported <= 5) {
 
-                    //loop through all user to find a match
+                    //Loops through all users to find a match
                     for (var username in users) {
 
-                        //check if looped user isn't the user, haven't skipped each other, isn't blocked, isn't matched, is opposite type of user (supporter & supportee)
+                        //Checks if the looped user isn't the user, haven't skipped each other, isn't blocked, isn't matched, is opposite type of user (supporter & supportee)
                         if (username !== socket.username && users[socket.username].skipped.indexOf(username) === -1
                             && users[username].skipped.indexOf(socket.username) === -1 && users[username].partner === undefined
                             && users[username].reported <= 5 && users[username].start === true && users[username].type !== users[socket.username].type) {
 
-                            //loop through the looped user's topic to find a match with the same topic
+                            //Loops through the looped user's topic to find a match with the same topic
                             for (var topic in users[username].topics) {
 
                                 if (users[socket.username].topics.indexOf(users[username].topics[topic]) !== -1) {
@@ -106,16 +112,19 @@ module.exports = function(io) {
                         }
                     }
 
+                    //Checks if no match was found, try to find a match that has a topic of anything
                     if (!matched) {
-                        //loop through all user to find a match that has a topic of anything
+
+                        //Loops through all users
                         for (var username in users) {
 
-                            //check if looped user isn't the user, haven't skipped each other, isn't blocked, isn't matched, is opposite type of user (supporter & supportee)
+                            //Checks if the looped user isn't the user, haven't skipped each other, isn't blocked, isn't matched, is opposite type of user (supporter & supportee)
                             if (username !== socket.username && users[socket.username].skipped.indexOf(username) === -1
                                 && users[username].skipped.indexOf(socket.username) === -1 && users[username].partner === undefined
                                 && users[username].reported <= 5 && users[username].start === true && users[username].type !== users[socket.username].type) {
 
-                                if (users[socket.username].topics.indexOf("Anything") !== -1 || users[username].topics.indexOf("Anything") !== -1 ) {
+                                //Checks if either has a topic of 'Anything'
+                                if (users[socket.username].topics.indexOf("Anything") !== -1 || users[username].topics.indexOf("Anything") !== -1) {
 
                                     users[username].partner = socket.username;
                                     users[socket.username].partner = username;
@@ -124,11 +133,14 @@ module.exports = function(io) {
                                     break;
                                 }
 
+
                                 if (matched) {
                                     break;
                                 }
                             }
                         }
+
+                        //If still not match send out feedback and motivataional message
                         if (!matched) {
                             feedback = "No Users Available. Waiting for a match...";
                             var messageIndex = Math.floor(Math.random() * motivationalMessages[users[socket.username].type].length);
@@ -136,16 +148,18 @@ module.exports = function(io) {
                         }
                     }
 
-                } else {
-                    blocked = true;
-                    feedback = "You have been blocked from chatting.";
                 }
-
-            } else {
+                //Else send feedback that they are blocked from the app
+                else {
+                    blocked = true;
+                }
+            }
+            //Else send feedback that they already have a match
+            else {
                 matched = true;
-                feedback = "Already matched.";
             }
 
+            //Translate the feedback and send it back to user
             googleTranslate.translate(feedback, users[socket.username].language, function(err, translation) {
 
                 googleTranslate.translate(randomMotivationalMessage, users[socket.username].language, function(err2, translation2) {
@@ -157,16 +171,20 @@ module.exports = function(io) {
 
         });
 
+        //Sends a message a user has sent to their partner
         socket.on("send message", function(message, callback) {
             var error;
 
+            //Check if the message isn't empty
             if (message.trim() !== "") {
+
+                //Check if partner exists
                 var partner = users[socket.username].partner;
                 if (partner) {
 
                     isprofanity(message, function(profanity) {
 
-                        //checks if message doesn't include any profanity
+                        //Checks if the message doesn't include any profanity
                         if (!profanity) {
 
                             if (users[partner].language !== users[socket.username].language) {
@@ -182,13 +200,10 @@ module.exports = function(io) {
                         } else {
                             error = "Message contains profanity.";
 
-                            if (users[partner].language !== users[socket.username].language) {
-                                googleTranslate.translate(error, users[socket.username].language, function(err, errorTranslation) {
-                                    callback(errorTranslation.translatedText || error);
-                                });
-                            } else {
-                                callback(error);
-                            }
+                            googleTranslate.translate(error, users[socket.username].language, function(err, errorTranslation) {
+                                callback(errorTranslation.translatedText || error);
+                            });
+
                         }
                     });
                 } else {
@@ -199,7 +214,11 @@ module.exports = function(io) {
                     });
                 }
             } else {
-                callback(error);
+                error = "Message is empty, message can't be empty.";
+
+                googleTranslate.translate(error, users[socket.username].language, function(err, translation) {
+                    callback(translation.translatedText || error);
+                });
             }
         });
 
@@ -214,15 +233,16 @@ module.exports = function(io) {
                 users[partner].emit("unmatched");
             }
 
-            //loop through all user to delete all users records
+            //Loops through all user to delete all users records
             for (var username in users) {
 
-                //check if looped user isn't the user, haven't skipped each other, isn't blocked, isn't matched, is opposite type of user (supporter & supportee)
+                //Checks if looped user isn't the user, haven't skipped each other, isn't blocked, isn't matched, is opposite type of user (supporter & supportee)
                 if (users[username].skipped.indexOf(socket.username) !== -1) {
                     delete users[username].skipped[users[username].skipped.indexOf(socket.username)];
                 }
             }
 
+            //Deletes the user from the list of users
             delete users[socket.username];
         });
 
@@ -274,10 +294,11 @@ module.exports = function(io) {
 
         });
 
-        socket.on("change preferences", function(data, callback) {
+        //Updates the new preferences
+        socket.on("preferences change", function(data, callback) {
             if (!socket.username) return;
 
-            var feedback = "";
+            var feedback;
 
             if (data.topics.length === 0) {
                 feedback = "Please select a topic.";
@@ -299,51 +320,58 @@ module.exports = function(io) {
 
         });
 
+        //Stops matching
         socket.on("start again", function() {
             if (!socket.username) return;
 
             users[socket.username].start = false;
-
         });
 
+        //Update the matched user whether or not they are currently typing
         socket.on("typing", function(typing) {
             if (!socket.username) return;
 
             var partner = users[socket.username].partner;
-
             if (partner) {
                 users[partner].emit("typing", typing);
             }
         });
 
+        //Gets the list of available languages and send it to the user
         socket.on("get languages", function(callback) {
             if (!socket.username) return;
 
-            googleTranslate.getSupportedLanguages(users[socket.username].language, function(err, languageCodes) {
-                callback(languageCodes);
+            googleTranslate.getSupportedLanguages(users[socket.username].language, function(err, languages) {
+                callback(languages);
             });
         });
 
-        socket.on("change language", function(language) {
+        //Changes the language when user has selected another
+        socket.on("language change ", function(language) {
             if (!socket.username) return;
 
             users[socket.username].language = language;
-
         });
 
+        //Translates a string
         socket.on("translate", function(string, callback) {
+            //If user hasn't got a username, just return
             if (!socket.username) return;
 
+            //Translate the string and send back
             googleTranslate.translate(string, users[socket.username].language, function(err, translation) {
                 callback(err, translation);
             });
         });
 
+        //When the user has viewed the messages
         socket.on("viewed", function() {
+
+            //If user hasn't got a username, just return
             if (!socket.username) return;
 
+            //Check user has a partner, and then let them know messages are viewed
             var partner = users[socket.username].partner;
-
             if (partner) {
                 users[partner].emit("viewed");
             }

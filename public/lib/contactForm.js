@@ -8,9 +8,7 @@ var renderFeedback = function(result) {
         }
 
         if (result.ok) {
-            $("#emailInput").val("");
-            $("#subjectInput").val("");
-            $("#messageInput").val("");
+            $("#emailInput, #messageInput, subjectInput").val("");
             $("#feedback").text(result.feedback).addClass("success");
         } else {
             $("#feedback").addClass("error");
@@ -45,15 +43,15 @@ $("#contactForm").submit(function() {
 
     var type = $("#contactType").val();
 
-    //validate each required user input
+    //Validates each required user input
     var messageValidation = validateMessage($("#messageInput").val(), true);
 
     if (type === "Enquiry") {
         var emailValidation = validateEmail($("#emailInput").val(), true);
     }
 
-    //if form is valid send a request with necessary data to XHR
-    if ((type === "Enquiry" && emailValidation && messageValidation) || (type === "Message" && messageValidation)) {
+    //Checks if form is valid send a request with necessary data to XHR
+    if (messageValidation && ((type === "Enquiry" && emailValidation) || (type === "Message"))) {
         $.ajax({
             url: '/contact',
             type: 'POST',
@@ -68,27 +66,27 @@ $("#contactForm").submit(function() {
     return false;
 });
 
-//validate the email address
+//Validates the email address
 var validateEmail = function(email, isForm) {
         $("#feedback").text("");
 
         var validEmailPattern = /\b[\w._-]+@[\w-]+.[\w]{2,}\b/im,
             result = validEmailPattern.test(email);
 
-        //checks if email is empty
+        //Checks if email is empty
         if (email.trim() === "" && isForm) {
             $("#emailInput").addClass("invalid");
             $("#emailFeedback").text("Email Address must be provided and valid.").addClass("error");
             return false;
         }
-        //checks if email is valid
+        //Checks if email is valid
         else if (!result && isForm) {
-            //give user message
+            //Gives user message
             $("#emailInput").addClass("invalid");
             $("#emailFeedback").text("Email Address must be valid.").addClass("error");
             return false;
         }
-        //else remove feedback message
+        //Else removes feedback message
         else if (email.trim() !== "" && result) {
             $("#emailInput").removeClass("invalid");
             $("#emailFeedback").text("").removeClass("error");
@@ -96,18 +94,18 @@ var validateEmail = function(email, isForm) {
         }
     },
 
-    //validate the message input
+    //Validates the message input
     validateMessage = function(message, isForm) {
         $("#feedback").text("");
 
-        //checks is message is empty
+        //Checks if the message is empty
         if (message.trim() === "" && isForm) {
-            //give user message
+            //Gives user message
             $("#messageInput").addClass("invalid");
             $("#messageFeedback").text("Message must be filled out.").addClass("error");
             return false;
         }
-        //else remove feedback messages
+        //Else remove feedback messages
         else if (message.trim() !== "") {
             $("#messageInput").removeClass("invalid");
             $("#messageFeedback").text("").removeClass("error");
@@ -116,6 +114,7 @@ var validateEmail = function(email, isForm) {
 
     };
 
+//Change the inputs shown on change of message type.
 $("#contactType").change(function() {
     var type = $("#contactType").val();
 

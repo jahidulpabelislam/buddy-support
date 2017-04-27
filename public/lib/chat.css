@@ -6,6 +6,7 @@
     padding: 3px;
     position: fixed;
     width: 100%;
+    z-index: 1000;
 }
 
 #messages > p {
@@ -93,10 +94,15 @@
     text-align: center;
 }
 
+legend {
+    text-align: center;
+}
+
 #chatButtons {
     display: none;
     position: fixed;
     width: 100%;
+    z-index: 1000;
 }
 
 #reportButton {
@@ -121,12 +127,7 @@ legend {
     text-align: center;
 }
 
-#motivationalMessageContainer {
-    display: none;
-}
-
 #motivationalMessage {
-
     font-size: xx-large;
 }
 
@@ -179,4 +180,10 @@ legend {
 
 #preferencesFeedback {
     display: inline-block;
+}
+
+#userTypingGif {
+    height: 10px;
+    vertical-align: text-bottom;
+    margin-left: 2px;
 }

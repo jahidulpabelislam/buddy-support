@@ -7,7 +7,7 @@ Users can use the app to get matched with another user and chat to them anonymou
 The chat will not be stored anywhere so after the connection with the app is broken the chat is gone making it temporary.
 
 The features:
-* Users can select whether user is a supporter or wants support
+* Users can select whether user is a Supporter or wants support (Supportee)
 * Users can select what they want to talk about
 * Users get matched with user of opposite (only to one user at a time)
 * Users can then chat to that matched user by text messages
@@ -18,7 +18,7 @@ The features:
 * Translate message to receiver’s language
 * Users can skip the matched user
 * Users can report the matched user
-* Users can choose a game and invite matched user to a game
+* Users can choose a game and invite matched user to a game (Not Implemented)
 * Users can accept or reject game invite
 * Users can send an enquiry or a message to the app company
 * Motivational messages when no users are available
