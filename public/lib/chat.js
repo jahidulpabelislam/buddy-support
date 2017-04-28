@@ -122,10 +122,13 @@ var socket = io(),
 
             //Create and add message and 'x' button
             $("#error").show();
-            $("#error").text(feedback);
-            $("#error").append($("<button>").addClass("close").append($("<span>").text("×")).click(function() {
+            $("#error");
+
+            var button = $("<button>").addClass("close").append($("<span>").text("×")).click(function() {
                 $("#error").hide();
-            }));
+            });
+
+            $("#error").text(feedback).append(button);
         });
     },
 
@@ -141,6 +144,7 @@ var socket = io(),
 
         sendNotification("Matched with a User.");
 
+        //Add the display of whose side of who's
         $("#messages")
             .append($("<p>").attr("id", "userDisplay")
                 .append($("<p>").text("↓ Matched User").addClass("matched"))
@@ -172,6 +176,13 @@ var socket = io(),
             } else if (waitingMessage) {
                 $("#feedbackContainer").toggleClass("panel-primary", true);
                 $("#feedbackContainer").toggleClass("panel-success", false);
+
+                var $button = $('<button/>').text('Back').addClass("btn btn-warning").click(function() {
+                    socket.emit("start again");
+                    $("#preferences").show();
+                    $("#messagesContainer").hide();
+                });
+
                 $("#feedback").text(feedback).append($button);
 
                 $("#motivationalMessageContainer").show();
@@ -211,8 +222,18 @@ var socket = io(),
         setUpFeedback();
         $("#feedbackContainer").toggleClass("panel-danger", true);
         $("#feedbackContainer").toggleClass("panel-primary", false);
-        $("#feedback").text("You have been blocked.");
-        sendNotification("You have been blocked.");
+
+        var feedback = "You have been blocked.";
+        socket.emit("translate", feedback, function(error, translation) {
+            if (!error && translation && translation.translatedText) {
+                feedback = translation.translatedText;
+            }
+        });
+
+        $("#feedback").text(feedback);
+        sendNotification(feedback);
+
+        $("#motivationalMessageContainer").hide();
     },
 
     //Sends a notification via Notifications API and plays sound
@@ -223,21 +244,29 @@ var socket = io(),
         //If user isn't on page send notification
         if (!onPage && !currentlyViewing()) {
 
-            //Checks if the browser supports notifications and whether  permissions has been granted already
-            if ("Notification" in window && Notification.permission === "granted") {
-                //Sends notification
-                new Notification(notification);
-            }
+            socket.emit("translate", notification, function(error, translation) {
+                if (!error && translation && translation.translatedText) {
+                    notification = translation.translatedText;
+                }
 
-            //Otherwise sends request to the user to get permission
-            else if (Notification.permission !== "denied") {
-                Notification.requestPermission(function(permission) {
-                    //Sends notification if persmission was granted
-                    if (permission === "granted") {
-                        new Notification(notification);
-                    }
-                });
-            }
+                //Checks if the browser supports notifications and whether  permissions has been granted already
+                if ("Notification" in window && Notification.permission === "granted") {
+                    //Sends notification
+                    new Notification(notification);
+                }
+
+                //Otherwise sends request to the user to get permission
+                else if (Notification.permission !== "denied") {
+                    Notification.requestPermission(function(permission) {
+                        //Sends notification if persmission was granted
+                        if (permission === "granted") {
+                            new Notification(notification);
+                        }
+                    });
+                }
+            });
+
+
         }
     },
 
@@ -420,7 +449,6 @@ $("#reportButton").click(function() {
 
         //Send event that user stopped typing
         typingTimeoutFunction = function() {
-            console.log("timer end");
             socket.emit("typing", false);
         };
 
@@ -534,9 +562,18 @@ socket.on("receive message", function(msg) {
         socket.emit("viewed");
     } else {
         newMessages++;
-        $("#newMessage").text("(" + newMessages + ") New Message");
-        $("#newMessage").append($("<i>").addClass("fa fa-arrow-down"));
-        $("#newMessage").show();
+
+        var feedback = "(" + newMessages + ") New Message";
+        socket.emit("translate", feedback, function(error, translation) {
+            if (!error && translation && translation.translatedText) {
+                feedback = translation.translatedText;
+            }
+
+            $("#newMessage").text(feedback);
+            $("#newMessage").append($("<i>").addClass("fa fa-arrow-down"));
+            $("#newMessage").show();
+        });
+
         document.title = "(" + newMessages + ") Chat | Buddy Support";
     }
 

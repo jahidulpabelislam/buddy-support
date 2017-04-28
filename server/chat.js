@@ -73,9 +73,9 @@ module.exports = function(io) {
         //Matches user with a random partner
         socket.on("match", function(callback) {
             var matched = false,
-                feedback ,
+                feedback = "",
                 blocked = false,
-                randomMotivationalMessage;
+                randomMotivationalMessage = "";
 
             users[socket.username].start = true;
 
@@ -133,7 +133,6 @@ module.exports = function(io) {
                                     break;
                                 }
 
-
                                 if (matched) {
                                     break;
                                 }
@@ -187,16 +186,10 @@ module.exports = function(io) {
                         //Checks if the message doesn't include any profanity
                         if (!profanity) {
 
-                            if (users[partner].language !== users[socket.username].language) {
-
-                                googleTranslate.translate(message, users[partner].language, function(err, messageTranslation) {
-                                    callback(error);
-                                    users[partner].emit("receive message", messageTranslation.translatedText || message);
-                                });
-                            } else {
+                            googleTranslate.translate(message, users[partner].language, function(err, messageTranslation) {
                                 callback(error);
-                                users[partner].emit("receive message", message);
-                            }
+                                users[partner].emit("receive message", messageTranslation.translatedText || message);
+                            });
                         } else {
                             error = "Message contains profanity.";
 
@@ -347,7 +340,7 @@ module.exports = function(io) {
         });
 
         //Changes the language when user has selected another
-        socket.on("language change ", function(language) {
+        socket.on("language change", function(language) {
             if (!socket.username) return;
 
             users[socket.username].language = language;
