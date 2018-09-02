@@ -10,13 +10,13 @@ module.exports = function(app) {
     //when the user requests home/chat page
     app.get("/", function(req, res) {
         //send the chat page back and display it
-        res.sendFile("/Users/Pabel/Google Drive/Project/Buddy-Support/public/view/chat.html");
+        res.sendFile("/Users/Pabel/Google-Drive/Project/Buddy-Support/public/view/chat.html");
     });
 
     //when the user requests the contact page
     app.get("/contact/", function(req, res) {
         //send the contact page back and display it
-        res.sendFile("/Users/Pabel/Google Drive/Project/Buddy-Support/public/view/contact.html");
+        res.sendFile("/Users/Pabel/Google-Drive/Project/Buddy-Support/public/view/contact.html");
     });
 
     //when the user requests to send a message from contact page
@@ -28,6 +28,6 @@ module.exports = function(app) {
     //when the user requests the help page
     app.get("/help/", function(req, res) {
         //send the help page back and display it
-        res.sendFile("/Users/Pabel/Google Drive/Project/Buddy-Support/public/view/help.html");
+        res.sendFile("/Users/Pabel/Google-Drive/Project/Buddy-Support/public/view/help.html");
     });
 };
