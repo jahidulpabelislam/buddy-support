@@ -9,6 +9,8 @@ const fs = require("fs"),
     app = express(),
     https = require("https").Server(credentials, app),
     io = require("socket.io")(https);
+
+console.log("listening");
 https.listen(9000);
 app.use(express.static(__dirname + "/public"));
 
