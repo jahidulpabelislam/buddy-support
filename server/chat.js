@@ -163,7 +163,7 @@ module.exports = function(io) {
 
                 googleTranslate.translate(randomMotivationalMessage, users[socket.username].language, function(err2, translation2) {
 
-                    callback(matched, translation.translatedText || feedback, translation2.translatedText || randomMotivationalMessage, blocked);
+                    callback(matched, translation && translation.translatedText || feedback, translation2 && translation2.translatedText || randomMotivationalMessage, blocked);
                 });
 
             });
