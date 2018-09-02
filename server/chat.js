@@ -188,13 +188,13 @@ module.exports = function(io) {
 
                             googleTranslate.translate(message, users[partner].language, function(err, messageTranslation) {
                                 callback(error);
-                                users[partner].emit("receive message", messageTranslation.translatedText || message);
+                                users[partner].emit("receive message", messageTranslation && messageTranslation.translatedText || message);
                             });
                         } else {
                             error = "Message contains profanity.";
 
                             googleTranslate.translate(error, users[socket.username].language, function(err, errorTranslation) {
-                                callback(errorTranslation.translatedText || error);
+                                callback(errorTranslation && errorTranslation.translatedText || error);
                             });
 
                         }
@@ -203,14 +203,14 @@ module.exports = function(io) {
                     error = "You aren't matched with anyone.";
 
                     googleTranslate.translate(error, users[socket.username].language, function(err, translation) {
-                        callback(translation.translatedText || error);
+                        callback(translation && translation.translatedText || error);
                     });
                 }
             } else {
                 error = "Message is empty, message can't be empty.";
 
                 googleTranslate.translate(error, users[socket.username].language, function(err, translation) {
-                    callback(translation.translatedText || error);
+                    callback(translation && translation.translatedText || error);
                 });
             }
         });
@@ -256,7 +256,7 @@ module.exports = function(io) {
             }
 
             googleTranslate.translate(feedback, users[socket.username].language, function(err, translation) {
-                callback(translation.translatedText || feedback);
+                callback(translation && translation.translatedText || feedback);
             });
 
         });
@@ -282,7 +282,7 @@ module.exports = function(io) {
             }
 
             googleTranslate.translate(feedback, users[socket.username].language, function(err, translation) {
-                callback(translation.translatedText || feedback);
+                callback(translation && translation.translatedText || feedback);
             });
 
         });
@@ -335,7 +335,7 @@ module.exports = function(io) {
             if (!socket.username) return;
 
             googleTranslate.getSupportedLanguages(users[socket.username].language, function(err, languages) {
-                callback(languages);
+                callback(languages || []);
             });
         });
 
