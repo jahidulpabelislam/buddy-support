@@ -28,7 +28,7 @@ The chat will not be stored anywhere so after the connection with the app is bro
 
 *   Date & Time on messages
 
-*   Translate message to receiver\u2019s language
+*   Translate message to receiver's language
 
 *   Users can skip the matched user
 
